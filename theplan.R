@@ -5,6 +5,11 @@
 
 ### a species key function
 
-### an "assembly" tool
+### an "assembly" tool (started)
 
-### a rarefaction Function
+### a rarefaction Function (check)
+
+### summary diveristy stats function
+# species distribution curve
+# skewness value?
+# alpha diversity
