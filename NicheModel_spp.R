@@ -5,7 +5,7 @@
 # initial model
 # Linear models
 
-
+# high abundance (1000s - beyond)
 spp1<-function(a,b,c,d,e) {(0.001(a-50)^3+3)+(10*b)+(-0.1(c-50)^2+50)+d+e}
 spp2<-function(a,b,c,d,e) {(0.001(a-50)^3+3)*(10*b)+(-0.1(c-50)^2+50)+d+e}
 spp3<-function(a,b,c,d,e) {((1/e)*(a-50)^3+3)+(10*b)+(-0.1(c-50)^2+50)+d}
@@ -37,6 +37,9 @@ spp28<-function(a,b,c,d,e) {}
 spp29<-function(a,b,c,d,e) {}
 spp30<-function(a,b,c,d,e) {}
 spp31<-function(a,b,c,d,e) {}
+
+#medium abundance (100s - 1000s)
+
 spp32<-function(a,b,c,d,e) {}
 spp33<-function(a,b,c,d,e) {}
 spp34<-function(a,b,c,d,e) {}
@@ -68,6 +71,9 @@ spp59<-function(a,b,c,d,e) {}
 spp60<-function(a,b,c,d,e) {}
 spp61<-function(a,b,c,d,e) {}
 spp62<-function(a,b,c,d,e) {}
+
+#low abundances (1-100)
+
 spp63<-function(a,b,c,d,e) {}
 spp64<-function(a,b,c,d,e) {}
 spp65<-function(a,b,c,d,e) {}

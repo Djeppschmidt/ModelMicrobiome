@@ -9,6 +9,13 @@
 
 ### a rarefaction Function (check)
 
+### benchmark tool
+
+# Run program functions
+# DESeq2, limma-Voom, mvabund (started)
+
+# extract run metrics-
+
 ### summary diveristy stats function
 # species distribution curve
 # skewness value?
