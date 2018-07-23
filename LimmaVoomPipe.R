@@ -2,6 +2,8 @@
 #design<-model.matrix(~categories)
 
 limmaVoomPipe<-function(dat, design, contrasts){
+  require(limma)
+  require(edgeR)
 OTU<-as.matrix(t(otu_table(dat)))
 sData<-sample_data(dat)
 attach(sData)
