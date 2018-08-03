@@ -1650,98 +1650,98 @@ spp1398<-function(a,b,c,d,e) {5000+(a+b+c-d*e)}
 spp1399<-function(a,b,c,d,e) {5000-(a+b*c+d*e)}
 spp1400<-function(a,b,c,d,e) {5000+(a+b*c+d*e)}
 
-spp1<-function(a,b,c,d,e) {5000+(a*b+100*c+d+e)}
-spp2<-function(a,b,c,d,e) {5000+(a*b-100*c+d+e)}
-spp3<-function(a,b,c,d,e) {5000-(a*b-c+100*d+e)}
-spp4<-function(a,b,c,d,e) {5000-(a*b+c+100*d+e)}
-spp5<-function(a,b,c,d,e) {5000-(a+100*b+c+d*e)}
-spp6<-function(a,b,c,d,e) {5000-(a+100*b+c-d*e)}
-spp7<-function(a,b,c,d,e) {5000+(a+b+c+100*d*e)}
-spp8<-function(a,b,c,d,e) {5000+(a+b+c-100*d*e)}
-spp9<-function(a,b,c,d,e) {round(5000-(a+100*b*c+d*e/10))}
-spp10<-function(a,b,c,d,e) {round(5000+(a+100*b*c+d*e/10))}
+spp1401<-function(a,b,c,d,e) {5000+(a*b+100*c+d+e)}
+spp1402<-function(a,b,c,d,e) {5000+(a*b-100*c+d+e)}
+spp1403<-function(a,b,c,d,e) {5000-(a*b-c+100*d+e)}
+spp1404<-function(a,b,c,d,e) {5000-(a*b+c+100*d+e)}
+spp1405<-function(a,b,c,d,e) {5000-(a+100*b+c+d*e)}
+spp1406<-function(a,b,c,d,e) {5000-(a+100*b+c-d*e)}
+spp1407<-function(a,b,c,d,e) {5000+(a+b+c+100*d*e)}
+spp1408<-function(a,b,c,d,e) {5000+(a+b+c-100*d*e)}
+spp1409<-function(a,b,c,d,e) {round(5000-(a+100*b*c+d*e/10))}
+spp1410<-function(a,b,c,d,e) {round(5000+(a+100*b*c+d*e/10))}
 
-spp1<-function(a,b,c,d,e) {round(1000+(a*b+c+100*d+e))}
-spp1<-function(a,b,c,d,e) {round(1000-(a*b+c+100*d+e))}
-spp1<-function(a,b,c,d,e) {round(1000+(a*b*c+d+100*e))}
-spp1<-function(a,b,c,d,e) {round(1000-(a*b*c+d+100*e))}
-spp1<-function(a,b,c,d,e) {round(1000+(a*b+c+d+100*e)/10)}
-spp1<-function(a,b,c,d,e) {round(1000+(a*b+c+d+100*e)/20)}
-spp1<-function(a,b,c,d,e) {round(1000+(a+b+c+d+100*e)/10)}
-spp1<-function(a,b,c,d,e) {round(1000-(a+b+c+d+100*e)/10)}
-spp1<-function(a,b,c,d,e) {round(1000+(100*a*b*c*d*e)/10)}
-spp1<-function(a,b,c,d,e) {round(1000-(100*a*b*c*d*e)/10)}
+spp1411<-function(a,b,c,d,e) {round(1000+(a*b+c+100*d+e))}
+spp1412<-function(a,b,c,d,e) {round(1000-(a*b+c+100*d+e))}
+spp1413<-function(a,b,c,d,e) {round(1000+(a*b*c+d+100*e))}
+spp1414<-function(a,b,c,d,e) {round(1000-(a*b*c+d+100*e))}
+spp1415<-function(a,b,c,d,e) {round(1000+(a*b+c+d+100*e)/10)}
+spp1416<-function(a,b,c,d,e) {round(1000+(a*b+c+d+100*e)/20)}
+spp1417<-function(a,b,c,d,e) {round(1000+(a+b+c+d+100*e)/10)}
+spp1418<-function(a,b,c,d,e) {round(1000-(a+b+c+d+100*e)/10)}
+spp1419<-function(a,b,c,d,e) {round(1000+(100*a*b*c*d*e)/10)}
+spp1420<-function(a,b,c,d,e) {round(1000-(100*a*b*c*d*e)/10)}
 
-spp1<-function(a,b,c,d,e) {round(8000+(a*b+c+d+e))}
-spp1<-function(a,b,c,d,e) {round(8000-(a*b+c+d+e))}
-spp1<-function(a,b,c,d,e) {round(8000+(a*b*c+d+e))}
-spp1<-function(a,b,c,d,e) {round(8000-(a*b*c+d+e))}
-spp1<-function(a,b,c,d,e) {round(8000+(a*b+c+d+e)/10)}
-spp1<-function(a,b,c,d,e) {round(8000+(a*b+c+d+e)/20)}
-spp1<-function(a,b,c,d,e) {round(8000+(a+b+c+d+e)/10)}
-spp1<-function(a,b,c,d,e) {round(8000-(a+b+c+d+e)/10)}
-spp1<-function(a,b,c,d,e) {round(8000+(a*b*c*d*e)/10)}
-spp1<-function(a,b,c,d,e) {round(8000-(a*b*c*d*e)/10)}
+spp1421<-function(a,b,c,d,e) {round(8000+(a*b+c+d+e))}
+spp1422<-function(a,b,c,d,e) {round(8000-(a*b+c+d+e))}
+spp1423<-function(a,b,c,d,e) {round(8000+(a*b*c+d+e))}
+spp1424<-function(a,b,c,d,e) {round(8000-(a*b*c+d+e))}
+spp1425<-function(a,b,c,d,e) {round(8000+(a*b+c+d+e)/10)}
+spp1426<-function(a,b,c,d,e) {round(8000+(a*b+c+d+e)/20)}
+spp1427<-function(a,b,c,d,e) {round(8000+(a+b+c+d+e)/10)}
+spp1428<-function(a,b,c,d,e) {round(8000-(a+b+c+d+e)/10)}
+spp1429<-function(a,b,c,d,e) {round(8000+(a*b*c*d*e)/10)}
+spp1430<-function(a,b,c,d,e) {round(8000-(a*b*c*d*e)/10)}
 
-spp1<-function(a,b,c,d,e) {round(5000+(a*b-c+d+e))}
-spp1<-function(a,b,c,d,e) {round(5000-(a*b-c+d+e))}
-spp1<-function(a,b,c,d,e) {round(5000+(a*b*c-d+e))}
-spp1<-function(a,b,c,d,e) {round(5000-(a*b*c-d+e))}
-spp1<-function(a,b,c,d,e) {round(5000-(a-b-c-d-e)/10)}
-spp1<-function(a,b,c,d,e) {round(5000+(a-b-c-d-e)/20)}
-spp1<-function(a,b,c,d,e) {round(5000+(a-b-c-d-e)/10)}
-spp1<-function(a,b,c,d,e) {round(5000+(a-100*b+c+d+e)/10)}
-spp1<-function(a,b,c,d,e) {round(5000+(a-100*b*c*d*e)/10)}
-spp1<-function(a,b,c,d,e) {round(5000+(a*b*c+d-100*e)/10)}
+spp1431<-function(a,b,c,d,e) {round(5000+(a*b-c+d+e))}
+spp1432<-function(a,b,c,d,e) {round(5000-(a*b-c+d+e))}
+spp1433<-function(a,b,c,d,e) {round(5000+(a*b*c-d+e))}
+spp1434<-function(a,b,c,d,e) {round(5000-(a*b*c-d+e))}
+spp1435<-function(a,b,c,d,e) {round(5000-(a-b-c-d-e)/10)}
+spp1436<-function(a,b,c,d,e) {round(5000+(a-b-c-d-e)/20)}
+spp1437<-function(a,b,c,d,e) {round(5000+(a-b-c-d-e)/10)}
+spp1438<-function(a,b,c,d,e) {round(5000+(a-100*b+c+d+e)/10)}
+spp1439<-function(a,b,c,d,e) {round(5000+(a-100*b*c*d*e)/10)}
+spp1440<-function(a,b,c,d,e) {round(5000+(a*b*c+d-100*e)/10)}
 
-spp1<-function(a,b,c,d,e) {round(10000+(a+b+c+d+100*e))}
-spp1<-function(a,b,c,d,e) {round(10000+(a+b+c+d+500*e))}
-spp1<-function(a,b,c,d,e) {round(10000+(a+b+c+d+1000*e))}
-spp1<-function(a,b,c,d,e) {round(10000+(a+b+c+100*d+e))}
-spp1<-function(a,b,c,d,e) {round(10000+(a+b+c+500*d+e))}
-spp1<-function(a,b,c,d,e) {round(10000+(a+b+c+1000*d+e))}
-spp1<-function(a,b,c,d,e) {round(10000+(-100*a+b+c+d+100*e))}
-spp1<-function(a,b,c,d,e) {round(10000+(-500*a+b+c+d+500*e))}
-spp1<-function(a,b,c,d,e) {round(10000+(a+b-100*c+100*d+e))}
-spp1<-function(a,b,c,d,e) {round(10000+(a+b-500*c+500*d+e))}
+spp1441<-function(a,b,c,d,e) {round(10000+(a+b+c+d+100*e))}
+spp1442<-function(a,b,c,d,e) {round(10000+(a+b+c+d+500*e))}
+spp1443<-function(a,b,c,d,e) {round(10000+(a+b+c+d+1000*e))}
+spp1444<-function(a,b,c,d,e) {round(10000+(a+b+c+100*d+e))}
+spp1445<-function(a,b,c,d,e) {round(10000+(a+b+c+500*d+e))}
+spp1446<-function(a,b,c,d,e) {round(10000+(a+b+c+1000*d+e))}
+spp1447<-function(a,b,c,d,e) {round(10000+(-100*a+b+c+d+100*e))}
+spp1448<-function(a,b,c,d,e) {round(10000+(-500*a+b+c+d+500*e))}
+spp1449<-function(a,b,c,d,e) {round(10000+(a+b-100*c+100*d+e))}
+spp1450<-function(a,b,c,d,e) {round(10000+(a+b-500*c+500*d+e))}
 
-spp1<-function(a,b,c,d,e) {1000*a*b*c*d*e}
-spp2<-function(a,b,c,d,e) {6000+(a+b-100*c+500*d+e))}
-spp3<-function(a,b,c,d,e) {6000+(a+b-100*c+1000*d+e))}
-spp4<-function(a,b,c,d,e) {6000+(a+b-500*c+100*d+e))}
-spp5<-function(a,b,c,d,e) {6000+(a+b-1000*c+500*d+e))}
-spp6<-function(a,b,c,d,e) {6000+(a+100*b+c-500*d+e))}
-spp7<-function(a,b,c,d,e) {6000+(a+500*b+c-1000*d+e))}
-spp8<-function(a,b,c,d,e) {6000+(a+1000*b+c-100*d+e))}
-spp9<-function(a,b,c,d,e) {6000+(a+b-500*c+d+1000*e))}
-spp10<-function(a,b,c,d,e) {6000+(a+b-500*c+d+100*e))}
+spp1451<-function(a,b,c,d,e) {1000*a*b*c*d*e}
+spp1452<-function(a,b,c,d,e) {6000+(a+b-100*c+500*d+e))}
+spp1453<-function(a,b,c,d,e) {6000+(a+b-100*c+1000*d+e))}
+spp1454<-function(a,b,c,d,e) {6000+(a+b-500*c+100*d+e))}
+spp1455<-function(a,b,c,d,e) {6000+(a+b-1000*c+500*d+e))}
+spp1456<-function(a,b,c,d,e) {6000+(a+100*b+c-500*d+e))}
+spp1457<-function(a,b,c,d,e) {6000+(a+500*b+c-1000*d+e))}
+spp1458<-function(a,b,c,d,e) {6000+(a+1000*b+c-100*d+e))}
+spp1459<-function(a,b,c,d,e) {6000+(a+b-500*c+d+1000*e))}
+spp1460<-function(a,b,c,d,e) {6000+(a+b-500*c+d+100*e))}
 
-spp2<-function(a,b,c,d,e) {10000-(a+b-100*c+500*d+e))}
-spp3<-function(a,b,c,d,e) {10000-(a+b-100*c+1000*d+e))}
-spp4<-function(a,b,c,d,e) {10000-(a+b-500*c+100*d+e))}
-spp5<-function(a,b,c,d,e) {10000-(a+b-1000*c+500*d+e))}
-spp6<-function(a,b,c,d,e) {10000-(a+100*b+c-500*d+e))}
-spp7<-function(a,b,c,d,e) {10000-(a+500*b+c-1000*d+e))}
-spp8<-function(a,b,c,d,e) {10000-(a+1000*b+c-100*d+e))}
-spp9<-function(a,b,c,d,e) {10000-(a+b-500*c+d+1000*e))}
-spp10<-function(a,b,c,d,e) {10000-(a+b-500*c+d+100*e))}
-
+spp1462<-function(a,b,c,d,e) {10000-(a+b-100*c+500*d+e))}
+spp1463<-function(a,b,c,d,e) {10000-(a+b-100*c+1000*d+e))}
+spp1464<-function(a,b,c,d,e) {10000-(a+b-500*c+100*d+e))}
+spp1465<-function(a,b,c,d,e) {10000-(a+b-1000*c+500*d+e))}
+spp1466<-function(a,b,c,d,e) {10000-(a+100*b+c-500*d+e))}
+spp1467<-function(a,b,c,d,e) {10000-(a+500*b+c-1000*d+e))}
+spp1468<-function(a,b,c,d,e) {10000-(a+1000*b+c-100*d+e))}
+spp1469<-function(a,b,c,d,e) {10000-(a+b-500*c+d+1000*e))}
+spp1470<-function(a,b,c,d,e) {10000-(a+b-500*c+d+100*e))}
+spp1461<-function(a,b,c,d,e) {10000-(a+b-500*c*d+100*e))}
 ################################################
 ##                                            ##
 ##  non-linear high complex  response         ##
 ##                                            ##
 ################################################
 
-spp1<-function(a,b,c,d,e) {(0.001(a-50)^3+3)+(10*b)+(-0.1(c-50)^2+50)+d+e}
-spp2<-function(a,b,c,d,e) {(0.001(a-50)^3+3)*(10*b)+(-0.1(c-50)^2+50)+d+e}
-spp3<-function(a,b,c,d,e) {((1/e)*(a-50)^3+3)+(10*b)+(-0.1(c-50)^2+50)+d}
-spp4<-function(a,b,c,d,e) {((1/e)*(a-50)^3+3)+(10*b)+(-(1/d)*(c-50)^2+50)}
-spp5<-function(a,b,c,d,e) {((1/e)^2*(a-50)^3+3)+(10*b)+(-(1/d)^2*(c-50)^2+50)}
-spp6<-function(a,b,c,d,e) {((1/d)*(a-50)^3+3)+(10*b)+(-(1/e)*(c-50)^2+50)}
-spp7<-function(a,b,c,d,e) {((1/e)*(a-100)^3+3)*(10*b)+(-(1/d)*(c-50)^2+50)}
-spp8<-function(a,b,c,d,e) {((1/e)^2*(a-100)^3+3)*(10*b)+(-(1/d)^2*(c-100)^2+50)}
-spp9<-function(a,b,c,d,e) {(0.001(a-50)^3+3)*(10*b)*(1/d)+(-0.1(c-50)^2+50)+d+e}
-spp10<-function(a,b,c,d,e) {(0.001(a-50)^3+3)*(10*b)*(-0.001(e-50)^2+50)+(-0.00000001(e-50)^5+10)+(-0.1(c-50)^2+50)+d}
+spp1471<-function(a,b,c,d,e) {(0.001(a-50)^3+3)+(10*b)+(-0.1(c-50)^2+50)+d+e}
+spp1472<-function(a,b,c,d,e) {(0.001(a-50)^3+3)*(10*b)+(-0.1(c-50)^2+50)+d+e}
+spp1473<-function(a,b,c,d,e) {((1/e)*(a-50)^3+3)+(10*b)+(-0.1(c-50)^2+50)+d}
+spp1474<-function(a,b,c,d,e) {((1/e)*(a-50)^3+3)+(10*b)+(-(1/d)*(c-50)^2+50)}
+spp1475<-function(a,b,c,d,e) {((1/e)^2*(a-50)^3+3)+(10*b)+(-(1/d)^2*(c-50)^2+50)}
+spp1476<-function(a,b,c,d,e) {((1/d)*(a-50)^3+3)+(10*b)+(-(1/e)*(c-50)^2+50)}
+spp1477<-function(a,b,c,d,e) {((1/e)*(a-100)^3+3)*(10*b)+(-(1/d)*(c-50)^2+50)}
+spp1478<-function(a,b,c,d,e) {((1/e)^2*(a-100)^3+3)*(10*b)+(-(1/d)^2*(c-100)^2+50)}
+spp1479<-function(a,b,c,d,e) {(0.001(a-50)^3+3)*(10*b)*(1/d)+(-0.1(c-50)^2+50)+d+e}
+spp1480<-function(a,b,c,d,e) {(0.001(a-50)^3+3)*(10*b)*(-0.001(e-50)^2+50)+(-0.00000001(e-50)^5+10)+(-0.1(c-50)^2+50)+d}
 
 ################################################
 ##                                            ##
@@ -1749,152 +1749,152 @@ spp10<-function(a,b,c,d,e) {(0.001(a-50)^3+3)*(10*b)*(-0.001(e-50)^2+50)+(-0.000
 ##                                            ##
 ################################################
 #complex
-spp1<-function(a,b,c,d,e) {100*a^2+(b^2)/10+c-100*d+e}
-spp2<-function(a,b,c,d,e) {-100*a^2+(b^2)/10+c+100*d+100*e}
-spp3<-function(a,b,c,d,e) {-100*a^2+(b^2)/10+c-100*d+e}
-spp4<-function(a,b,c,d,e) {100*a^2-b+c-100*d^2+e^2}
-spp5<-function(a,b,c,d,e) {(a^2)*b*c*(d^2)*(e^2)}
-spp6<-function(a,b,c,d,e) {-100*a^2+b+c+1000*d^2+e^2}
-spp7<-function(a,b,c,d,e) {100*a^2-b+c-d^2+100*e^2}
-spp8<-function(a,b,c,d,e) {100*e^3+a+(b^2)/10+c-100*d}
-spp9<-function(a,b,c,d,e) {(100*a^2-b+c-100*d^2+e^2)/3}
-spp10<-function(a,b,c,d,e) {(100*a^2-b+c-100*d^2+e^2)/5}
+spp1481<-function(a,b,c,d,e) {100*a^2+(b^2)/10+c-100*d+e}
+spp1482<-function(a,b,c,d,e) {-100*a^2+(b^2)/10+c+100*d+100*e}
+spp1483<-function(a,b,c,d,e) {-100*a^2+(b^2)/10+c-100*d+e}
+spp1484<-function(a,b,c,d,e) {100*a^2-b+c-100*d^2+e^2}
+spp1485<-function(a,b,c,d,e) {(a^2)*b*c*(d^2)*(e^2)}
+spp1486<-function(a,b,c,d,e) {-100*a^2+b+c+1000*d^2+e^2}
+spp1487<-function(a,b,c,d,e) {100*a^2-b+c-d^2+100*e^2}
+spp1488<-function(a,b,c,d,e) {100*e^3+a+(b^2)/10+c-100*d}
+spp1489<-function(a,b,c,d,e) {(100*a^2-b+c-100*d^2+e^2)/3}
+spp1490<-function(a,b,c,d,e) {(100*a^2-b+c-100*d^2+e^2)/5}
 
 
-spp1<-function(a,b,c,d,e) {100*(a+b+c)-(d^e)}
-spp2<-function(a,b,c,d,e) {10000+(a+b+c)-(d*e)}
-spp3<-function(a,b,c,d,e) {100*a*b*c-1/(d/(100*e))}
-spp4<-function(a,b,c,d,e) {1000*e^2-a-b-c-d}
-spp5<-function(a,b,c,d,e) {1000*e^2-a-b-c-d^2}
-spp6<-function(a,b,c,d,e) {(1000*e^2)/a*b*c*d^2}
-spp7<-function(a,b,c,d,e) {(1000*e^2)/a*b*c*d}
-spp8<-function(a,b,c,d,e) {100*a^b^c^d^e}
-spp9<-function(a,b,c,d,e) {1000*a^b+c-100*d^e}
-spp10<-function(a,b,c,d,e) {1000*d^e-100*a^b+c}
+spp1491<-function(a,b,c,d,e) {100*(a+b+c)-(d^e)}
+spp1492<-function(a,b,c,d,e) {10000+(a+b+c)-(d*e)}
+spp1493<-function(a,b,c,d,e) {100*a*b*c-1/(d/(100*e))}
+spp1494<-function(a,b,c,d,e) {1000*e^2-a-b-c-d}
+spp1495<-function(a,b,c,d,e) {1000*e^2-a-b-c-d^2}
+spp1496<-function(a,b,c,d,e) {(1000*e^2)/a*b*c*d^2}
+spp1497<-function(a,b,c,d,e) {(1000*e^2)/a*b*c*d}
+spp1498<-function(a,b,c,d,e) {100*a^b^c^d^e}
+spp1499<-function(a,b,c,d,e) {1000*a^b+c-100*d^e}
+spp1500<-function(a,b,c,d,e) {1000*d^e-100*a^b+c}
 
-spp1<-function(a,b,c,d,e) {10000-(10000/(100*(a+b+c+d+e)))}
-spp2<-function(a,b,c,d,e) {10000-(10000/(a*b*c*d*e))}
-spp3<-function(a,b,c,d,e) {10000-(10000/(a*b*c*d))+e^2}
-spp4<-function(a,b,c,d,e) {10000*e-(10000/(a*b*c*d))}
-spp5<-function(a,b,c,d,e) {10000-(10000/(100*(a+b+c+d+e)))}
-spp6<-function(a,b,c,d,e) {10000-100*a*b*c*d*e}
-spp7<-function(a,b,c,d,e) {10000-100*(a+b+c+d+e))}
-spp8<-function(a,b,c,d,e) {100*a*b*c-d^(10*e)}
-spp9<-function(a,b,c,d,e) {1000+100*a*b*c-d^(10*e)}
-spp10<-function(a,b,c,d,e) {1000+100*e*b*c-d^(10*a)}
+spp1501<-function(a,b,c,d,e) {10000-(10000/(100*(a+b+c+d+e)))}
+spp1502<-function(a,b,c,d,e) {10000-(10000/(a*b*c*d*e))}
+spp1503<-function(a,b,c,d,e) {10000-(10000/(a*b*c*d))+e^2}
+spp1504<-function(a,b,c,d,e) {10000*e-(10000/(a*b*c*d))}
+spp1505<-function(a,b,c,d,e) {10000-(10000/(100*(a+b+c+d+e)))}
+spp1506<-function(a,b,c,d,e) {10000-100*a*b*c*d*e}
+spp1507<-function(a,b,c,d,e) {10000-100*(a+b+c+d+e))}
+spp1508<-function(a,b,c,d,e) {100*a*b*c-d^(10*e)}
+spp1509<-function(a,b,c,d,e) {1000+100*a*b*c-d^(10*e)}
+spp1510<-function(a,b,c,d,e) {1000+100*e*b*c-d^(10*a)}
 
 
 #simple (single factor)
 
-spp1<-function(a,b,c,d,e) {(rnorm(1, 1000, 100)*(a^2)+0*(a+b+c+d+e))}
-spp2<-function(a,b,c,d,e) {10000-(10000/(100*a))+(0*(a+b+c+d+e))}
-spp3<-function(a,b,c,d,e) {10000-(10000/(100*b))+(0*(a+b+c+d+e))}
-spp4<-function(a,b,c,d,e) {10000-(10000/(100*c))+(0*(a+b+c+d+e))}
-spp5<-function(a,b,c,d,e) {10000-(10000/(100*d))+(0*(a+b+c+d+e))}
-spp6<-function(a,b,c,d,e) {10000-(10000/(100*e))+(0*(a+b+c+d+e))}
-spp7<-function(a,b,c,d,e) {500^a+(0*(a+b+c+d+e))}
-spp8<-function(a,b,c,d,e) {500^b+(0*(a+b+c+d+e))}
-spp9<-function(a,b,c,d,e) {500^c+(0*(a+b+c+d+e))}
-spp10<-function(a,b,c,d,e) {500^d+(0*(a+b+c+d+e))}
+spp1511<-function(a,b,c,d,e) {(rnorm(1, 1000, 100)*(a^2)+0*(a+b+c+d+e))}
+spp1512<-function(a,b,c,d,e) {10000-(10000/(100*a))+(0*(a+b+c+d+e))}
+spp1513<-function(a,b,c,d,e) {10000-(10000/(100*b))+(0*(a+b+c+d+e))}
+spp1514<-function(a,b,c,d,e) {10000-(10000/(100*c))+(0*(a+b+c+d+e))}
+spp1515<-function(a,b,c,d,e) {10000-(10000/(100*d))+(0*(a+b+c+d+e))}
+spp1516<-function(a,b,c,d,e) {10000-(10000/(100*e))+(0*(a+b+c+d+e))}
+spp1517<-function(a,b,c,d,e) {500^a+(0*(a+b+c+d+e))}
+spp1518<-function(a,b,c,d,e) {500^b+(0*(a+b+c+d+e))}
+spp1519<-function(a,b,c,d,e) {500^c+(0*(a+b+c+d+e))}
+spp1520<-function(a,b,c,d,e) {500^d+(0*(a+b+c+d+e))}
 
-spp1<-function(a,b,c,d,e) {500^e+(0*(a+b+c+d+e))}
-spp2<-function(a,b,c,d,e) {(rnorm(1, 1000, 100)*(b^2)+(0*(a+b+c+d+e))}
-spp3<-function(a,b,c,d,e) {(rnorm(1, 1000, 100)*(c^2)+(0*(a+b+c+d+e))}
-spp4<-function(a,b,c,d,e) {(rnorm(1, 1000, 100)*(d^2)+(0*(a+b+c+d+e))}
-spp5<-function(a,b,c,d,e) {(rnorm(1, 1000, 100)*(e^2)+(0*(a+b+c+d+e))}
-spp6<-function(a,b,c,d,e) {(10000/(100*a))+(0*(a+b+c+d+e))}
-spp7<-function(a,b,c,d,e) {(10000/(100*b))+(0*(a+b+c+d+e))}
-spp8<-function(a,b,c,d,e) {(10000/(100*c))+(0*(a+b+c+d+e))}
-spp9<-function(a,b,c,d,e) {(10000/(100*d))+(0*(a+b+c+d+e))}
-spp10<-function(a,b,c,d,e) {(10000/(100*e))+(0*(a+b+c+d+e))}
+spp1521<-function(a,b,c,d,e) {500^e+(0*(a+b+c+d+e))}
+spp1522<-function(a,b,c,d,e) {(rnorm(1, 1000, 100)*(b^2)+(0*(a+b+c+d+e))}
+spp1523<-function(a,b,c,d,e) {(rnorm(1, 1000, 100)*(c^2)+(0*(a+b+c+d+e))}
+spp1524<-function(a,b,c,d,e) {(rnorm(1, 1000, 100)*(d^2)+(0*(a+b+c+d+e))}
+spp1525<-function(a,b,c,d,e) {(rnorm(1, 1000, 100)*(e^2)+(0*(a+b+c+d+e))}
+spp1526<-function(a,b,c,d,e) {(10000/(100*a))+(0*(a+b+c+d+e))}
+spp1527<-function(a,b,c,d,e) {(10000/(100*b))+(0*(a+b+c+d+e))}
+spp1528<-function(a,b,c,d,e) {(10000/(100*c))+(0*(a+b+c+d+e))}
+spp1529<-function(a,b,c,d,e) {(10000/(100*d))+(0*(a+b+c+d+e))}
+spp1530<-function(a,b,c,d,e) {(10000/(100*e))+(0*(a+b+c+d+e))}
 
 
-spp1<-function(a,b,c,d,e) {100*(a^4)+(0*(a+b+c+d+e))}
-spp2<-function(a,b,c,d,e) {100*(b^4)+(0*(a+b+c+d+e))}
-spp3<-function(a,b,c,d,e) {100*(c^4)+(0*(a+b+c+d+e))}
-spp4<-function(a,b,c,d,e) {100*(d^4)+(0*(a+b+c+d+e))}
-spp5<-function(a,b,c,d,e) {100*(e^4)+(0*(a+b+c+d+e))}
-spp6<-function(a,b,c,d,e) {(10000-(100*a^2))+(0*(a+b+c+d+e))}
-spp7<-function(a,b,c,d,e) {(10000-(100*b^2))+(0*(a+b+c+d+e))}
-spp8<-function(a,b,c,d,e) {(10000-(100*c^2))+(0*(a+b+c+d+e))}
-spp9<-function(a,b,c,d,e) {(10000-(100*d^2))+(0*(a+b+c+d+e))}
-spp10<-function(a,b,c,d,e) {(10000-(100*e^2))+(0*(a+b+c+d+e))}
+spp1531<-function(a,b,c,d,e) {100*(a^4)+(0*(a+b+c+d+e))}
+spp1532<-function(a,b,c,d,e) {100*(b^4)+(0*(a+b+c+d+e))}
+spp1533<-function(a,b,c,d,e) {100*(c^4)+(0*(a+b+c+d+e))}
+spp1534<-function(a,b,c,d,e) {100*(d^4)+(0*(a+b+c+d+e))}
+spp1535<-function(a,b,c,d,e) {100*(e^4)+(0*(a+b+c+d+e))}
+spp1536<-function(a,b,c,d,e) {(10000-(100*a^2))+(0*(a+b+c+d+e))}
+spp1537<-function(a,b,c,d,e) {(10000-(100*b^2))+(0*(a+b+c+d+e))}
+spp1538<-function(a,b,c,d,e) {(10000-(100*c^2))+(0*(a+b+c+d+e))}
+spp1539<-function(a,b,c,d,e) {(10000-(100*d^2))+(0*(a+b+c+d+e))}
+spp1540<-function(a,b,c,d,e) {(10000-(100*e^2))+(0*(a+b+c+d+e))}
 ################################################
 ##                                            ##
 ##  non-linear med simple   response          ##
 ##                                            ##
 ################################################
 #complex
-spp1<-function(a,b,c,d,e) {10*a^2+(b^2)/10+c-10*d+e}
-spp2<-function(a,b,c,d,e) {-10*a^2+(b^2)/10+c+10*d+10*e}
-spp3<-function(a,b,c,d,e) {-10*a^2+(b^2)/10+c-10*d+e}
-spp4<-function(a,b,c,d,e) {10*a^2-b+c-10*d^2+e^2}
-spp5<-function(a,b,c,d,e) {(a^2)*b*c*(d^2)*(e^2)}
-spp6<-function(a,b,c,d,e) {-10*a^2+b+c+10*d^2+e^2}
-spp7<-function(a,b,c,d,e) {a^2-b+c-d^2+10*e^2}
-spp8<-function(a,b,c,d,e) {10*e^3+a+(b^2)/10+c-10*d}
-spp9<-function(a,b,c,d,e) {(10*a^2-b+c-10*d^2+e^2)/3}
-spp10<-function(a,b,c,d,e) {(10*a^2-b+c-10*d^2+e^2)/5}
+spp1541<-function(a,b,c,d,e) {10*a^2+(b^2)/10+c-10*d+e}
+spp1542<-function(a,b,c,d,e) {-10*a^2+(b^2)/10+c+10*d+10*e}
+spp1543<-function(a,b,c,d,e) {-10*a^2+(b^2)/10+c-10*d+e}
+spp1544<-function(a,b,c,d,e) {10*a^2-b+c-10*d^2+e^2}
+spp1545<-function(a,b,c,d,e) {(a^2)*b*c*(d^2)*(e^2)}
+spp1546<-function(a,b,c,d,e) {-10*a^2+b+c+10*d^2+e^2}
+spp1547<-function(a,b,c,d,e) {a^2-b+c-d^2+10*e^2}
+spp1548<-function(a,b,c,d,e) {10*e^3+a+(b^2)/10+c-10*d}
+spp1549<-function(a,b,c,d,e) {(10*a^2-b+c-10*d^2+e^2)/3}
+spp1550<-function(a,b,c,d,e) {(10*a^2-b+c-10*d^2+e^2)/5}
 
 
-spp1<-function(a,b,c,d,e) {10*(a+b+c)-(d^e)}
-spp2<-function(a,b,c,d,e) {10+(a+b+c)-(d*e)}
-spp3<-function(a,b,c,d,e) {10*a*b*c-1/(d/(10*e))}
-spp4<-function(a,b,c,d,e) {10*e^2-a-b-c-d}
-spp5<-function(a,b,c,d,e) {100*e^2-a-b-c-d^2}
-spp6<-function(a,b,c,d,e) {(100*e^2)/a*b*c*d^2}
-spp7<-function(a,b,c,d,e) {(100*e^2)/a*b*c*d}
-spp8<-function(a,b,c,d,e) {10*a^b^c^d^e}
-spp9<-function(a,b,c,d,e) {100*a^b+c-10*d^e}
-spp10<-function(a,b,c,d,e) {100*d^e-10*a^b+c}
+spp1551<-function(a,b,c,d,e) {10*(a+b+c)-(d^e)}
+spp1552<-function(a,b,c,d,e) {10+(a+b+c)-(d*e)}
+spp1553<-function(a,b,c,d,e) {10*a*b*c-1/(d/(10*e))}
+spp1554<-function(a,b,c,d,e) {10*e^2-a-b-c-d}
+spp1555<-function(a,b,c,d,e) {100*e^2-a-b-c-d^2}
+spp1556<-function(a,b,c,d,e) {(100*e^2)/a*b*c*d^2}
+spp1557<-function(a,b,c,d,e) {(100*e^2)/a*b*c*d}
+spp1558<-function(a,b,c,d,e) {10*a^b^c^d^e}
+spp1559<-function(a,b,c,d,e) {100*a^b+c-10*d^e}
+spp1560<-function(a,b,c,d,e) {100*d^e-10*a^b+c}
 
-spp1<-function(a,b,c,d,e) {1000-(1000/(100*(a+b+c+d+e)))}
-spp2<-function(a,b,c,d,e) {1000-(1000/(a*b*c*d*e))}
-spp3<-function(a,b,c,d,e) {1000-(1000/(a*b*c*d))+e^2}
-spp4<-function(a,b,c,d,e) {1000*e-(100/(a*b*c*d))}
-spp5<-function(a,b,c,d,e) {100-(100/(100*(a+b+c+d+e)))}
-spp6<-function(a,b,c,d,e) {100-10*a*b*c*d*e}
-spp7<-function(a,b,c,d,e) {100-10*(a+b+c+d+e))}
-spp8<-function(a,b,c,d,e) {10*a*b*c-d^(e)}
-spp9<-function(a,b,c,d,e) {100+10*a*b*c-d^(10*e)}
-spp10<-function(a,b,c,d,e) {100+10*e*b*c-d^(10*a)}
+spp1561<-function(a,b,c,d,e) {1000-(1000/(100*(a+b+c+d+e)))}
+spp1562<-function(a,b,c,d,e) {1000-(1000/(a*b*c*d*e))}
+spp1563<-function(a,b,c,d,e) {1000-(1000/(a*b*c*d))+e^2}
+spp1564<-function(a,b,c,d,e) {1000*e-(100/(a*b*c*d))}
+spp1565<-function(a,b,c,d,e) {100-(100/(100*(a+b+c+d+e)))}
+spp1566<-function(a,b,c,d,e) {100-10*a*b*c*d*e}
+spp1567<-function(a,b,c,d,e) {100-10*(a+b+c+d+e))}
+spp1568<-function(a,b,c,d,e) {10*a*b*c-d^(e)}
+spp1569<-function(a,b,c,d,e) {100+10*a*b*c-d^(10*e)}
+spp1570<-function(a,b,c,d,e) {100+10*e*b*c-d^(10*a)}
 
 
 #simple (single factor)
 
-spp1<-function(a,b,c,d,e) {(rnorm(1, 100, 10)*(a^2)+0*(a+b+c+d+e))}
-spp2<-function(a,b,c,d,e) {1000-(1000/(10*a))+(0*(a+b+c+d+e))}
-spp3<-function(a,b,c,d,e) {1000-(1000/(10*b))+(0*(a+b+c+d+e))}
-spp4<-function(a,b,c,d,e) {1000-(1000/(10*c))+(0*(a+b+c+d+e))}
-spp5<-function(a,b,c,d,e) {1000-(1000/(10*d))+(0*(a+b+c+d+e))}
-spp6<-function(a,b,c,d,e) {1000-(1000/(10*e))+(0*(a+b+c+d+e))}
-spp7<-function(a,b,c,d,e) {50^a+(0*(a+b+c+d+e))}
-spp8<-function(a,b,c,d,e) {50^b+(0*(a+b+c+d+e))}
-spp9<-function(a,b,c,d,e) {50^c+(0*(a+b+c+d+e))}
-spp10<-function(a,b,c,d,e) {50^d+(0*(a+b+c+d+e))}
+spp1571<-function(a,b,c,d,e) {(rnorm(1, 100, 10)*(a^2)+0*(a+b+c+d+e))}
+spp1572<-function(a,b,c,d,e) {1000-(1000/(10*a))+(0*(a+b+c+d+e))}
+spp1573<-function(a,b,c,d,e) {1000-(1000/(10*b))+(0*(a+b+c+d+e))}
+spp1574<-function(a,b,c,d,e) {1000-(1000/(10*c))+(0*(a+b+c+d+e))}
+spp1575<-function(a,b,c,d,e) {1000-(1000/(10*d))+(0*(a+b+c+d+e))}
+spp1576<-function(a,b,c,d,e) {1000-(1000/(10*e))+(0*(a+b+c+d+e))}
+spp1577<-function(a,b,c,d,e) {50^a+(0*(a+b+c+d+e))}
+spp1578<-function(a,b,c,d,e) {50^b+(0*(a+b+c+d+e))}
+spp1579<-function(a,b,c,d,e) {50^c+(0*(a+b+c+d+e))}
+spp1580<-function(a,b,c,d,e) {50^d+(0*(a+b+c+d+e))}
 
-spp1<-function(a,b,c,d,e) {50^e+(0*(a+b+c+d+e))}
-spp2<-function(a,b,c,d,e) {(rnorm(1, 100, 100)*(b^2)+(0*(a+b+c+d+e))}
-spp3<-function(a,b,c,d,e) {(rnorm(1, 100, 100)*(c^2)+(0*(a+b+c+d+e))}
-spp4<-function(a,b,c,d,e) {(rnorm(1, 100, 100)*(d^2)+(0*(a+b+c+d+e))}
-spp5<-function(a,b,c,d,e) {(rnorm(1, 100, 100)*(e^2)+(0*(a+b+c+d+e))}
-spp6<-function(a,b,c,d,e) {(1000/(10*a))+(0*(a+b+c+d+e))}
-spp7<-function(a,b,c,d,e) {(1000/(10*b))+(0*(a+b+c+d+e))}
-spp8<-function(a,b,c,d,e) {(1000/(10*c))+(0*(a+b+c+d+e))}
-spp9<-function(a,b,c,d,e) {(1000/(10*d))+(0*(a+b+c+d+e))}
-spp10<-function(a,b,c,d,e) {(1000/(10*e))+(0*(a+b+c+d+e))}
+spp1581<-function(a,b,c,d,e) {50^e+(0*(a+b+c+d+e))}
+spp1582<-function(a,b,c,d,e) {(rnorm(1, 100, 100)*(b^2)+(0*(a+b+c+d+e))}
+spp1583<-function(a,b,c,d,e) {(rnorm(1, 100, 100)*(c^2)+(0*(a+b+c+d+e))}
+spp1584<-function(a,b,c,d,e) {(rnorm(1, 100, 100)*(d^2)+(0*(a+b+c+d+e))}
+spp1585<-function(a,b,c,d,e) {(rnorm(1, 100, 100)*(e^2)+(0*(a+b+c+d+e))}
+spp1586<-function(a,b,c,d,e) {(1000/(10*a))+(0*(a+b+c+d+e))}
+spp1587<-function(a,b,c,d,e) {(1000/(10*b))+(0*(a+b+c+d+e))}
+spp1588<-function(a,b,c,d,e) {(1000/(10*c))+(0*(a+b+c+d+e))}
+spp1589<-function(a,b,c,d,e) {(1000/(10*d))+(0*(a+b+c+d+e))}
+spp1590<-function(a,b,c,d,e) {(1000/(10*e))+(0*(a+b+c+d+e))}
 
 
-spp1<-function(a,b,c,d,e) {10*(a^4)+(0*(a+b+c+d+e))}
-spp2<-function(a,b,c,d,e) {10*(b^4)+(0*(a+b+c+d+e))}
-spp3<-function(a,b,c,d,e) {10*(c^4)+(0*(a+b+c+d+e))}
-spp4<-function(a,b,c,d,e) {10*(d^4)+(0*(a+b+c+d+e))}
-spp5<-function(a,b,c,d,e) {10*(e^4)+(0*(a+b+c+d+e))}
-spp6<-function(a,b,c,d,e) {(1000-(10*a^2))+(0*(a+b+c+d+e))}
-spp7<-function(a,b,c,d,e) {(1000-(10*b^2))+(0*(a+b+c+d+e))}
-spp8<-function(a,b,c,d,e) {(1000-(10*c^2))+(0*(a+b+c+d+e))}
-spp9<-function(a,b,c,d,e) {(1000-(10*d^2))+(0*(a+b+c+d+e))}
-spp10<-function(a,b,c,d,e) {(1000-(10*e^2))+(0*(a+b+c+d+e))}
+spp1591<-function(a,b,c,d,e) {10*(a^4)+(0*(a+b+c+d+e))}
+spp1592<-function(a,b,c,d,e) {10*(b^4)+(0*(a+b+c+d+e))}
+spp1593<-function(a,b,c,d,e) {10*(c^4)+(0*(a+b+c+d+e))}
+spp1594<-function(a,b,c,d,e) {10*(d^4)+(0*(a+b+c+d+e))}
+spp1595<-function(a,b,c,d,e) {10*(e^4)+(0*(a+b+c+d+e))}
+spp1596<-function(a,b,c,d,e) {(1000-(10*a^2))+(0*(a+b+c+d+e))}
+spp1597<-function(a,b,c,d,e) {(1000-(10*b^2))+(0*(a+b+c+d+e))}
+spp1598<-function(a,b,c,d,e) {(1000-(10*c^2))+(0*(a+b+c+d+e))}
+spp1599<-function(a,b,c,d,e) {(1000-(10*d^2))+(0*(a+b+c+d+e))}
+spp1600<-function(a,b,c,d,e) {(1000-(10*e^2))+(0*(a+b+c+d+e))}
 
 ################################################
 ##                                            ##
@@ -1902,76 +1902,76 @@ spp10<-function(a,b,c,d,e) {(1000-(10*e^2))+(0*(a+b+c+d+e))}
 ##                                            ##
 ################################################
 #complex
-spp1<-function(a,b,c,d,e) {a^2+(b^2)/10+c-10*d+e}
-spp2<-function(a,b,c,d,e) {-a^2+(b^2)/10+c+10*d+10*e}
-spp3<-function(a,b,c,d,e) {-a^2+(b^2)/10+c-10*d+e}
-spp4<-function(a,b,c,d,e) {a^2-b+c-10*d^2+e^2}
-spp5<-function(a,b,c,d,e) {(a^2)*b*c*(d^2)*(e^2)}
-spp6<-function(a,b,c,d,e) {*a^2+b+c+d^2+e^2}
-spp7<-function(a,b,c,d,e) {a^2-b+c-d^2+e^2}
-spp8<-function(a,b,c,d,e) {e^3+a+(b^2)/10+c-d}
-spp9<-function(a,b,c,d,e) {(a^2-b+c-d^2+e^2)/3}
-spp10<-function(a,b,c,d,e) {(a^2-b+c-d^2+e^2)/5}
+spp1601<-function(a,b,c,d,e) {a^2+(b^2)/10+c-10*d+e}
+spp1602<-function(a,b,c,d,e) {-a^2+(b^2)/10+c+10*d+10*e}
+spp1603<-function(a,b,c,d,e) {-a^2+(b^2)/10+c-10*d+e}
+spp1604<-function(a,b,c,d,e) {a^2-b+c-10*d^2+e^2}
+spp1605<-function(a,b,c,d,e) {(a^2)*b*c*(d^2)*(e^2)}
+spp1606<-function(a,b,c,d,e) {*a^2+b+c+d^2+e^2}
+spp1607<-function(a,b,c,d,e) {a^2-b+c-d^2+e^2}
+spp1608<-function(a,b,c,d,e) {e^3+a+(b^2)/10+c-d}
+spp1609<-function(a,b,c,d,e) {(a^2-b+c-d^2+e^2)/3}
+spp1610<-function(a,b,c,d,e) {(a^2-b+c-d^2+e^2)/5}
 
 
-spp1<-function(a,b,c,d,e) {(a+b+c)-(d^e)}
-spp2<-function(a,b,c,d,e) {1+(a+b+c)-(d*e)}
-spp3<-function(a,b,c,d,e) {1*a*b*c-1/(d/(10*e))}
-spp4<-function(a,b,c,d,e) {e^2-a-b-c-d}
-spp5<-function(a,b,c,d,e) {e^2-a-b-c-d^2}
-spp6<-function(a,b,c,d,e) {(10*e^2)/a*b*c*d^2}
-spp7<-function(a,b,c,d,e) {(10*e^2)/a*b*c*d}
-spp8<-function(a,b,c,d,e) {a^b^c^d^e}
-spp9<-function(a,b,c,d,e) {a^b+c-10*d^e}
-spp10<-function(a,b,c,d,e) {d^e-10*a^b+c}
+spp1611<-function(a,b,c,d,e) {(a+b+c)-(d^e)}
+spp1612<-function(a,b,c,d,e) {1+(a+b+c)-(d*e)}
+spp1613<-function(a,b,c,d,e) {1*a*b*c-1/(d/(10*e))}
+spp1614<-function(a,b,c,d,e) {e^2-a-b-c-d}
+spp1615<-function(a,b,c,d,e) {e^2-a-b-c-d^2}
+spp1616<-function(a,b,c,d,e) {(10*e^2)/a*b*c*d^2}
+spp1617<-function(a,b,c,d,e) {(10*e^2)/a*b*c*d}
+spp1618<-function(a,b,c,d,e) {a^b^c^d^e}
+spp1619<-function(a,b,c,d,e) {a^b+c-10*d^e}
+spp1620<-function(a,b,c,d,e) {d^e-10*a^b+c}
 
-spp1<-function(a,b,c,d,e) {100-(100/(10*(a+b+c+d+e)))}
-spp2<-function(a,b,c,d,e) {100-(100/(a*b*c*d*e))}
-spp3<-function(a,b,c,d,e) {100-(100/(a*b*c*d))+e^2}
-spp4<-function(a,b,c,d,e) {100*e-(10/(a*b*c*d))}
-spp5<-function(a,b,c,d,e) {10-(10/(10*(a+b+c+d+e)))}
-spp6<-function(a,b,c,d,e) {10-a*b*c*d*e}
-spp7<-function(a,b,c,d,e) {10-(a+b+c+d+e))}
-spp8<-function(a,b,c,d,e) {a*b*c-d^(e)}
-spp9<-function(a,b,c,d,e) {10+a*b*c-d^(e)}
-spp10<-function(a,b,c,d,e) {10+e*b*c-d^(a)}
+spp1621<-function(a,b,c,d,e) {100-(100/(10*(a+b+c+d+e)))}
+spp1622<-function(a,b,c,d,e) {100-(100/(a*b*c*d*e))}
+spp1623<-function(a,b,c,d,e) {100-(100/(a*b*c*d))+e^2}
+spp1624<-function(a,b,c,d,e) {100*e-(10/(a*b*c*d))}
+spp1625<-function(a,b,c,d,e) {10-(10/(10*(a+b+c+d+e)))}
+spp1626<-function(a,b,c,d,e) {10-a*b*c*d*e}
+spp1627<-function(a,b,c,d,e) {10-(a+b+c+d+e))}
+spp1628<-function(a,b,c,d,e) {a*b*c-d^(e)}
+spp1629<-function(a,b,c,d,e) {10+a*b*c-d^(e)}
+spp1630<-function(a,b,c,d,e) {10+e*b*c-d^(a)}
 
 
 #simple (single factor)
 
-spp1<-function(a,b,c,d,e) {(rnorm(1, 10, 1)*(a^2)+0*(a+b+c+d+e))}
-spp2<-function(a,b,c,d,e) {100-(100/(10*a))+(0*(a+b+c+d+e))}
-spp3<-function(a,b,c,d,e) {100-(100/(10*b))+(0*(a+b+c+d+e))}
-spp4<-function(a,b,c,d,e) {100-(100/(10*c))+(0*(a+b+c+d+e))}
-spp5<-function(a,b,c,d,e) {100-(100/(10*d))+(0*(a+b+c+d+e))}
-spp6<-function(a,b,c,d,e) {100-(100/(10*e))+(0*(a+b+c+d+e))}
-spp7<-function(a,b,c,d,e) {5^a+(0*(a+b+c+d+e))}
-spp8<-function(a,b,c,d,e) {5^b+(0*(a+b+c+d+e))}
-spp9<-function(a,b,c,d,e) {5^c+(0*(a+b+c+d+e))}
-spp10<-function(a,b,c,d,e) {5^d+(0*(a+b+c+d+e))}
+spp1631<-function(a,b,c,d,e) {(rnorm(1, 10, 1)*(a^2)+0*(a+b+c+d+e))}
+spp1632<-function(a,b,c,d,e) {100-(100/(10*a))+(0*(a+b+c+d+e))}
+spp1633<-function(a,b,c,d,e) {100-(100/(10*b))+(0*(a+b+c+d+e))}
+spp1634<-function(a,b,c,d,e) {100-(100/(10*c))+(0*(a+b+c+d+e))}
+spp1635<-function(a,b,c,d,e) {100-(100/(10*d))+(0*(a+b+c+d+e))}
+spp1636<-function(a,b,c,d,e) {100-(100/(10*e))+(0*(a+b+c+d+e))}
+spp1637<-function(a,b,c,d,e) {5^a+(0*(a+b+c+d+e))}
+spp1638<-function(a,b,c,d,e) {5^b+(0*(a+b+c+d+e))}
+spp1639<-function(a,b,c,d,e) {5^c+(0*(a+b+c+d+e))}
+spp1640<-function(a,b,c,d,e) {5^d+(0*(a+b+c+d+e))}
 
-spp1<-function(a,b,c,d,e) {5^e+(0*(a+b+c+d+e))}
-spp2<-function(a,b,c,d,e) {(rnorm(1, 10, 10)*(b^2)+(0*(a+b+c+d+e))}
-spp3<-function(a,b,c,d,e) {(rnorm(1, 10, 10)*(c^2)+(0*(a+b+c+d+e))}
-spp4<-function(a,b,c,d,e) {(rnorm(1, 10, 10)*(d^2)+(0*(a+b+c+d+e))}
-spp5<-function(a,b,c,d,e) {(rnorm(1, 10, 10)*(e^2)+(0*(a+b+c+d+e))}
-spp6<-function(a,b,c,d,e) {(100/(10*a))+(0*(a+b+c+d+e))}
-spp7<-function(a,b,c,d,e) {(100/(10*b))+(0*(a+b+c+d+e))}
-spp8<-function(a,b,c,d,e) {(100/(10*c))+(0*(a+b+c+d+e))}
-spp9<-function(a,b,c,d,e) {(100/(10*d))+(0*(a+b+c+d+e))}
-spp10<-function(a,b,c,d,e) {(100/(10*e))+(0*(a+b+c+d+e))}
+spp1641<-function(a,b,c,d,e) {5^e+(0*(a+b+c+d+e))}
+spp1642<-function(a,b,c,d,e) {(rnorm(1, 10, 10)*(b^2)+(0*(a+b+c+d+e))}
+spp1643<-function(a,b,c,d,e) {(rnorm(1, 10, 10)*(c^2)+(0*(a+b+c+d+e))}
+spp1644<-function(a,b,c,d,e) {(rnorm(1, 10, 10)*(d^2)+(0*(a+b+c+d+e))}
+spp1645<-function(a,b,c,d,e) {(rnorm(1, 10, 10)*(e^2)+(0*(a+b+c+d+e))}
+spp1646<-function(a,b,c,d,e) {(100/(10*a))+(0*(a+b+c+d+e))}
+spp1647<-function(a,b,c,d,e) {(100/(10*b))+(0*(a+b+c+d+e))}
+spp1648<-function(a,b,c,d,e) {(100/(10*c))+(0*(a+b+c+d+e))}
+spp1649<-function(a,b,c,d,e) {(100/(10*d))+(0*(a+b+c+d+e))}
+spp1650<-function(a,b,c,d,e) {(100/(10*e))+(0*(a+b+c+d+e))}
 
 
-spp1<-function(a,b,c,d,e) {(a^4)+(0*(a+b+c+d+e))}
-spp2<-function(a,b,c,d,e) {(b^4)+(0*(a+b+c+d+e))}
-spp3<-function(a,b,c,d,e) {(c^4)+(0*(a+b+c+d+e))}
-spp4<-function(a,b,c,d,e) {(d^4)+(0*(a+b+c+d+e))}
-spp5<-function(a,b,c,d,e) {(e^4)+(0*(a+b+c+d+e))}
-spp6<-function(a,b,c,d,e) {(100-(a^2))+(0*(a+b+c+d+e))}
-spp7<-function(a,b,c,d,e) {(100-(b^2))+(0*(a+b+c+d+e))}
-spp8<-function(a,b,c,d,e) {(100-(c^2))+(0*(a+b+c+d+e))}
-spp9<-function(a,b,c,d,e) {(100-(d^2))+(0*(a+b+c+d+e))}
-spp10<-function(a,b,c,d,e) {(100-(e^2))+(0*(a+b+c+d+e))}
+spp1651<-function(a,b,c,d,e) {(a^4)+(0*(a+b+c+d+e))}
+spp1652<-function(a,b,c,d,e) {(b^4)+(0*(a+b+c+d+e))}
+spp1653<-function(a,b,c,d,e) {(c^4)+(0*(a+b+c+d+e))}
+spp1654<-function(a,b,c,d,e) {(d^4)+(0*(a+b+c+d+e))}
+spp1655<-function(a,b,c,d,e) {(e^4)+(0*(a+b+c+d+e))}
+spp1656<-function(a,b,c,d,e) {(100-(a^2))+(0*(a+b+c+d+e))}
+spp1657<-function(a,b,c,d,e) {(100-(b^2))+(0*(a+b+c+d+e))}
+spp1658<-function(a,b,c,d,e) {(100-(c^2))+(0*(a+b+c+d+e))}
+spp1659<-function(a,b,c,d,e) {(100-(d^2))+(0*(a+b+c+d+e))}
+spp1660<-function(a,b,c,d,e) {(100-(e^2))+(0*(a+b+c+d+e))}
 
 
 ################################################
@@ -1981,84 +1981,84 @@ spp10<-function(a,b,c,d,e) {(100-(e^2))+(0*(a+b+c+d+e))}
 ################################################
 
 #low
-spp11<-function(a,b,c,d,e) {rnorm(1, 50, 50)+(0*(a+b+c+d+e))} #generate 1 number with mean=50, stdev=50
-spp12<-function(a,b,c,d,e) {rnorm(1, 50, 40)+(0*(a+b+c+d+e))}
-spp13<-function(a,b,c,d,e) {rnorm(1, 50, 20)+(0*(a+b+c+d+e))}
-spp14<-function(a,b,c,d,e) {rnorm(1, 50, 10)+(0*(a+b+c+d+e))}
-spp15<-function(a,b,c,d,e) {rnorm(1, 50, 100)+(0*(a+b+c+d+e))}
-spp16<-function(a,b,c,d,e) {rnorm(1, 50, 200)+(0*(a+b+c+d+e))}
-spp17<-function(a,b,c,d,e) {rnorm(1, 50, 1)+(0*(a+b+c+d+e))}
-spp18<-function(a,b,c,d,e) {rnorm(1, 5, 100)+(0*(a+b+c+d+e))}
-spp19<-function(a,b,c,d,e) {rnorm(1, 5, 50)+(0*(a+b+c+d+e))}
-spp20<-function(a,b,c,d,e) {rnorm(1, 5, 5)+(0*(a+b+c+d+e))}
+spp1661<-function(a,b,c,d,e) {rnorm(1, 50, 50)+(0*(a+b+c+d+e))} #generate 1 number with mean=50, stdev=50
+spp1662<-function(a,b,c,d,e) {rnorm(1, 50, 40)+(0*(a+b+c+d+e))}
+spp1663<-function(a,b,c,d,e) {rnorm(1, 50, 20)+(0*(a+b+c+d+e))}
+spp1664<-function(a,b,c,d,e) {rnorm(1, 50, 10)+(0*(a+b+c+d+e))}
+spp1665<-function(a,b,c,d,e) {rnorm(1, 50, 100)+(0*(a+b+c+d+e))}
+spp1666<-function(a,b,c,d,e) {rnorm(1, 50, 200)+(0*(a+b+c+d+e))}
+spp1667<-function(a,b,c,d,e) {rnorm(1, 50, 1)+(0*(a+b+c+d+e))}
+spp1668<-function(a,b,c,d,e) {rnorm(1, 5, 100)+(0*(a+b+c+d+e))}
+spp1669<-function(a,b,c,d,e) {rnorm(1, 5, 50)+(0*(a+b+c+d+e))}
+spp1670<-function(a,b,c,d,e) {rnorm(1, 5, 5)+(0*(a+b+c+d+e))}
 
-spp21<-function(a,b,c,d,e) {rnorm(1, 1, 50)+(0*(a+b+c+d+e))}
-spp22<-function(a,b,c,d,e) {rnorm(1, 2, 50)+(0*(a+b+c+d+e))}
-spp23<-function(a,b,c,d,e) {rnorm(1, 10, 50)+(0*(a+b+c+d+e))}
-spp24<-function(a,b,c,d,e) {rnorm(1, 20, 50)+(0*(a+b+c+d+e))}
-spp25<-function(a,b,c,d,e) {rnorm(1, 30, 50)+(0*(a+b+c+d+e))}
-spp26<-function(a,b,c,d,e) {rnorm(1, 40, 50)+(0*(a+b+c+d+e))}
-spp27<-function(a,b,c,d,e) {rnorm(1, 60, 50)+(0*(a+b+c+d+e))}
-spp28<-function(a,b,c,d,e) {rnorm(1, 70, 50)+(0*(a+b+c+d+e))}
-spp29<-function(a,b,c,d,e) {rnorm(1, 80, 50)+(0*(a+b+c+d+e))}
-spp30<-function(a,b,c,d,e) {rnorm(1, 90, 50)+(0*(a+b+c+d+e))}
-spp31<-function(a,b,c,d,e) {rnorm(1, 100, 50)+(0*(a+b+c+d+e))}
-spp32<-function(a,b,c,d,e) {rnorm(1, 1, 5)+(0*(a+b+c+d+e))}
-spp32<-function(a,b,c,d,e) {rnorm(1, 1, 50)+(0*(a+b+c+d+e))}
-spp32<-function(a,b,c,d,e) {rnorm(1, 1, 100)+(0*(a+b+c+d+e))}
+spp1671<-function(a,b,c,d,e) {rnorm(1, 1, 50)+(0*(a+b+c+d+e))}
+spp1672<-function(a,b,c,d,e) {rnorm(1, 2, 50)+(0*(a+b+c+d+e))}
+spp1673<-function(a,b,c,d,e) {rnorm(1, 10, 50)+(0*(a+b+c+d+e))}
+spp1674<-function(a,b,c,d,e) {rnorm(1, 20, 50)+(0*(a+b+c+d+e))}
+spp1675<-function(a,b,c,d,e) {rnorm(1, 30, 50)+(0*(a+b+c+d+e))}
+spp1676<-function(a,b,c,d,e) {rnorm(1, 40, 50)+(0*(a+b+c+d+e))}
+spp1677<-function(a,b,c,d,e) {rnorm(1, 60, 50)+(0*(a+b+c+d+e))}
+spp1678<-function(a,b,c,d,e) {rnorm(1, 70, 50)+(0*(a+b+c+d+e))}
+spp1679<-function(a,b,c,d,e) {rnorm(1, 80, 50)+(0*(a+b+c+d+e))}
+spp1680<-function(a,b,c,d,e) {rnorm(1, 90, 50)+(0*(a+b+c+d+e))}
+spp1681<-function(a,b,c,d,e) {rnorm(1, 100, 50)+(0*(a+b+c+d+e))}
+spp1682<-function(a,b,c,d,e) {rnorm(1, 1, 5)+(0*(a+b+c+d+e))}
+spp1683<-function(a,b,c,d,e) {rnorm(1, 1, 50)+(0*(a+b+c+d+e))}
+spp1684<-function(a,b,c,d,e) {rnorm(1, 1, 100)+(0*(a+b+c+d+e))}
 
 #medium
 
 
-spp11<-function(a,b,c,d,e) {rnorm(1, 500, 500)+(0*(a+b+c+d+e))} #generate 1 number with mean=50, stdev=50
-spp12<-function(a,b,c,d,e) {rnorm(1, 500, 400)+(0*(a+b+c+d+e))}
-spp13<-function(a,b,c,d,e) {rnorm(1, 500, 200)+(0*(a+b+c+d+e))}
-spp14<-function(a,b,c,d,e) {rnorm(1, 500, 100)+(0*(a+b+c+d+e))}
-spp15<-function(a,b,c,d,e) {rnorm(1, 500, 1000)+(0*(a+b+c+d+e))}
-spp16<-function(a,b,c,d,e) {rnorm(1, 500, 2000)+(0*(a+b+c+d+e))}
-spp17<-function(a,b,c,d,e) {rnorm(1, 500, 10)+(0*(a+b+c+d+e))}
-spp18<-function(a,b,c,d,e) {rnorm(1, 50, 1000)+(0*(a+b+c+d+e))}
-spp19<-function(a,b,c,d,e) {rnorm(1, 50, 500)+(0*(a+b+c+d+e))}
-spp20<-function(a,b,c,d,e) {rnorm(1, 50, 50)+(0*(a+b+c+d+e))}
+spp1725<-function(a,b,c,d,e) {rnorm(1, 500, 500)+(0*(a+b+c+d+e))} #generate 1 number with mean=50, stdev=50
+spp1726<-function(a,b,c,d,e) {rnorm(1, 500, 400)+(0*(a+b+c+d+e))}
+spp1727<-function(a,b,c,d,e) {rnorm(1, 500, 200)+(0*(a+b+c+d+e))}
+spp1728<-function(a,b,c,d,e) {rnorm(1, 500, 100)+(0*(a+b+c+d+e))}
+spp1685<-function(a,b,c,d,e) {rnorm(1, 500, 1000)+(0*(a+b+c+d+e))}
+spp1686<-function(a,b,c,d,e) {rnorm(1, 500, 2000)+(0*(a+b+c+d+e))}
+spp1687<-function(a,b,c,d,e) {rnorm(1, 500, 10)+(0*(a+b+c+d+e))}
+spp1688<-function(a,b,c,d,e) {rnorm(1, 50, 1000)+(0*(a+b+c+d+e))}
+spp1689<-function(a,b,c,d,e) {rnorm(1, 50, 500)+(0*(a+b+c+d+e))}
+spp1690<-function(a,b,c,d,e) {rnorm(1, 50, 50)+(0*(a+b+c+d+e))}
 
-spp21<-function(a,b,c,d,e) {rnorm(1, 10, 500)+(0*(a+b+c+d+e))}
-spp22<-function(a,b,c,d,e) {rnorm(1, 20, 500)+(0*(a+b+c+d+e))}
-spp23<-function(a,b,c,d,e) {rnorm(1, 100, 500)+(0*(a+b+c+d+e))}
-spp24<-function(a,b,c,d,e) {rnorm(1, 200, 500)+(0*(a+b+c+d+e))}
-spp25<-function(a,b,c,d,e) {rnorm(1, 300, 500)+(0*(a+b+c+d+e))}
-spp26<-function(a,b,c,d,e) {rnorm(1, 400, 500)+(0*(a+b+c+d+e))}
-spp27<-function(a,b,c,d,e) {rnorm(1, 600, 500)+(0*(a+b+c+d+e))}
-spp28<-function(a,b,c,d,e) {rnorm(1, 700, 500)+(0*(a+b+c+d+e))}
-spp29<-function(a,b,c,d,e) {rnorm(1, 800, 500)+(0*(a+b+c+d+e))}
-spp30<-function(a,b,c,d,e) {rnorm(1, 900, 500)+(0*(a+b+c+d+e))}
-spp31<-function(a,b,c,d,e) {rnorm(1, 1000, 500)+(0*(a+b+c+d+e))}
-spp32<-function(a,b,c,d,e) {rnorm(1, 10, 50)+(0*(a+b+c+d+e))}
-spp32<-function(a,b,c,d,e) {rnorm(1, 10, 500)+(0*(a+b+c+d+e))}
-spp32<-function(a,b,c,d,e) {rnorm(1, 10, 1000)+(0*(a+b+c+d+e))}
+spp1691<-function(a,b,c,d,e) {rnorm(1, 10, 500)+(0*(a+b+c+d+e))}
+spp1692<-function(a,b,c,d,e) {rnorm(1, 20, 500)+(0*(a+b+c+d+e))}
+spp1693<-function(a,b,c,d,e) {rnorm(1, 100, 500)+(0*(a+b+c+d+e))}
+spp1694<-function(a,b,c,d,e) {rnorm(1, 200, 500)+(0*(a+b+c+d+e))}
+spp1695<-function(a,b,c,d,e) {rnorm(1, 300, 500)+(0*(a+b+c+d+e))}
+spp1696<-function(a,b,c,d,e) {rnorm(1, 400, 500)+(0*(a+b+c+d+e))}
+spp1697<-function(a,b,c,d,e) {rnorm(1, 600, 500)+(0*(a+b+c+d+e))}
+spp1698<-function(a,b,c,d,e) {rnorm(1, 700, 500)+(0*(a+b+c+d+e))}
+spp1699<-function(a,b,c,d,e) {rnorm(1, 800, 500)+(0*(a+b+c+d+e))}
+spp1700<-function(a,b,c,d,e) {rnorm(1, 900, 500)+(0*(a+b+c+d+e))}
+spp1701<-function(a,b,c,d,e) {rnorm(1, 1000, 500)+(0*(a+b+c+d+e))}
+spp1702<-function(a,b,c,d,e) {rnorm(1, 10, 50)+(0*(a+b+c+d+e))}
+spp1703<-function(a,b,c,d,e) {rnorm(1, 10, 500)+(0*(a+b+c+d+e))}
+spp1704<-function(a,b,c,d,e) {rnorm(1, 10, 1000)+(0*(a+b+c+d+e))}
 
 #high
-spp11<-function(a,b,c,d,e) {rnorm(1, 5000, 5000)+(0*(a+b+c+d+e))} #generate 1 number with mean=50, stdev=50
-spp12<-function(a,b,c,d,e) {rnorm(1, 5000, 4000)+(0*(a+b+c+d+e))}
-spp13<-function(a,b,c,d,e) {rnorm(1, 5000, 2000)+(0*(a+b+c+d+e))}
-spp14<-function(a,b,c,d,e) {rnorm(1, 5000, 1000)+(0*(a+b+c+d+e))}
-spp15<-function(a,b,c,d,e) {rnorm(1, 5000, 10000)+(0*(a+b+c+d+e))}
-spp16<-function(a,b,c,d,e) {rnorm(1, 5000, 20000)+(0*(a+b+c+d+e))}
-spp17<-function(a,b,c,d,e) {rnorm(1, 5000, 100)+(0*(a+b+c+d+e))}
-spp18<-function(a,b,c,d,e) {rnorm(1, 500, 10000)+(0*(a+b+c+d+e))}
-spp19<-function(a,b,c,d,e) {rnorm(1, 500, 5000)+(0*(a+b+c+d+e))}
-spp20<-function(a,b,c,d,e) {rnorm(1, 500, 500)+(0*(a+b+c+d+e))}
+spp1729<-function(a,b,c,d,e) {rnorm(1, 5000, 5000)+(0*(a+b+c+d+e))} #generate 1 number with mean=50, stdev=50
+spp1730<-function(a,b,c,d,e) {rnorm(1, 5000, 4000)+(0*(a+b+c+d+e))}
+spp1731<-function(a,b,c,d,e) {rnorm(1, 5000, 2000)+(0*(a+b+c+d+e))}
+spp1732<-function(a,b,c,d,e) {rnorm(1, 5000, 1000)+(0*(a+b+c+d+e))}
+spp1705<-function(a,b,c,d,e) {rnorm(1, 5000, 10000)+(0*(a+b+c+d+e))}
+spp1706<-function(a,b,c,d,e) {rnorm(1, 5000, 20000)+(0*(a+b+c+d+e))}
+spp1707<-function(a,b,c,d,e) {rnorm(1, 5000, 100)+(0*(a+b+c+d+e))}
+spp1708<-function(a,b,c,d,e) {rnorm(1, 500, 10000)+(0*(a+b+c+d+e))}
+spp1709<-function(a,b,c,d,e) {rnorm(1, 500, 5000)+(0*(a+b+c+d+e))}
+spp1710<-function(a,b,c,d,e) {rnorm(1, 500, 500)+(0*(a+b+c+d+e))}
 
-spp21<-function(a,b,c,d,e) {rnorm(1, 100, 5000)+(0*(a+b+c+d+e))}
-spp22<-function(a,b,c,d,e) {rnorm(1, 200, 5000)+(0*(a+b+c+d+e))}
-spp23<-function(a,b,c,d,e) {rnorm(1, 1000, 5000)+(0*(a+b+c+d+e))}
-spp24<-function(a,b,c,d,e) {rnorm(1, 2000, 5000)+(0*(a+b+c+d+e))}
-spp25<-function(a,b,c,d,e) {rnorm(1, 3000, 5000)+(0*(a+b+c+d+e))}
-spp26<-function(a,b,c,d,e) {rnorm(1, 4000, 5000)+(0*(a+b+c+d+e))}
-spp27<-function(a,b,c,d,e) {rnorm(1, 6000, 5000)+(0*(a+b+c+d+e))}
-spp28<-function(a,b,c,d,e) {rnorm(1, 7000, 5000)+(0*(a+b+c+d+e))}
-spp29<-function(a,b,c,d,e) {rnorm(1, 8000, 5000)+(0*(a+b+c+d+e))}
-spp30<-function(a,b,c,d,e) {rnorm(1, 9000, 5000)+(0*(a+b+c+d+e))}
-spp31<-function(a,b,c,d,e) {rnorm(1, 10000, 5000)+(0*(a+b+c+d+e))}
-spp32<-function(a,b,c,d,e) {rnorm(1, 100, 500)+(0*(a+b+c+d+e))}
-spp32<-function(a,b,c,d,e) {rnorm(1, 100, 5000)+(0*(a+b+c+d+e))}
-spp32<-function(a,b,c,d,e) {rnorm(1, 100, 10000)+(0*(a+b+c+d+e))}
+spp1711<-function(a,b,c,d,e) {rnorm(1, 100, 5000)+(0*(a+b+c+d+e))}
+spp1712<-function(a,b,c,d,e) {rnorm(1, 200, 5000)+(0*(a+b+c+d+e))}
+spp1713<-function(a,b,c,d,e) {rnorm(1, 1000, 5000)+(0*(a+b+c+d+e))}
+spp1714<-function(a,b,c,d,e) {rnorm(1, 2000, 5000)+(0*(a+b+c+d+e))}
+spp1715<-function(a,b,c,d,e) {rnorm(1, 3000, 5000)+(0*(a+b+c+d+e))}
+spp1716<-function(a,b,c,d,e) {rnorm(1, 4000, 5000)+(0*(a+b+c+d+e))}
+spp1717<-function(a,b,c,d,e) {rnorm(1, 6000, 5000)+(0*(a+b+c+d+e))}
+spp1718<-function(a,b,c,d,e) {rnorm(1, 7000, 5000)+(0*(a+b+c+d+e))}
+spp1719<-function(a,b,c,d,e) {rnorm(1, 8000, 5000)+(0*(a+b+c+d+e))}
+spp1720<-function(a,b,c,d,e) {rnorm(1, 9000, 5000)+(0*(a+b+c+d+e))}
+spp1721<-function(a,b,c,d,e) {rnorm(1, 10000, 5000)+(0*(a+b+c+d+e))}
+spp1722<-function(a,b,c,d,e) {rnorm(1, 100, 500)+(0*(a+b+c+d+e))}
+spp1723<-function(a,b,c,d,e) {rnorm(1, 100, 5000)+(0*(a+b+c+d+e))}
+spp1724<-function(a,b,c,d,e) {rnorm(1, 100, 10000)+(0*(a+b+c+d+e))}
