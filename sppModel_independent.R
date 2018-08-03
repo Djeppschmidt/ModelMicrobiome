@@ -2062,3 +2062,78 @@ spp1721<-function(a,b,c,d,e) {rnorm(1, 10000, 5000)+(0*(a+b+c+d+e))}
 spp1722<-function(a,b,c,d,e) {rnorm(1, 100, 500)+(0*(a+b+c+d+e))}
 spp1723<-function(a,b,c,d,e) {rnorm(1, 100, 5000)+(0*(a+b+c+d+e))}
 spp1724<-function(a,b,c,d,e) {rnorm(1, 100, 10000)+(0*(a+b+c+d+e))}
+
+#########################################
+###     Function Lists                ###
+#########################################
+
+linearspp.HighA<-c(rep("spp", 80))
+linearspp.HighA<-lapply(linearspp.High, paste0, c(1:80), sep="")
+
+linearspp.MedA<-c(rep("spp", 80))
+linearspp.MedA<-lapply(linearspp.High, paste0, c(161:240), sep="")
+
+linearspp.LowA<-c(rep("spp", 80))
+linearspp.LowA<-lapply(linearspp.High, paste0, c(81:160), sep="")
+
+linearspp.HighB<-c(rep("spp", 80))
+linearspp.HighB<-lapply(linearspp.High, paste0, c(241:320), sep="")
+
+linearspp.MedB<-c(rep("spp", 80))
+linearspp.MedB<-lapply(linearspp.High, paste0, c(401:480), sep="")
+
+linearspp.LowB<-c(rep("spp", 80))
+linearspp.LowB<-lapply(linearspp.High, paste0, c(321:400), sep="")
+
+linearspp.HighC<-c(rep("spp", 80))
+linearspp.HighC<-lapply(linearspp.High, paste0, c(481:560), sep="")
+
+linearspp.MedC<-c(rep("spp", 80))
+linearspp.MedC<-lapply(linearspp.High, paste0, c(641:720), sep="")
+
+linearspp.LowC<-c(rep("spp", 80))
+linearspp.LowC<-lapply(linearspp.High, paste0, c(561-640), sep="")
+
+linearspp.HighD<-c(rep("spp", 80))
+linearspp.HighD<-lapply(linearspp.High, paste0, c(721-800), sep="")
+
+linearspp.MedD<-c(rep("spp", 80))
+linearspp.MedD<-lapply(linearspp.High, paste0, c(881:960), sep="")
+
+linearspp.LowD<-c(rep("spp", 80))
+linearspp.LowD<-lapply(linearspp.High, paste0, c(801:880), sep="")
+
+linearspp.HighE<-c(rep("spp", 80))
+linearspp.HighE<-lapply(linearspp.High, paste0, c(961:1040), sep="")
+
+linearspp.MedE<-c(rep("spp", 80))
+linearspp.MedE<-lapply(linearspp.High, paste0, c(1121:1200), sep="")
+
+linearspp.LowE<-c(rep("spp", 80))
+linearspp.LowE<-lapply(linearspp.High, paste0, c(1041:1120), sep="")
+
+Lin.Low<-c(linearspp.LowA,linearspp.LowB,linearspp.LowC,linearspp.LowD,linearspp.LowE)
+
+Lin.Med<-c(linearspp.MedA,linearspp.MedB,linearspp.MedC,linearspp.MedD,linearspp.MedE)
+
+Lin.High<-c(linearspp.HighA,linearspp.HighB,linearspp.HighC,linearspp.HighD,linearspp.HighE)
+
+#add multiple linear spp subset_taxa
+
+Nonlinearspp.High<-c(rep("spp", 80))
+#Nonlinearspp.High<-lapply(linearspp.High, paste0, c(1061:1140), sep="")
+
+Nonlinearspp.Med<-c(rep("spp", 80))
+#Nonlinearspp.Med<-lapply(linearspp.High, paste0, c(1221:1300), sep="")
+
+Nonlinearspp.Low<-c(rep("spp", 80))
+#Nonlinearspp.Low<-lapply(linearspp.High, paste0, c(1141:1220), sep="")
+
+Randomspp.L<-c(rep("spp", 20))
+Randomspp.L<-lapply(Randomspp.L, paste0, c(1661:1684))
+
+Randomspp.M<-c(rep("spp", 23))
+Randomspp.M<-lapply(Randomspp.M, paste0, c(1685:1704, 1725:1728))
+
+Randomspp.H<-c(rep("spp", 22))
+Randomspp.H<-lapply(Randomspp.H, paste0, c(1729:1731, 1705:1724))
