@@ -1456,7 +1456,7 @@ spp1231<-function(a,b,c,d,e) {round(1+(a*b+c+d+e))}
 spp1232<-function(a,b,c,d,e) {round(1-(a*b+c+d+e))}
 spp1233<-function(a,b,c,d,e) {round(1+(a*b*c+d+e))}
 spp1234<-function(a,b,c,d,e) {round(1-(a*b*c+d+e))}
-spp1234<-function(a,b,c,d,e) {round(1+(a*b+c+d+e)/10)}
+spp1235<-function(a,b,c,d,e) {round(1+(a*b+c+d+e)/10)}
 spp1236<-function(a,b,c,d,e) {round(1+(a*b+c+d+e)/20)}
 spp1237<-function(a,b,c,d,e) {round(1+(a+b+c+d+e)/10)}
 spp1238<-function(a,b,c,d,e) {round(1-(a+b+c+d+e)/10)}
@@ -1497,26 +1497,26 @@ spp1269<-function(a,b,c,d,e) {round(1+(a+b-10*c+10*d+e))}
 spp1270<-function(a,b,c,d,e) {round(1+(a+b-50*c+50*d+e))}
 
 spp1271<-function(a,b,c,d,e) {10*a*b*c*d*e}
-spp1272<-function(a,b,c,d,e) {1+(a+b-10*c+50*d+e))}
-spp1273<-function(a,b,c,d,e) {1+(a+b-10*c+100*d+e))}
-spp1274<-function(a,b,c,d,e) {1+(a+b-50*c+10*d+e))}
-spp1275<-function(a,b,c,d,e) {1+(a+b-100*c+50*d+e))}
-spp1276<-function(a,b,c,d,e) {1+(a+10*b+c-50*d+e))}
-spp1277<-function(a,b,c,d,e) {1+(a+50*b+c-100*d+e))}
-spp1278<-function(a,b,c,d,e) {1+(a+100*b+c-10*d+e))}
-spp1279<-function(a,b,c,d,e) {1+(a+b-50*c+d+100*e))}
-spp1280<-function(a,b,c,d,e) {1+(a+b-50*c+d+10*e))}
+spp1272<-function(a,b,c,d,e) {1+(a+b-10*c+50*d+e)}
+spp1273<-function(a,b,c,d,e) {1+(a+b-10*c+100*d+e)}
+spp1274<-function(a,b,c,d,e) {1+(a+b-50*c+10*d+e)}
+spp1275<-function(a,b,c,d,e) {1+(a+b-100*c+50*d+e)}
+spp1276<-function(a,b,c,d,e) {1+(a+10*b+c-50*d+e)}
+spp1277<-function(a,b,c,d,e) {1+(a+50*b+c-100*d+e)}
+spp1278<-function(a,b,c,d,e) {1+(a+100*b+c-10*d+e)}
+spp1279<-function(a,b,c,d,e) {1+(a+b-50*c+d+100*e)}
+spp1280<-function(a,b,c,d,e) {1+(a+b-50*c+d+10*e)}
 
-spp1281<-function(a,b,c,d,e) {100-(a+b-10*c+50*d+e))}
-spp1282<-function(a,b,c,d,e) {100-(a+b-10*c+100*d+e))}
-spp1283<-function(a,b,c,d,e) {100-(a+b-50*c+10*d+e))}
-spp1284<-function(a,b,c,d,e) {100-(a+b-100*c+50*d+e))}
-spp1285<-function(a,b,c,d,e) {100-(a+10*b+c-50*d+e))}
-spp1286<-function(a,b,c,d,e) {100-(a+50*b+c-100*d+e))}
-spp1287<-function(a,b,c,d,e) {100-(a+100*b+c-10*d+e))}
-spp1288<-function(a,b,c,d,e) {100-(a+b-50*c+d+100*e))}
-spp1289<-function(a,b,c,d,e) {100-(a+b-50*c+d+10*e))}
-spp1290<-function(a,b,c,d,e) {100-(a+b-50*c*d+10*e))}
+spp1281<-function(a,b,c,d,e) {100-(a+b-10*c+50*d+e)}
+spp1282<-function(a,b,c,d,e) {100-(a+b-10*c+100*d+e)}
+spp1283<-function(a,b,c,d,e) {100-(a+b-50*c+10*d+e)}
+spp1284<-function(a,b,c,d,e) {100-(a+b-100*c+50*d+e)}
+spp1285<-function(a,b,c,d,e) {100-(a+10*b+c-50*d+e)}
+spp1286<-function(a,b,c,d,e) {100-(a+50*b+c-100*d+e)}
+spp1287<-function(a,b,c,d,e) {100-(a+100*b+c-10*d+e)}
+spp1288<-function(a,b,c,d,e) {100-(a+b-50*c+d+100*e)}
+spp1289<-function(a,b,c,d,e) {100-(a+b-50*c+d+10*e)}
+spp1290<-function(a,b,c,d,e) {100-(a+b-50*c*d+10*e)}
 ################################################
 ##                                            ##
 ##  multiple linear med responses             ##
@@ -1601,26 +1601,26 @@ spp1359<-function(a,b,c,d,e) {round(1000+(a+b-10*c+10*d+e))}
 spp1360<-function(a,b,c,d,e) {round(1000+(a+b-50*c+50*d+e))}
 
 spp1361<-function(a,b,c,d,e) {100*a*b*c*d*e}
-spp1362<-function(a,b,c,d,e) {600+(a+b-10*c+50*d+e))}
-spp1363<-function(a,b,c,d,e) {600+(a+b-10*c+100*d+e))}
-spp1364<-function(a,b,c,d,e) {600+(a+b-50*c+10*d+e))}
-spp1365<-function(a,b,c,d,e) {600+(a+b-100*c+50*d+e))}
-spp1366<-function(a,b,c,d,e) {600+(a+10*b+c-50*d+e))}
-spp1367<-function(a,b,c,d,e) {600+(a+50*b+c-100*d+e))}
-spp1368<-function(a,b,c,d,e) {600+(a+100*b+c-10*d+e))}
-spp1369<-function(a,b,c,d,e) {600+(a+b-50*c+d+100*e))}
-spp1370<-function(a,b,c,d,e) {600+(a+b-50*c+d+10*e))}
+spp1362<-function(a,b,c,d,e) {600+(a+b-10*c+50*d+e)}
+spp1363<-function(a,b,c,d,e) {600+(a+b-10*c+100*d+e)}
+spp1364<-function(a,b,c,d,e) {600+(a+b-50*c+10*d+e)}
+spp1365<-function(a,b,c,d,e) {600+(a+b-100*c+50*d+e)}
+spp1366<-function(a,b,c,d,e) {600+(a+10*b+c-50*d+e)}
+spp1367<-function(a,b,c,d,e) {600+(a+50*b+c-100*d+e)}
+spp1368<-function(a,b,c,d,e) {600+(a+100*b+c-10*d+e)}
+spp1369<-function(a,b,c,d,e) {600+(a+b-50*c+d+100*e)}
+spp1370<-function(a,b,c,d,e) {600+(a+b-50*c+d+10*e)}
 
-spp1372<-function(a,b,c,d,e) {1000-(a+b-10*c+50*d+e))}
-spp1373<-function(a,b,c,d,e) {1000-(a+b-10*c+100*d+e))}
-spp1374<-function(a,b,c,d,e) {1000-(a+b-50*c+10*d+e))}
-spp1375<-function(a,b,c,d,e) {1000-(a+b-100*c+50*d+e))}
-spp1376<-function(a,b,c,d,e) {1000-(a+10*b+c-50*d+e))}
-spp1377<-function(a,b,c,d,e) {1000-(a+50*b+c-100*d+e))}
-spp1378<-function(a,b,c,d,e) {1000-(a+100*b+c-10*d+e))}
-spp1379<-function(a,b,c,d,e) {1000-(a+b-50*c+d+100*e))}
-spp1380<-function(a,b,c,d,e) {1000-(a+b-50*c+d+10*e))}
-spp1371<-function(a,b,c,d,e) {1000-(a+b-50*c*d+10*e))}
+spp1372<-function(a,b,c,d,e) {1000-(a+b-10*c+50*d+e)}
+spp1373<-function(a,b,c,d,e) {1000-(a+b-10*c+100*d+e)}
+spp1374<-function(a,b,c,d,e) {1000-(a+b-50*c+10*d+e)}
+spp1375<-function(a,b,c,d,e) {1000-(a+b-100*c+50*d+e)}
+spp1376<-function(a,b,c,d,e) {1000-(a+10*b+c-50*d+e)}
+spp1377<-function(a,b,c,d,e) {1000-(a+50*b+c-100*d+e)}
+spp1378<-function(a,b,c,d,e) {1000-(a+100*b+c-10*d+e)}
+spp1379<-function(a,b,c,d,e) {1000-(a+b-50*c+d+100*e)}
+spp1380<-function(a,b,c,d,e) {1000-(a+b-50*c+d+10*e)}
+spp1371<-function(a,b,c,d,e) {1000-(a+b-50*c*d+10*e)}
 
 ################################################
 ##                                            ##
@@ -1706,42 +1706,42 @@ spp1449<-function(a,b,c,d,e) {round(10000+(a+b-100*c+100*d+e))}
 spp1450<-function(a,b,c,d,e) {round(10000+(a+b-500*c+500*d+e))}
 
 spp1451<-function(a,b,c,d,e) {1000*a*b*c*d*e}
-spp1452<-function(a,b,c,d,e) {6000+(a+b-100*c+500*d+e))}
-spp1453<-function(a,b,c,d,e) {6000+(a+b-100*c+1000*d+e))}
-spp1454<-function(a,b,c,d,e) {6000+(a+b-500*c+100*d+e))}
-spp1455<-function(a,b,c,d,e) {6000+(a+b-1000*c+500*d+e))}
-spp1456<-function(a,b,c,d,e) {6000+(a+100*b+c-500*d+e))}
-spp1457<-function(a,b,c,d,e) {6000+(a+500*b+c-1000*d+e))}
-spp1458<-function(a,b,c,d,e) {6000+(a+1000*b+c-100*d+e))}
-spp1459<-function(a,b,c,d,e) {6000+(a+b-500*c+d+1000*e))}
-spp1460<-function(a,b,c,d,e) {6000+(a+b-500*c+d+100*e))}
+spp1452<-function(a,b,c,d,e) {6000+(a+b-100*c+500*d+e)}
+spp1453<-function(a,b,c,d,e) {6000+(a+b-100*c+1000*d+e)}
+spp1454<-function(a,b,c,d,e) {6000+(a+b-500*c+100*d+e)}
+spp1455<-function(a,b,c,d,e) {6000+(a+b-1000*c+500*d+e)}
+spp1456<-function(a,b,c,d,e) {6000+(a+100*b+c-500*d+e)}
+spp1457<-function(a,b,c,d,e) {6000+(a+500*b+c-1000*d+e)}
+spp1458<-function(a,b,c,d,e) {6000+(a+1000*b+c-100*d+e)}
+spp1459<-function(a,b,c,d,e) {6000+(a+b-500*c+d+1000*e)}
+spp1460<-function(a,b,c,d,e) {6000+(a+b-500*c+d+100*e)}
 
-spp1462<-function(a,b,c,d,e) {10000-(a+b-100*c+500*d+e))}
-spp1463<-function(a,b,c,d,e) {10000-(a+b-100*c+1000*d+e))}
-spp1464<-function(a,b,c,d,e) {10000-(a+b-500*c+100*d+e))}
-spp1465<-function(a,b,c,d,e) {10000-(a+b-1000*c+500*d+e))}
-spp1466<-function(a,b,c,d,e) {10000-(a+100*b+c-500*d+e))}
-spp1467<-function(a,b,c,d,e) {10000-(a+500*b+c-1000*d+e))}
-spp1468<-function(a,b,c,d,e) {10000-(a+1000*b+c-100*d+e))}
-spp1469<-function(a,b,c,d,e) {10000-(a+b-500*c+d+1000*e))}
-spp1470<-function(a,b,c,d,e) {10000-(a+b-500*c+d+100*e))}
-spp1461<-function(a,b,c,d,e) {10000-(a+b-500*c*d+100*e))}
+spp1462<-function(a,b,c,d,e) {10000-(a+b-100*c+500*d+e)}
+spp1463<-function(a,b,c,d,e) {10000-(a+b-100*c+1000*d+e)}
+spp1464<-function(a,b,c,d,e) {10000-(a+b-500*c+100*d+e)}
+spp1465<-function(a,b,c,d,e) {10000-(a+b-1000*c+500*d+e)}
+spp1466<-function(a,b,c,d,e) {10000-(a+100*b+c-500*d+e)}
+spp1467<-function(a,b,c,d,e) {10000-(a+500*b+c-1000*d+e)}
+spp1468<-function(a,b,c,d,e) {10000-(a+1000*b+c-100*d+e)}
+spp1469<-function(a,b,c,d,e) {10000-(a+b-500*c+d+1000*e)}
+spp1470<-function(a,b,c,d,e) {10000-(a+b-500*c+d+100*e)}
+spp1461<-function(a,b,c,d,e) {10000-(a+b-500*c*d+100*e)}
 ################################################
 ##                                            ##
 ##  non-linear high complex  response         ##
 ##                                            ##
 ################################################
 
-spp1471<-function(a,b,c,d,e) {(0.001(a-50)^3+3)+(10*b)+(-0.1(c-50)^2+50)+d+e}
-spp1472<-function(a,b,c,d,e) {(0.001(a-50)^3+3)*(10*b)+(-0.1(c-50)^2+50)+d+e}
-spp1473<-function(a,b,c,d,e) {((1/e)*(a-50)^3+3)+(10*b)+(-0.1(c-50)^2+50)+d}
+spp1471<-function(a,b,c,d,e) {(0.001*(a-50)^3+3)+(10*b)+(-0.1*(c-50)^2+50)+d+e}
+spp1472<-function(a,b,c,d,e) {(0.001*(a-50)^3+3)*(10*b)+(-0.1*(c-50)^2+50)+d+e}
+spp1473<-function(a,b,c,d,e) {((1/e)*(a-50)^3+3)+(10*b)+(-0.1*(c-50)^2+50)+d}
 spp1474<-function(a,b,c,d,e) {((1/e)*(a-50)^3+3)+(10*b)+(-(1/d)*(c-50)^2+50)}
 spp1475<-function(a,b,c,d,e) {((1/e)^2*(a-50)^3+3)+(10*b)+(-(1/d)^2*(c-50)^2+50)}
 spp1476<-function(a,b,c,d,e) {((1/d)*(a-50)^3+3)+(10*b)+(-(1/e)*(c-50)^2+50)}
 spp1477<-function(a,b,c,d,e) {((1/e)*(a-100)^3+3)*(10*b)+(-(1/d)*(c-50)^2+50)}
 spp1478<-function(a,b,c,d,e) {((1/e)^2*(a-100)^3+3)*(10*b)+(-(1/d)^2*(c-100)^2+50)}
-spp1479<-function(a,b,c,d,e) {(0.001(a-50)^3+3)*(10*b)*(1/d)+(-0.1(c-50)^2+50)+d+e}
-spp1480<-function(a,b,c,d,e) {(0.001(a-50)^3+3)*(10*b)*(-0.001(e-50)^2+50)+(-0.00000001(e-50)^5+10)+(-0.1(c-50)^2+50)+d}
+spp1479<-function(a,b,c,d,e) {(0.001*(a-50)^3+3)*(10*b)*(1/d)+(-0.1*(c-50)^2+50)+d+e}
+spp1480<-function(a,b,c,d,e) {(0.001*(a-50)^3+3)*(10*b)*(-0.001*(e-50)^2+50)+(-0.00000001*(e-50)^5+10)+(-0.1*(c-50)^2+50)+d}
 
 ################################################
 ##                                            ##
@@ -1778,7 +1778,7 @@ spp1503<-function(a,b,c,d,e) {10000-(10000/(a*b*c*d))+e^2}
 spp1504<-function(a,b,c,d,e) {10000*e-(10000/(a*b*c*d))}
 spp1505<-function(a,b,c,d,e) {10000-(10000/(100*(a+b+c+d+e)))}
 spp1506<-function(a,b,c,d,e) {10000-100*a*b*c*d*e}
-spp1507<-function(a,b,c,d,e) {10000-100*(a+b+c+d+e))}
+spp1507<-function(a,b,c,d,e) {10000-100*(a+b+c+d+e)}
 spp1508<-function(a,b,c,d,e) {100*a*b*c-d^(10*e)}
 spp1509<-function(a,b,c,d,e) {1000+100*a*b*c-d^(10*e)}
 spp1510<-function(a,b,c,d,e) {1000+100*e*b*c-d^(10*a)}
@@ -1798,10 +1798,10 @@ spp1519<-function(a,b,c,d,e) {500^c+(0*(a+b+c+d+e))}
 spp1520<-function(a,b,c,d,e) {500^d+(0*(a+b+c+d+e))}
 
 spp1521<-function(a,b,c,d,e) {500^e+(0*(a+b+c+d+e))}
-spp1522<-function(a,b,c,d,e) {(rnorm(1, 1000, 100)*(b^2)+(0*(a+b+c+d+e))}
-spp1523<-function(a,b,c,d,e) {(rnorm(1, 1000, 100)*(c^2)+(0*(a+b+c+d+e))}
-spp1524<-function(a,b,c,d,e) {(rnorm(1, 1000, 100)*(d^2)+(0*(a+b+c+d+e))}
-spp1525<-function(a,b,c,d,e) {(rnorm(1, 1000, 100)*(e^2)+(0*(a+b+c+d+e))}
+spp1522<-function(a,b,c,d,e) {rnorm(1, 1000, 100)*(b^2)+(0*(a+b+c+d+e))}
+spp1523<-function(a,b,c,d,e) {rnorm(1, 1000, 100)*(c^2)+(0*(a+b+c+d+e))}
+spp1524<-function(a,b,c,d,e) {rnorm(1, 1000, 100)*(d^2)+(0*(a+b+c+d+e))}
+spp1525<-function(a,b,c,d,e) {rnorm(1, 1000, 100)*(e^2)+(0*(a+b+c+d+e))}
 spp1526<-function(a,b,c,d,e) {(10000/(100*a))+(0*(a+b+c+d+e))}
 spp1527<-function(a,b,c,d,e) {(10000/(100*b))+(0*(a+b+c+d+e))}
 spp1528<-function(a,b,c,d,e) {(10000/(100*c))+(0*(a+b+c+d+e))}
@@ -1854,7 +1854,7 @@ spp1563<-function(a,b,c,d,e) {1000-(1000/(a*b*c*d))+e^2}
 spp1564<-function(a,b,c,d,e) {1000*e-(100/(a*b*c*d))}
 spp1565<-function(a,b,c,d,e) {100-(100/(100*(a+b+c+d+e)))}
 spp1566<-function(a,b,c,d,e) {100-10*a*b*c*d*e}
-spp1567<-function(a,b,c,d,e) {100-10*(a+b+c+d+e))}
+spp1567<-function(a,b,c,d,e) {100-10*(a+b+c+d+e)}
 spp1568<-function(a,b,c,d,e) {10*a*b*c-d^(e)}
 spp1569<-function(a,b,c,d,e) {100+10*a*b*c-d^(10*e)}
 spp1570<-function(a,b,c,d,e) {100+10*e*b*c-d^(10*a)}
@@ -1874,10 +1874,10 @@ spp1579<-function(a,b,c,d,e) {50^c+(0*(a+b+c+d+e))}
 spp1580<-function(a,b,c,d,e) {50^d+(0*(a+b+c+d+e))}
 
 spp1581<-function(a,b,c,d,e) {50^e+(0*(a+b+c+d+e))}
-spp1582<-function(a,b,c,d,e) {(rnorm(1, 100, 100)*(b^2)+(0*(a+b+c+d+e))}
-spp1583<-function(a,b,c,d,e) {(rnorm(1, 100, 100)*(c^2)+(0*(a+b+c+d+e))}
-spp1584<-function(a,b,c,d,e) {(rnorm(1, 100, 100)*(d^2)+(0*(a+b+c+d+e))}
-spp1585<-function(a,b,c,d,e) {(rnorm(1, 100, 100)*(e^2)+(0*(a+b+c+d+e))}
+spp1582<-function(a,b,c,d,e) {rnorm(1, 100, 100)*(b^2)+(0*(a+b+c+d+e))}
+spp1583<-function(a,b,c,d,e) {rnorm(1, 100, 100)*(c^2)+(0*(a+b+c+d+e))}
+spp1584<-function(a,b,c,d,e) {rnorm(1, 100, 100)*(d^2)+(0*(a+b+c+d+e))}
+spp1585<-function(a,b,c,d,e) {rnorm(1, 100, 100)*(e^2)+(0*(a+b+c+d+e))}
 spp1586<-function(a,b,c,d,e) {(1000/(10*a))+(0*(a+b+c+d+e))}
 spp1587<-function(a,b,c,d,e) {(1000/(10*b))+(0*(a+b+c+d+e))}
 spp1588<-function(a,b,c,d,e) {(1000/(10*c))+(0*(a+b+c+d+e))}
@@ -1907,7 +1907,7 @@ spp1602<-function(a,b,c,d,e) {-a^2+(b^2)/10+c+10*d+10*e}
 spp1603<-function(a,b,c,d,e) {-a^2+(b^2)/10+c-10*d+e}
 spp1604<-function(a,b,c,d,e) {a^2-b+c-10*d^2+e^2}
 spp1605<-function(a,b,c,d,e) {(a^2)*b*c*(d^2)*(e^2)}
-spp1606<-function(a,b,c,d,e) {*a^2+b+c+d^2+e^2}
+spp1606<-function(a,b,c,d,e) {a^2+b+c+d^2+e^2}
 spp1607<-function(a,b,c,d,e) {a^2-b+c-d^2+e^2}
 spp1608<-function(a,b,c,d,e) {e^3+a+(b^2)/10+c-d}
 spp1609<-function(a,b,c,d,e) {(a^2-b+c-d^2+e^2)/3}
@@ -1931,7 +1931,7 @@ spp1623<-function(a,b,c,d,e) {100-(100/(a*b*c*d))+e^2}
 spp1624<-function(a,b,c,d,e) {100*e-(10/(a*b*c*d))}
 spp1625<-function(a,b,c,d,e) {10-(10/(10*(a+b+c+d+e)))}
 spp1626<-function(a,b,c,d,e) {10-a*b*c*d*e}
-spp1627<-function(a,b,c,d,e) {10-(a+b+c+d+e))}
+spp1627<-function(a,b,c,d,e) {10-(a+b+c+d+e)}
 spp1628<-function(a,b,c,d,e) {a*b*c-d^(e)}
 spp1629<-function(a,b,c,d,e) {10+a*b*c-d^(e)}
 spp1630<-function(a,b,c,d,e) {10+e*b*c-d^(a)}
@@ -1951,10 +1951,11 @@ spp1639<-function(a,b,c,d,e) {5^c+(0*(a+b+c+d+e))}
 spp1640<-function(a,b,c,d,e) {5^d+(0*(a+b+c+d+e))}
 
 spp1641<-function(a,b,c,d,e) {5^e+(0*(a+b+c+d+e))}
-spp1642<-function(a,b,c,d,e) {(rnorm(1, 10, 10)*(b^2)+(0*(a+b+c+d+e))}
-spp1643<-function(a,b,c,d,e) {(rnorm(1, 10, 10)*(c^2)+(0*(a+b+c+d+e))}
-spp1644<-function(a,b,c,d,e) {(rnorm(1, 10, 10)*(d^2)+(0*(a+b+c+d+e))}
-spp1645<-function(a,b,c,d,e) {(rnorm(1, 10, 10)*(e^2)+(0*(a+b+c+d+e))}
+
+spp1642<-function(a,b,c,d,e){rnorm(1, 10, 10)*(b^2)+(0*(a+b+c+d+e))}
+spp1643<-function(a,b,c,d,e) {rnorm(1, 10, 10)*(c^2)+(0*(a+b+c+d+e))}
+spp1644<-function(a,b,c,d,e) {rnorm(1, 10, 10)*(d^2)+(0*(a+b+c+d+e))}
+spp1645<-function(a,b,c,d,e) {rnorm(1, 10, 10)*(e^2)+(0*(a+b+c+d+e))}
 spp1646<-function(a,b,c,d,e) {(100/(10*a))+(0*(a+b+c+d+e))}
 spp1647<-function(a,b,c,d,e) {(100/(10*b))+(0*(a+b+c+d+e))}
 spp1648<-function(a,b,c,d,e) {(100/(10*c))+(0*(a+b+c+d+e))}
@@ -2067,73 +2068,93 @@ spp1724<-function(a,b,c,d,e) {rnorm(1, 100, 10000)+(0*(a+b+c+d+e))}
 ###     Function Lists                ###
 #########################################
 
-linearspp.HighA<-c(rep("spp", 80))
-linearspp.HighA<-lapply(linearspp.High, paste0, c(1:80), sep="")
 
-linearspp.MedA<-c(rep("spp", 80))
-linearspp.MedA<-lapply(linearspp.High, paste0, c(161:240), sep="")
+linearspp.HighA<-paste0("spp", c(1:80), sep="")
 
-linearspp.LowA<-c(rep("spp", 80))
-linearspp.LowA<-lapply(linearspp.High, paste0, c(81:160), sep="")
 
-linearspp.HighB<-c(rep("spp", 80))
-linearspp.HighB<-lapply(linearspp.High, paste0, c(241:320), sep="")
+linearspp.MedA<-paste0("spp", c(161:240), sep="")
 
-linearspp.MedB<-c(rep("spp", 80))
-linearspp.MedB<-lapply(linearspp.High, paste0, c(401:480), sep="")
 
-linearspp.LowB<-c(rep("spp", 80))
-linearspp.LowB<-lapply(linearspp.High, paste0, c(321:400), sep="")
+linearspp.LowA<-paste0("spp", c(81:160), sep="")
 
-linearspp.HighC<-c(rep("spp", 80))
-linearspp.HighC<-lapply(linearspp.High, paste0, c(481:560), sep="")
 
-linearspp.MedC<-c(rep("spp", 80))
-linearspp.MedC<-lapply(linearspp.High, paste0, c(641:720), sep="")
+linearspp.HighB<-paste0("spp", c(241:320), sep="")
 
-linearspp.LowC<-c(rep("spp", 80))
-linearspp.LowC<-lapply(linearspp.High, paste0, c(561-640), sep="")
 
-linearspp.HighD<-c(rep("spp", 80))
-linearspp.HighD<-lapply(linearspp.High, paste0, c(721-800), sep="")
+linearspp.MedB<-paste0("spp", c(401:480), sep="")
 
-linearspp.MedD<-c(rep("spp", 80))
-linearspp.MedD<-lapply(linearspp.High, paste0, c(881:960), sep="")
 
-linearspp.LowD<-c(rep("spp", 80))
-linearspp.LowD<-lapply(linearspp.High, paste0, c(801:880), sep="")
+linearspp.LowB<-paste0("spp", c(321:400), sep="")
 
-linearspp.HighE<-c(rep("spp", 80))
-linearspp.HighE<-lapply(linearspp.High, paste0, c(961:1040), sep="")
 
-linearspp.MedE<-c(rep("spp", 80))
-linearspp.MedE<-lapply(linearspp.High, paste0, c(1121:1200), sep="")
+linearspp.HighC<-paste0("spp", c(481:560), sep="")
 
-linearspp.LowE<-c(rep("spp", 80))
-linearspp.LowE<-lapply(linearspp.High, paste0, c(1041:1120), sep="")
 
-Lin.Low<-c(linearspp.LowA,linearspp.LowB,linearspp.LowC,linearspp.LowD,linearspp.LowE)
+linearspp.MedC<-paste0("spp", c(641:720), sep="")
 
-Lin.Med<-c(linearspp.MedA,linearspp.MedB,linearspp.MedC,linearspp.MedD,linearspp.MedE)
 
-Lin.High<-c(linearspp.HighA,linearspp.HighB,linearspp.HighC,linearspp.HighD,linearspp.HighE)
+linearspp.LowC<-paste0("spp", c(561-640), sep="")
+
+
+linearspp.HighD<-paste0("spp", c(721-800), sep="")
+
+
+linearspp.MedD<-paste0("spp", c(881:960), sep="")
+
+
+linearspp.LowD<-paste0("spp", c(801:880), sep="")
+
+
+linearspp.HighE<-paste0("spp", c(961:1040), sep="")
+
+
+linearspp.MedE<-paste0("spp", c(1121:1200), sep="")
+
+
+linearspp.LowE<-paste0("spp", c(1041:1120), sep="")
+
 
 #add multiple linear spp subset_taxa
 
-Nonlinearspp.High<-c(rep("spp", 80))
-#Nonlinearspp.High<-lapply(linearspp.High, paste0, c(1061:1140), sep="")
 
-Nonlinearspp.Med<-c(rep("spp", 80))
-#Nonlinearspp.Med<-lapply(linearspp.High, paste0, c(1221:1300), sep="")
+MultiLinear.High<-paste0("spp", c(1381:1470), sep="")
 
-Nonlinearspp.Low<-c(rep("spp", 80))
-#Nonlinearspp.Low<-lapply(linearspp.High, paste0, c(1141:1220), sep="")
 
-Randomspp.L<-c(rep("spp", 20))
-Randomspp.L<-lapply(Randomspp.L, paste0, c(1661:1684))
+MultiLinear.Med<-paste0("spp", c(1291:1380), sep="")
 
-Randomspp.M<-c(rep("spp", 23))
-Randomspp.M<-lapply(Randomspp.M, paste0, c(1685:1704, 1725:1728))
 
-Randomspp.H<-c(rep("spp", 22))
-Randomspp.H<-lapply(Randomspp.H, paste0, c(1729:1731, 1705:1724))
+MultiLinear.Low<-paste0("spp", c(1201:1290), sep="")
+
+
+NonlinearsppComplex.High<-paste0("spp", c(1601:1630), sep="")
+
+
+NonlinearsppSimple.High<-paste0("spp", c(1631:1660), sep="")
+
+
+NonlinearsppComplex.Med<-paste0("spp", c(1541:1570), sep="")
+
+NonlinearsppSimple.Med<-paste0("spp", c(1571:1600), sep="")
+
+NonlinearsppComplex.Low<-paste0("spp", c(1481:1510), sep="")
+
+
+NonlinearsppSimple.Low<-paste0("spp", c(1511:1540), sep="")
+
+Randomspp.L<-paste0("spp", c(1661:1684))
+
+Randomspp.M<-paste0("spp", c(1685:1704, 1725:1728))
+
+Randomspp.H<-paste0("spp", c(1729:1731, 1705:1724)) # Correct approach!!###
+
+Lin.Low<-c(linearspp.LowA,linearspp.LowB,linearspp.LowC,linearspp.LowD,linearspp.LowE, MultiLinear.Low)
+
+Lin.Med<-c(linearspp.MedA,linearspp.MedB,linearspp.MedC,linearspp.MedD,linearspp.MedE, MultiLinear.Med)
+
+Lin.High<-c(linearspp.HighA,linearspp.HighB,linearspp.HighC,linearspp.HighD,linearspp.HighE, MultiLinear.High)
+
+# all
+
+AllSpp<-paste0("spp", c(1:1724), sep="")
+
+
