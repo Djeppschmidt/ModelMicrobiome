@@ -89,6 +89,11 @@ rarefy_even<-function(ps, val){
   otu
 } # val can be a single value
 
+# other normalization approaches ####
+#from vegan
+decostand()
+#
+
 #etagenomeSeq object####
 #make metagenomeSeq object from phyloseq, calculate cumsum
 #sourcecode: http://joey711.github.io/waste-not-supplemental/simulation-differential-abundance/simulation-differential-abundance-server.html

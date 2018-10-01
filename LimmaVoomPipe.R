@@ -4,6 +4,7 @@
 limmaVoomPipe<-function(dat, design, contrasts){
   require(limma)
   require(edgeR)
+  require(phyloseq)
 OTU<-as.matrix(t(otu_table(dat)))
 sData<-sample_data(dat)
 attach(sData)
