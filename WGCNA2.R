@@ -1,9 +1,13 @@
 # network analysis ####
-
 library(zoo)
 library(stats)
 
-makeEQTN<-funciton(x,y,a,b){
+# a=number averaged in rolling mean
+# b=power
+# x= value of x
+# y= value of y
+
+makeEQTN<-function(x,y,a,b){
   require(zoo)
   require(stats)
   power<-c(1:b)
@@ -17,8 +21,10 @@ makeEQTN<-funciton(x,y,a,b){
   eqtn<-paste(eqtn[1], eqtn[2], eqtn[3], eqtn[4], eqtn[5], eqtn[6], sep="+")
   noquote(eqtn)
 }
-eqtn[2:6]<-paste(coefs[2:6], power, sep="")
-fit<-function(x,y,eqtn){}
+#eqtn[2:6]<-paste(coefs[2:6], power, sep="")
+fit<-function(x,y,eqtn){
+  #variance explained/total variance
+}
 
 
 eqtn[1]
@@ -26,7 +32,10 @@ eqtn[1]
 model <- lm(y ~ poly(q,3))
 
 # extract values 
-
+# test case ####
+a<-c(1:50, rnorm(10,25,2))
+b<-c(rnorm(25, 30, 20),rnorm(25, 150, 30),rnorm(10, 100, 20))
+eq<-makeEQTN(a,b,10,5)
 
 # hierarchical clustering ####
 library("ggplot2")
