@@ -16,9 +16,9 @@ makeKey<-function(spp, type, response){
 # "assembly" tool ####
 #(started)
 makeComm <- function(spp, Factors){
-  
+
   out<-matrix(data=NA, nrow=nrow(Factors), ncol = length(spp))
-  
+
   for(i in 1:length(spp)) {
     for(row in 1:nrow(Factors)){
       out[row,i]<-do.call(spp[[i]], list(Factors[row,1],Factors[row,2],Factors[row,3],Factors[row,4],Factors[row,5]))
@@ -62,7 +62,7 @@ rarefy2<-
     x
   }
 
-# normalization wrappers: QPCR (count) & PFLA (biomass) , CSS, VST, limma, rarefy_even ####
+# normalization wrappers: CSS, VST, limma, rarefy_even, rarefy_uneven, rarefy_adj ####
 
 NormAdj<-function(OTU, qpcr.val, set){
   require(vegan)
@@ -88,11 +88,6 @@ rarefy_even<-function(ps, val){
   otu<-rarefy(OTU, val)
   otu
 } # val can be a single value
-
-# other normalization approaches ####
-#from vegan
-decostand()
-#
 
 #etagenomeSeq object####
 #make metagenomeSeq object from phyloseq, calculate cumsum
@@ -130,7 +125,7 @@ CSSTest<-function(ps, mod){
   coef
 }
 
-# extract run metrics #### 
+# extract run metrics ####
 
 # evaluate differential abundance ###
 evalDiff<- function(x, key){
@@ -151,16 +146,16 @@ r.Deseq2<-function(data, model, Type){
   require(DESeq2)
   require(edgeR)
   dds = phyloseq_to_deseq2(data, model)
-  
+
   geoMeans = apply(counts(dds), 1, gm_mean)
-  
+
   dds = estimateSizeFactors(dds, geoMeans = geoMeans)
   dds = DESeq(dds, fitType=Type)
-  
+
   res = results(dds)
   res
 }#include categories/predictor variables in phyloseq; if a factor, specify
-#this one works! 
+#this one works!
 
 summarizeDeseq2<-function(res){
   T.P<-
@@ -198,7 +193,7 @@ r.limma<-function(ps, model){
 # benchmark tool ####
 benchmark<-function(df, array){}
 
-# 
+#
 
 ### summary diveristy stats function
 # species distribution curve
