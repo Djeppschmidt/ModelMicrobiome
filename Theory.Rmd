@@ -1,0 +1,94 @@
+---
+title: "Standardized Approaches to Microbial Metabarcoding Studies"
+author: "Dietrich Epp Schmidt"
+date: "7/25/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## introduction
+
+For some time there has been contentious debate over the appropriate data handling techniques for microbial sequence data. The center of the controversy is the question of whether we should or should not rarefy our samples. In this case, rarefaction means subsampling each sample to a certain threshold. Typically, the practitioner will determine an arbitrary minimum count and rarefy all samples down to this count. This technique is employed to adress the lack of uniform sampling effort that is inherent in sequence data (CITATION). It should be pointed out here that subsampling sequences to an equal number of sequences is not in fact normalizing sampling effort. McMurdie and Holmes argued in 2014 that no sequences should be omitted for the purpose of normalizing sampling effort. Their argument essentially is that to do causes us to lose the power to detect taxa that respond, and increased in false positives. Later, Weiss et al countered that their method unfairly handicapped rarefied datasets in their modeling. The center of the dispute was in how the mock community was constructed, and scored. McCmurdie and Holmes had manually increased the abundance of certain taxa in the dataset. They only counted those that they had manipulated as being true positives. But if one taxon should increase in abundance, then as a proportion all other taxa will decrease. These are true effects in the sense that the relative abundance of each taxon is actually changing within the dataset. McMurdie and Holmes, however, scored those detections as false positives and found that rarefied data had a much higher probability of detecting such false positives. Weiss et all argued that in fact these were true positives, suggesting that rarefaction actually increased the sensitivity of the differential abundance analysis. They proposed using a mock community where manipulated taxa are reciprocally balanced such that they do not affect the relative abundance of any other taxon (if one taxon is increased by 10, another is decreased by 10 for balance). This differential abundance test showing that rarefaction did sometimes improve true positive detection, depending on the context. It should be pointed out here that strictly speaking, this type of behavior (i.e. perfectly balanced differences in taxon abundance) does not occure in nature.
+
+What is perhaps most curious about this debate is what is not addressed: the underlying reason that ecologists seek to rarefy data. The concept of effort in sampling is quite literally a representation of physical effort in much of macro-ecology. It seeks to ensure that, for example, the dimensions of area surveyed in each sampling location of a study are equal so that the results are directly comparable. In sequencing studies, effort cannot be controled a priori either physically or procedurally by the scientist because the sequencing machine acts much like a random number generator in determining how many counts (often interpreted as effort) is devoted to each sample. But counts themselves are not intrinsically a measure of effort. If population A has twice the density of organisms than population B, then if samples of both are represented by the same number of sequences, then twice the effort has been expended on sampling population B compared to population A. Effort per unit sampled is important to normalize because it provides a standardization that allows the scientist to infer the density of the organisms. Therefore, to control effort is to normalize for organismal density in the real world. This key observation is lost in the discussion as none of the parties (and none of the softwares employed) include a standard protocol for normalizing for population density across samples. This is because the major publicly available softwares in this realm (particularly DESeq2, EdgeR, and Limma) were developed to determine differential expression of genes within organisms - not the differential abundance of organisms in the environment. They were designed to work with either with RNA-seq data, and often are expansions of software originally developed for micro-array analysis. In this data context, the overall abundance of RNA in the cell is rarely, if ever, an important factor to consider. Since gene expression is highly interdependent within an organism, expression data is best understood as a distribution where autocorrelation of the sequence counts is assumed. Therefore, all of these algorithms include normalization protocol for sample-wise sequencing depth within the GLM. However, for microbiome work the density of the overall community is of paramount importance. The diversity of metabolic strategies is such that groups of microbes may be essentially independent in their growth, each either relying on or being limited by different substrates. If one group becomes more abundant while the other remains at the same abundance level, it is impossible to parse whether one grew or the other died off simply using distributional (or proportional) data. In order to accurately infer the environmental drivers of each taxon, the practicioner needs to model a population density correction into the GLM. Thus, to understand how the environment shapes any microbial community, there must be an independent measure of overall community abundance. The power of external normalization has recently been demonstrated as a XYZ et. al published a paper where they were able to achieve nearly quantitative estimation of taxon abundance using QPCR as an external measure of total bacterial density. 
+
+From the ecological perspective, much of the modeling for expression data has been done backwards. Typically, the modeler generates a random base dataset, manipulate part of it to generate a "treatment effect," then tests if the algorithm accurately identifies the manipulation. This does not allow the modeler to test the algorithm's ability to infer the state of an original population; in essence this is just a test of the algorithm's ability to infer the state of the sample. In order to benchmark the algorithm's ability to infer the population parameters, we must make a model population, sample from the model population, and then supply the algorithm with the sample data and determine its accuracy in predicting the actual state of the population. None of the popular algorithms employed for differential abundance testing have been benchmarked in this way. It also has the advantage that it eliminates subjectivity in interpreting the results because there is a modeled population in the simulation. There can be no quibble over the proper scoring for the benchmark.
+
+Fragments:
+XYZ et al's data demonstrates that highly abundant taxa are easy to model using an external... This is because normalizing the distribution to the density will
+Rarefaction is often misapplied in The advantage of rarefaction is that it allows us to normalize the sequence distributio
+
+##Methods and Results
+
+First we use a simplistic community model framework designed to elucidate explicitly the theoretical weaknesses of different preprossessing and statistical approaches. Then we present a flexible modeling platform that allows us to construct dynamic and nuanced community models to test the bounds of the inferential statistical software.
+
+![Analysis Workflow](images/week3/silly-dog.png)
+# Model Community 1
+Construct a model population. In this case we used the fibonacci sequence as a base for taxon abundance curves. We create several different detection scenarios for how the taxa could respond to the environment. Here the only environmental data is total population for each sample.
+
+
+
+```{r}
+fib1<-c(1,1,2,3,5,8,13,21,34,55,89,144,233,377,610) #1596 (Reference conditions)
+fib2<-fib1*2 #3192 (wrt ref: all taxa increase) ;(expected false: all the same)
+fib3<-c(1,1,2,3,8,5,13,21,34,55,89,144,377,233,610) # (wrt ref: 5,13 increases, 6,14 decreases); expected false: NA
+fib4<-fib3*2 # (wrt ref: all taxa increase); expected false(5,13 increases, 6,14 decreases)
+fib5<-c(1,1,2,3,8,8,13,21,34,55,89,233,233,377,610) # a (wrt ref: 5,12 increases) ;expected false(NA)
+fib6<-fib5*2 # (wrt ref: all taxa increase); expected false(5,12 increases)
+fib7<-c(1,1,2,3,5,8,8,21,34,55,89,144,233,377,377) # (wrt ref: 7,15 decreases); expected false(NA)
+fib8<-fib7*2 # (wrt ref: all taxa increase) ; expected false(7,15 decreases)
+fib9<-c(1,1,2,0,5,0,13,21,34,55,89,144,0,377,610) # identify zeros; expected false(NA)
+fib10<-fib9*2 # (wrt ref: 4,6,13 decrease, all others increase); expected false(4,6,13 decrease)
+fib11<-c(1,1,2,3,5,8,13,21,34,55,89,144,466,754,1220) # (wrt ref: only top 3 increase) ; expected false(bottom 12 decrease)
+fib12<-c(2,2,4,6,10,16,26,42,68,11,178,288,233,377,610) # (wrt ref: all increase except top 3 stay same); expected false(top 3 decrease)
+
+comm<-data.frame(fib1,fib2,fib3,fib4,fib5,fib6,fib7,fib8,fib9,fib10,fib11,fib12)
+rownames(comm)<-paste(rep("sp",15), c(1:15), sep=".")
+
+sampling.da<-function(x,a){
+  #require(plyr)
+  #o<-matrix(data=NA,nrow=length(rownames(x)), ncol = 3)
+  #for (i in c(rnorm(3, 300, 100))) {
+    #o[,i]<-rrarefy2(x, i, replace=T)
+    #colnames(o)<-paste0(names(x), c("a", "b", "c"))
+    #o}
+  for (i in c()){rrarefy2()}
+  
+}
+test1<-rrarefy2(otu, c(rnorm(30, 300, 100)), replace=T)
+test2<-rrarefy2(otu, c(rnorm(30, 300, 100)), replace=T)
+test3<-rrarefy2(otu, c(rnorm(30, 300, 100)), replace=T)
+
+
+
+library(dplyr)
+test<-sampling.da(otu[,1], c(rnorm(3, 300, 100)))
+# make into phyloseq object
+ps<-phyloseq(otu_table(comm, taxa_are_rows = T))
+
+sample_data(ps)$Total_abundance<-sample_sums(ps)
+```
+
+## Including Plots
+We conduct sequencing in the form of a bounded random number generator, and then subsample with replacement. We do multiple samplings in order to generate variation. This subsampling routine will impose variability on our community.  Our condition is idealistic and reduces variation from sampling, and therefore should show clearly when the software is making errors in categorizing taxa.
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+Build a script to run the following platforms:
+
+DESeq2
+Limma Trend
+EdgeR
+BBSeq
+DSS
+BaySeq
+ShrinkBayes
+PoissonSeq

@@ -1,3 +1,68 @@
+# x = otu table with taxa as rows
+# y = number of replicates desired for each treatment condition
+# depth = simulated sequencing depth. Default = 250
+# var = variance of sequencing totals. Default = 75
+# adj = vector of probablility adjustments to simulate technical bias. Default = 1
+#
+
+sampling<-function(x, depth = 250, var = 75, adj = rep(1, ncol(x))){
+  #data.frame(table(sample(rownames(x), round(rnorm(1, depth, var)), replace=T, adj*x/sum(x))))
+  t1<-data.frame(unlist(table(sample(rownames(x), round(rnorm(1, depth, var)), replace=T, prob= adj*x[,1]/sum(x[,1])))))
+  site.1<-t1$Freq
+  names(site.1)<-as.character(t1$Var1)
+  t1<-data.frame(unlist(table(sample(rownames(x), round(rnorm(1, depth, var)), replace=T, prob= adj*x[,2]/sum(x[,2])))))
+  site.2<-t1$Freq
+  names(site.2)<-as.character(t1$Var1)
+  t1<-merge(as.data.frame(site.1), as.data.frame(site.2), by=0, all=T)
+  rownames(t1)<-t1$Row.names
+  t1<-subset(t1, select=c(names(t1)[names(t1)!="Row.names"]))
+for (i in 3:ncol(x)){
+  t2<-data.frame(unlist(table(sample(rownames(x), round(rnorm(1, depth, var)), replace=T, prob= adj*x[,(i)]/sum(x[,(i)])))))
+  t.2<-t2$Freq
+  names(t.2)<-t2$Var1
+  t1<-merge(as.data.frame(t1), as.data.frame(t.2), by=0, all=T)
+  rownames(t1)<-t1$Row.names
+  t1<-subset(t1, select=c(names(t1)[names(t1)!="Row.names"]))
+  names(t1)[names(t1)=="t.2"]<-paste("site", (i), sep=".")
+    }
+  t1[is.na(t1)]<-0
+  t1
+}
+
+model.rarefy<-function(x, y, ...){
+  out<-sampling(x, ...)
+  colnames(out)<-paste(colnames(out), "1", sep=".")
+  if (y>1) {
+  for (i in 2:y){
+    out2<-sampling(x, ...)
+    colnames(out2)<-paste(colnames(out2), (i), sep=".")
+    out<-merge(out, out2, by=0, all=T)
+    out<-subset(out, select=c(names(out)[names(out)!="Row.names"]))
+  }
+    out[is.na(out)]<-0
+  out
+  } else {out}
+}
+
+
+# wrapper for making spp list: ####
+make.spList<-function(n, replace=F){
+  AllSpp<-c(paste0("spp", c(1:1724), sep=""))
+  AllSpp<-lapply(AllSpp, get)
+  AllSpp<-unlist(AllSpp)
+  
+  C<-base::sample(AllSpp, n, replace)
+  C
+}
+
+make.comm<-function(Comm1, Factors){
+otu<-matrix(data=NA, nrow=nrow(Factors), ncol = length(Comm1))
+Sites<-c(paste0("Site", 1:30))
+for(i in 1:length(Comm1)) {
+  for(row in 1:nrow(Factors)){
+   otu[row,i]<-do.call(Comm1[[i]], list(Factors[row,1],Factors[row,2],Factors[row,3],Factors[row,4],Factors[row,5]))
+      }
+}}
 
 #define species functions
 # 100 high response, linear functions Factor 1 ####
@@ -2065,235 +2130,7 @@ spp1723<-function(a,b,c,d,e) {rnorm(1, 100, 5000)+(0*(a+b+c+d+e))}
 spp1724<-function(a,b,c,d,e) {rnorm(1, 100, 10000)+(0*(a+b+c+d+e))}
 
 
-# functions for modeling sequencing ####
-sampling<-function(x, depth = 250, var = 75, adj = rep(1, ncol(x))){
-  #data.frame(table(sample(rownames(x), round(rnorm(1, depth, var)), replace=T, adj*x/sum(x))))
-  t1<-data.frame(unlist(table(sample(rownames(x), round(rnorm(1, depth, var)), replace=T, prob= adj*x[,1]/sum(x[,1])))))
-  site.1<-t1$Freq
-  names(site.1)<-as.character(t1$Var1)
-  t1<-data.frame(unlist(table(sample(rownames(x), round(rnorm(1, depth, var)), replace=T, prob= adj*x[,2]/sum(x[,2])))))
-  site.2<-t1$Freq
-  names(site.2)<-as.character(t1$Var1)
-  t1<-merge(as.data.frame(site.1), as.data.frame(site.2), by=0, all=T)
-  rownames(t1)<-t1$Row.names
-  t1<-subset(t1, select=c(names(t1)[names(t1)!="Row.names"]))
-for (i in 3:ncol(x)){
-  t2<-data.frame(unlist(table(sample(rownames(x), round(rnorm(1, depth, var)), replace=T, prob= adj*x[,(i)]/sum(x[,(i)])))))
-  t.2<-t2$Freq
-  names(t.2)<-t2$Var1
-  t1<-merge(as.data.frame(t1), as.data.frame(t.2), by=0, all=T)
-  rownames(t1)<-t1$Row.names
-  t1<-subset(t1, select=c(names(t1)[names(t1)!="Row.names"]))
-  names(t1)[names(t1)=="t.2"]<-paste("site", (i), sep=".")
-    }
-  t1[is.na(t1)]<-0
-  t1
-}
-
-model.rarefy<-function(x, y, ...){
-  out<-sampling(x, ...)
-  colnames(out)<-paste(colnames(out), "1", sep=".")
-  if (y>1) {
-  for (i in 2:y){
-    out2<-sampling(x, ...)
-    colnames(out2)<-paste(colnames(out2), (i), sep=".")
-    out<-merge(out, out2, by=0, all=T)
-    out<-subset(out, select=c(names(out)[names(out)!="Row.names"]))
-  }
-    out[is.na(out)]<-0
-  out
-  } else {out}
-}
-
-
-
-#########################################
-###     Function Lists                ###
-#########################################
-
-
-linearspp.HighA<-paste0("spp", c(1:80), sep="")
-
-
-linearspp.MedA<-paste0("spp", c(161:240), sep="")
-
-
-linearspp.LowA<-paste0("spp", c(81:160), sep="")
-
-
-linearspp.HighB<-paste0("spp", c(241:320), sep="")
-
-
-linearspp.MedB<-paste0("spp", c(401:480), sep="")
-
-
-linearspp.LowB<-paste0("spp", c(321:400), sep="")
-
-
-linearspp.HighC<-paste0("spp", c(481:560), sep="")
-
-
-linearspp.MedC<-paste0("spp", c(641:720), sep="")
-
-
-linearspp.LowC<-paste0("spp", c(561-640), sep="")
-
-
-linearspp.HighD<-paste0("spp", c(721-800), sep="")
-
-
-linearspp.MedD<-paste0("spp", c(881:960), sep="")
-
-
-linearspp.LowD<-paste0("spp", c(801:880), sep="")
-
-
-linearspp.HighE<-paste0("spp", c(961:1040), sep="")
-
-
-linearspp.MedE<-paste0("spp", c(1121:1200), sep="")
-
-
-linearspp.LowE<-paste0("spp", c(1041:1120), sep="")
-
-
-#add multiple linear spp subset_taxa
-
-
-MultiLinear.High<-paste0("spp", c(1381:1470), sep="")
-
-
-MultiLinear.Med<-paste0("spp", c(1291:1380), sep="")
-
-
-MultiLinear.Low<-paste0("spp", c(1201:1290), sep="")
-
-
-NonlinearsppComplex.High<-paste0("spp", c(1601:1630), sep="")
-
-
-NonlinearsppSimple.High<-paste0("spp", c(1631:1660), sep="")
-
-
-NonlinearsppComplex.Med<-paste0("spp", c(1541:1570), sep="")
-
-NonlinearsppSimple.Med<-paste0("spp", c(1571:1600), sep="")
-
-NonlinearsppComplex.Low<-paste0("spp", c(1481:1510), sep="")
-
-
-NonlinearsppSimple.Low<-paste0("spp", c(1511:1540), sep="")
-
-Randomspp.L<-paste0("spp", c(1661:1684))
-
-Randomspp.M<-paste0("spp", c(1685:1704, 1725:1728))
-
-Randomspp.H<-paste0("spp", c(1729:1731, 1705:1724)) # Correct approach!!###
-
-Lin.Low<-c(linearspp.LowA,linearspp.LowB,linearspp.LowC,linearspp.LowD,linearspp.LowE, MultiLinear.Low)
-
-Lin.Med<-c(linearspp.MedA,linearspp.MedB,linearspp.MedC,linearspp.MedD,linearspp.MedE, MultiLinear.Med)
-
-Lin.High<-c(linearspp.HighA,linearspp.HighB,linearspp.HighC,linearspp.HighD,linearspp.HighE, MultiLinear.High)
-# wrapper for making spp list: ####
-make.spList<-function(n, replace=F){
-  AllSpp<-c(paste0("spp", c(1:1724), sep=""))
-  AllSpp<-lapply(AllSpp, get)
-  AllSpp<-unlist(AllSpp)
-  
-  C<-base::sample(AllSpp, n, replace)
-  C
-}
-# all
-
-# generate the community workflow ####
-AllSpp<-c(paste0("spp", c(1:1724), sep="")) # trying to make a quick list of all functions
-AllSpp<-lapply(AllSpp, get)
-AllSpp<-unlist(AllSpp)
-
-seeds<-round(rnorm(50,5000,100)) 
-set.seed(seeds[1]) # 4945
-Comm1<-base::sample(AllSpp, 200, replace=F)
-set.seed(seeds[2]) # 4902
-Comm2<-base::sample(AllSpp, 200, replace=F)
-set.seed(seeds[4]) # 5098
-Comm3<-base::sample(AllSpp, 200, replace=F)
-
-names(Comm1)
-names(Comm2)
-names(Comm3)
-
-
-
-
-library(reshape2)
-f1c1<-c(5,5,5,5,5,5)
-f1c2<-c(1,3,10,15,3,15)
-f1c3<-c(0.5,0.5,3,3,1,5)
-F1.frame<-mapply(rnorm, f1c1,f1c2,f1c3)
-F1<-melt(F1.frame)
-
-#F2
-f2c1<-c(5,5,5,5,5,5)
-f2c2<-c(34,30,50,55,35,60)
-f2c3<-c(0.5,0.5,3,3,1,5)
-F2.frame<-mapply(rnorm, f2c1,f2c2,f2c3)
-F2<-melt(F2.frame)
-
-#F3
-f3c1<-c(5,5,5,5,5,5)
-f3c2<-c(1,3,10,15,3,15)
-f3c3<-c(0.5,0.5,3,3,1,5)
-F3.frame<-mapply(rnorm, f3c1,f3c2,f3c3)
-F3<-melt(F3.frame)
-
-#F4
-f4c1<-c(5,5,5,5,5,5)
-f4c2<-c(1,3,10,15,3,15)
-f4c3<-c(0.5,0.5,3,3,1,5)
-F4.frame<-mapply(rnorm, f4c1,f4c2,f4c3)
-F4<-melt(F4.frame)
-
-#F5
-f5c1<-c(5,5,5,5,5,5)
-f5c2<-c(1,3,10,15,3,15)
-f5c3<-c(0.5,0.5,3,3,1,5)
-F5.frame<-mapply(rnorm, f5c1,f5c2,f5c3)
-F5<-melt(F5.frame)
-
-Factors<-data.frame(F1$value,F2$value,F3$value,F4$value,F5$value) # environment
-Sites<-c(paste0("Site", 1:30))
-rownames(Factors)<-Sites
-colnames(Factors)<-c("F1","F2","F3","F4","F5")
-head(Factors)
-
-saveRDS(Factors, ".RDS") # save environmental gradient!!
-
-#### output response table ###
-
-make.comm<-function(Comm1, Factors){
-otu<-matrix(data=NA, nrow=nrow(Factors), ncol = length(Comm1))
-Sites<-c(paste0("Site", 1:30))
-for(i in 1:length(Comm1)) {
-  for(row in 1:nrow(Factors)){
-   otu[row,i]<-do.call(Comm1[[i]], list(Factors[row,1],Factors[row,2],Factors[row,3],Factors[row,4],Factors[row,5]))
-      }
-}
-
-otu<-make.comm(Comm1, Factors)
-row.names(otu)<-Sites
-colnames(otu)<-names(Comm1)
-otu[otu<0]<-0
-otu<-round(otu)
-otu<-otu_table(otu, taxa_are_rows = FALSE)
-Sa<-sample_data(Factors)
-out<-phyloseq(otu, Sa)
-
-t.ab<-sample_sums(Comm1)
-sample_data(out)$total_abund<-t.ab
-out}
-
-{
+rrarefy2<-function(){
   if (!identical(all.equal(x, round(x)), TRUE)) 
     stop("function is meaningful only for integers (counts)")
   x <- as.matrix(x)
@@ -2318,31 +2155,3 @@ out}
   }
   x
 }
-
-rrarefy2<-function (x, sample, replace, prob=NULL) 
-{
-    x <- as.matrix(x)
-    if (!identical(all.equal(x, round(x)), TRUE)) 
-        stop("function is meaningful only for integers (counts)")
-    if (!is.integer(x)) 
-        x <- round(x)
-    if (ncol(x) == 1) 
-        x <- t(x)
-    if (length(sample) > 1 && length(sample) != nrow(x)) 
-        stop(gettextf("length of 'sample' and number of rows of 'x' do not match"))
-    sample <- rep(sample, length = nrow(x))
-    if (any(rowSums(x) < sample)) 
-        warning("some row sums < 'sample' and are not rarefied")
-    for (i in 1:nrow(x)) {
-        x[i, ] <- .Call(do_rrarefy, x[i, ], sample[i])
-    }
-    x
-}
-#####
-# x = otu table with taxa as rows
-# y = number of replicates desired for each treatment condition
-# depth = simulated sequencing depth. Default = 250
-# var = variance of sequencing totals. Default = 75
-# adj = vector of probablility adjustments to simulate technical bias. Default = 1
-#
-
