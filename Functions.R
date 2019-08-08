@@ -3,7 +3,6 @@
 # depth = simulated sequencing depth. Default = 250
 # var = variance of sequencing totals. Default = 75
 # adj = vector of probablility adjustments to simulate technical bias. Default = 1
-#
 
 sampling<-function(x, depth = 250, var = 75, adj = rep(1, ncol(x))){
   #data.frame(table(sample(rownames(x), round(rnorm(1, depth, var)), replace=T, adj*x/sum(x))))
@@ -36,7 +35,8 @@ model.rarefy<-function(x, y, ...){
   for (i in 2:y){
     out2<-sampling(x, ...)
     colnames(out2)<-paste(colnames(out2), (i), sep=".")
-    out<-merge(out, out2, by=0, all=T)
+    out<-merge(as.data.frame(out), as.data.frame(out2), by=0, all=T)
+    rownames(out)<-out$Row.names
     out<-subset(out, select=c(names(out)[names(out)!="Row.names"]))
   }
     out[is.na(out)]<-0
@@ -63,6 +63,47 @@ for(i in 1:length(Comm1)) {
    otu[row,i]<-do.call(Comm1[[i]], list(Factors[row,1],Factors[row,2],Factors[row,3],Factors[row,4],Factors[row,5]))
       }
 }}
+
+Build a script to run the following platforms:
+
+DESeq2 #
+
+Limma Trend #
+
+EdgeR #essentially same as deseq2
+# start with sample phyloseq object
+model.edgeR<-function(PS){
+Library(edgeR)
+dgList <- DGEList(counts=Counts, genes=rownames(Counts))
+dgList <- calcNormFactors(dgList, method="TMM") # tmm is not appropriate for microbial metabarcoding studies!!
+designMat <- model.matrix(~Factor)
+dgList <- estimateGLMTagwiseDisp(dgList, design=designMat) # other options are trended (as in limma-voom) and whole dataset...
+fit <- glmFit(dgList, designMat)
+lrt <- glmLRT(fit, coef=4)
+deGenes <- decideTestsDGE(lrt, p=0.001)
+}
+BBSeq #questionable methods
+
+DSS #
+model.DSS<-function(){
+  
+}
+BaySeq #
+model.BaySeq<-function(){
+  
+}
+
+ShrinkBayes #
+model.ShrinkBays<-function(){
+  
+}
+PoissonSeq #
+model.PoissonSeq<-function(){
+  require(PoissonSeq)
+  a<-PS.Main()
+  b<-
+}
+
 
 #define species functions
 # 100 high response, linear functions Factor 1 ####

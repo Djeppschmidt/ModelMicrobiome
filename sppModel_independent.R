@@ -2267,7 +2267,7 @@ rownames(Factors)<-Sites
 colnames(Factors)<-c("F1","F2","F3","F4","F5")
 head(Factors)
 
-saveRDS(Factors, ".RDS") # save environmental gradient!!
+saveRDS(Factors, "~/Documents/Github/ModelMicrobiome/Model_environment.RDS") # save environmental gradient!!
 
 #### output response table ###
 
@@ -2278,7 +2278,7 @@ for(i in 1:length(Comm1)) {
   for(row in 1:nrow(Factors)){
    otu[row,i]<-do.call(Comm1[[i]], list(Factors[row,1],Factors[row,2],Factors[row,3],Factors[row,4],Factors[row,5]))
       }
-}
+}}
 
 otu<-make.comm(Comm1, Factors)
 row.names(otu)<-Sites
@@ -2289,10 +2289,10 @@ otu<-otu_table(otu, taxa_are_rows = FALSE)
 Sa<-sample_data(Factors)
 out<-phyloseq(otu, Sa)
 
-t.ab<-sample_sums(Comm1)
+t.ab<-sample_sums(out)
 sample_data(out)$total_abund<-t.ab
-out}
-
+saveRDS(out, "~/Documents/GitHub/ModelMicrobiome/PS_envComm.RDS")
+#####
 {
   if (!identical(all.equal(x, round(x)), TRUE)) 
     stop("function is meaningful only for integers (counts)")
@@ -2339,10 +2339,4 @@ rrarefy2<-function (x, sample, replace, prob=NULL)
     x
 }
 #####
-# x = otu table with taxa as rows
-# y = number of replicates desired for each treatment condition
-# depth = simulated sequencing depth. Default = 250
-# var = variance of sequencing totals. Default = 75
-# adj = vector of probablility adjustments to simulate technical bias. Default = 1
-#
 
