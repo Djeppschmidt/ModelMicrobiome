@@ -67,8 +67,9 @@ for(i in 1:length(Comm1)) {
 Build a script to run the following platforms:
 
 DESeq2 #
-
+model.deseq2<-function(){}
 Limma Trend #
+model.limma<-function(){}
 
 EdgeR #essentially same as deseq2
 # start with sample phyloseq object
@@ -82,20 +83,29 @@ fit <- glmFit(dgList, designMat)
 lrt <- glmLRT(fit, coef=4)
 deGenes <- decideTestsDGE(lrt, p=0.001)
 }
-BBSeq #questionable methods
+BBSeq # specifically designed for whole genome sequencing; inappropriate normalization methods
 
 DSS #
 model.DSS<-function(){
   
 }
 BaySeq #
-model.BaySeq<-function(){
-  
+model.BaySeq<-function(ps){
+ require(baySeq) 
+  require(phyloseq)
+  tb<-as.data.matrix(as.matrix(otu_table(ps)))
+  replicates<-sample_data(ps)$Factor
+  groups<-list("NDE"=c(rep(1,ncol(tb))), "DE"=c(as.factor(sample_data(ps)$Factor)))
+  CD<-new("countData", data=tb, replicates=replicates, groups=groups)
+  libsizes(CD) <- getLibsizes(CD)
+   CD <- getPriors.NB(CD, samplesize = 500, estimation = "QL", cl = NULL)# using a negative binomial distribution
+   CD <- getLikelihoods(CD, cl = NULL, bootStraps = 3, verbose = FALSE)
+   
 }
 
 ShrinkBayes #
 model.ShrinkBays<-function(){
-  
+  require()
 }
 PoissonSeq #
 model.PoissonSeq<-function(){
