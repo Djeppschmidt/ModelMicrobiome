@@ -64,7 +64,16 @@ for(i in 1:length(Comm1)) {
       }
 }}
 
-Build a script to run the following platforms:
+# build my own functions for processing data
+
+model.glm<-function(data,model){
+  g<-glm(model, family=quasipoisson(link = "log"), data)
+}
+
+model.sp<-function(data, model){
+  t<-apply(data, model.glm, model)
+  }
+#Build a script to run the following platforms:
 
 DESeq2 #
 model.deseq2<-function(){}
