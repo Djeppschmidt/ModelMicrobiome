@@ -51,7 +51,7 @@ fib13<-c(5,10,100,5,10,20,1,1,1,280,124,100,790,540,420,233,377,610,0,0,0,0,0,0,
 fib14<-c(5,10,100,0,0,0,540,420,1,1,1,280,5,10,20,0,0,0,0,233,377,610,0,0,0,0,0,0,0,0,0,0,0,0,0)
 fib15<-c(5,10,100,0,0,0,540,420,1,1,1,280,5,540,420,0,0,0,0,0,0,0,0,0,233,377,610,0,0,0,0,0,0,0,0)
 fib16<-c(5,10,100,0,0,0,540,420,1,1,1,280,5,540,420,0,0,0,0,0,0,0,0,0,0,0,0,233,377,610,0,0,0,0,0)
-fib17<-c(5,rep(1,5),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,89,144,466,233,377,610,0,0,0,0,0,0,0,0)
+fib17<-c(5,rep(1,5),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,89,144,466,233,377,610,0,0,0,0,500,50,100,200)
 
 comm<-data.frame(fib1,fib2,fib3,fib4,fib5,fib6,fib7,fib8,fib9,fib10,fib11,fib12)
 rownames(comm)<-paste(rep("sp",15), c(1:15), sep=".")
@@ -70,13 +70,13 @@ make.table<-function(comm, r){
    m<-m[,colnames(m)!="Var1"]
    colnames(m)[colnames(m)=="Freq"]<-paste("site", 1, r, sep=".")
     m2<-as.data.frame(t(table(sample(rownames(comm),rnorm(1, 250, 75), replace=T, prob=comm[,2]/sum(comm[,2])))))
-   m<-merge(m, m2, by="Var2", all.x=T)
+   m<-merge(m, m2, by="Var2", all=T)
     m<-m[,colnames(m)!="Var1"]
     colnames(m)[colnames(m)=="Freq"]<-paste("site", 2, r, sep=".")
     for(i in 3:ncol(comm)){
      a<-as.data.frame(t(table(sample(rownames(comm),rnorm(1, 250, 75), replace=T, prob=comm[,i]/sum(comm[,i])))))
      a<-a[,colnames(a)!="Var1"]
-     m<-merge(m,a, by="Var2", all.x=T)
+     m<-merge(m,a, by="Var2", all=T)
       m<-m[,colnames(m)!="Var1"]
       colnames(m)[colnames(m)=="Freq"]<-paste("site", i, r, sep=".")
       
@@ -87,42 +87,44 @@ make.table<-function(comm, r){
       m
     }
 
-table2<-function(x){
-  t<-table(x)
-  t<-as.data.frame(t(t))
-  names<-t$Var2
-  t<-t$Freq
-  names(t)<-names
-  t}
-
 model.rarefy<-function(comm, rep){
  a<-make.table(comm, r=1)
  #a<-a[,colnames(a)!="Var1"]
  for(r in 2:rep){
    b<-make.table(comm, r)
-   a<-merge(a,b,by="Var2", all.x=T)
+   a<-merge(a,b,by="Var2", all=T)
    a<-a[,colnames(a)!="Var1"]}
    rownames(a)<-a$Var2
    a<-a[,colnames(a)!="Var2"]
+   a[is.na(a)] <- 0
    a
  }
 
-### come back to this   ################### ^^^^^^^^^^^^
-### come back to this   ################### ||||||||||||
-### come back to this   ################### Needs to end up with appropriate column names
-### come back to this   ###################
-### come back to this   ###################
-
-model.otu<-model.rarefy(comm, 3) # works
-s.order<-c("site.1.1", "site.1.2", "site.1.3", "site.2.1", "site.2.2", "site.2.3", "site.3.1", "site.3.2", "site.3.3", "site.4.1", "site.4.2", "site.4.3", "site.5.1","site.5.2","site.5.3", "site.6.1","site.6.2","site.6.3", "site.7.1","site.7.2","site.7.3", "site.8.1","site.8.2","site.8.3", "site.9.1","site.9.2","site.9.3", "site.10.1","site.10.2","site.10.3", "site.11.1","site.11.2","site.11.3", "site.12.1","site.12.2","site.12.3")
-model.test<-model.otu[,s.order]
 
 
-### come back to this# construct the metadata
-meta<-data.frame("Factor" = as.factor(c(rep("one",3), rep("two",3),rep("three",3),rep("four",3), rep("five",3), rep("six",3),rep("seven",3),rep("eight",3),rep("nine",3),rep("ten",3),rep("eleven",3),rep("twelve",3))), "Sample" = c("site.1.1", "site.1.2", "site.1.3", "site.2.1", "site.2.2", "site.2.3", "site.3.1", "site.3.2", "site.3.3", "site.4.1", "site.4.2", "site.4.3", "site.5.1","site.5.2","site.5.3", "site.6.1","site.6.2","site.6.3", "site.7.1","site.7.2","site.7.3", "site.8.1","site.8.2","site.8.3", "site.9.1","site.9.2","site.9.3", "site.10.1","site.10.2","site.10.3", "site.11.1","site.11.2","site.11.3", "site.12.1","site.12.2","site.12.3"), "Density"=c(rep(sum(fib1), 3),rep(sum(fib2), 3),rep(sum(fib3), 3),rep(sum(fib4), 3),rep(sum(fib5), 3),rep(sum(fib6), 3),rep(sum(fib7), 3),rep(sum(fib8), 3),rep(sum(fib9), 3),rep(sum(fib10), 3),rep(sum(fib11), 3),rep(sum(fib12), 3)))
-rownames(meta)<-meta$Sample
-model.ps<-phyloseq(otu_table(model.otu, taxa_are_rows = T), sample_data(meta))
-sample_data(model.ps)$Total_abundance<-sample_sums(model.ps)
+
+model1.otu<-model.rarefy(comm, 3) # works
+s.order1<-c("site.1.1", "site.1.2", "site.1.3", "site.2.1", "site.2.2", "site.2.3", "site.3.1", "site.3.2", "site.3.3", "site.4.1", "site.4.2", "site.4.3", "site.5.1","site.5.2","site.5.3", "site.6.1","site.6.2","site.6.3", "site.7.1","site.7.2","site.7.3", "site.8.1","site.8.2","site.8.3", "site.9.1","site.9.2","site.9.3", "site.10.1","site.10.2","site.10.3", "site.11.1","site.11.2","site.11.3", "site.12.1","site.12.2","site.12.3")
+model1.otu<-model1.otu[,s.order1]
+
+model2.otu<-model.rarefy(comm=comm2, 5) # works
+s.order2<-c("site.1.1", "site.1.2", "site.1.3", "site.1.4", "site.1.5", "site.2.1", "site.2.2", "site.2.3", "site.2.4","site.2.5","site.3.1", "site.3.2", "site.3.3","site.3.4","site.3.5", "site.4.1", "site.4.2", "site.4.3","site.4.4","site.4.5", "site.5.1","site.5.2","site.5.3", "site.5.4","site.5.5")
+model2.otu<-model2.otu[,s.order2]
+
+# construct the metadata
+meta1<-data.frame("Factor" = as.factor(c(rep("one",3), rep("two",3),rep("three",3),rep("four",3), rep("five",3), rep("six",3),rep("seven",3),rep("eight",3),rep("nine",3),rep("ten",3),rep("eleven",3),rep("twelve",3))), "Sample" = c("site.1.1", "site.1.2", "site.1.3", "site.2.1", "site.2.2", "site.2.3", "site.3.1", "site.3.2", "site.3.3", "site.4.1", "site.4.2", "site.4.3", "site.5.1","site.5.2","site.5.3", "site.6.1","site.6.2","site.6.3", "site.7.1","site.7.2","site.7.3", "site.8.1","site.8.2","site.8.3", "site.9.1","site.9.2","site.9.3", "site.10.1","site.10.2","site.10.3", "site.11.1","site.11.2","site.11.3", "site.12.1","site.12.2","site.12.3"), "Density"=c(rep(sum(fib1), 3),rep(sum(fib2), 3),rep(sum(fib3), 3),rep(sum(fib4), 3),rep(sum(fib5), 3),rep(sum(fib6), 3),rep(sum(fib7), 3),rep(sum(fib8), 3),rep(sum(fib9), 3),rep(sum(fib10), 3),rep(sum(fib11), 3),rep(sum(fib12), 3)))
+rownames(meta1)<-meta$Sample
+model1.ps<-phyloseq(otu_table(model1.otu, taxa_are_rows = T), sample_data(meta1))
+sample_data(model1.ps)$Total_abundance<-sample_sums(model1.ps)
+sample_data(model1.ps)$DensityF.model1<-sample_data(model1.ps)$Density/mean(sample_data(model1.ps)$Density)
+
+
+meta2<-data.frame("Factor" = as.factor(c(rep("one",5), rep("two",5),rep("three",5),rep("four",5), rep("five",5))), "Sample" = c("site.1.1", "site.1.2", "site.1.3", "site.1.4", "site.1.5", "site.2.1", "site.2.2", "site.2.3", "site.2.4","site.2.5","site.3.1", "site.3.2", "site.3.3","site.3.4","site.3.5", "site.4.1", "site.4.2", "site.4.3","site.4.4","site.4.5", "site.5.1","site.5.2","site.5.3", "site.5.4","site.5.5"), "Density"=c(rep(sum(fib13), 5),rep(sum(fib14), 5),rep(sum(fib15), 5),rep(sum(fib16), 5),rep(sum(fib17), 5)))
+rownames(meta2)<-meta2$Sample
+model2.ps<-phyloseq(otu_table(model2.otu, taxa_are_rows = T), sample_data(meta2))
+sample_data(model2.ps)$Total_abundance<-sample_sums(model2.ps)
+sample_data(model2.ps)$DensityF.model2<-sample_data(model2.ps)$Density/mean(sample_data(model2.ps)$Density)
+
 
 saveRDS(model.ps, "~/Documents/GitHub/ModelMicrobiome/ModelPS.RDS")
 ?phyloseq::subset_samples
@@ -131,61 +133,242 @@ There are several philosophies about how to normalize the sample data. Some say 
 
 ```{r}
 
+make.rarefy<-function(x, level){
+  require(phyloseq)
+  require(vegan)
+  
+  if (length(level)==1){
+     p<-prune_samples(sample_sums(x)>=level, x)
+  
+  if (nsamples(x)>nsamples(p)){warning(as.character(nsamples(x)-nsamples(p)), " samples have been removed because they are lower than rarefaction limit")}
+     
+  r<-as.data.frame(as.matrix(otu_table(p)))
+  meta<-sample_data(p)
+  rr<-rrarefy(t(r), level) #use lowest value
+  ps<-phyloseq(otu_table(t(rr), taxa_are_rows = T), sample_data(meta))
+  ps} else {
+    sample_data(x)$adj<-level
+    
+     p<-prune_samples(sample_sums(x)>=level, x)
+  if (nsamples(x)>nsamples(p)){warning(as.character(nsamples(x)-nsamples(p)), " samples have been removed because they are lower than rarefaction limit")}
+    
+    r<-as.data.frame(as.matrix(otu_table(p)))
+  meta<-sample_data(p)
+  rr<-rrarefy(t(r), meta$adj)
+  ps<-phyloseq(otu_table(t(rr), taxa_are_rows = T), sample_data(meta))
+  ps
+  }
+}
+
+make.scaled<-function(ps, val, scale){
+  scaled<-data.frame(mapply(`*`, data.frame(as.matrix(otu_table(transform_sample_counts(ps, function(x) x/sum(x))))), scale * val))# sample_data(ps)$val))
+  names<-rownames(data.frame(as.matrix(otu_table(ps))))
+  rownames(scaled)<-names
+  scaled<-round(scaled)
+
+  p2<-ps
+  otu_table(p2)<- otu_table(scaled, taxa_are_rows=T)
+  p2
+}
+
 # untouched ####
 untouched<-model.ps
 
 # deseqVST ####
-r<-phyloseq_to_deseq2(model.ps, ~Factor)
-dds<-DESeqDataSetFromMatrix(r, sample_data(model.ps), design=~Factor)
-dds = estimateSizeFactors(dds)
-dds = estimateDispersions(dds)
-vst = getVarianceStabilizedData(dds)
-deseqVST<-model.ps
-otu_table(deseqVST) <- otu_table(vst, taxa_are_rows = TRUE)
+gm_mean = function(x, na.rm=TRUE){
+  exp(sum(log(x[x > 0]), na.rm=na.rm) / length(x))
+} # relative abundance
 
+make.deseqVST<-function(ps, Factor, l){
+r<-phyloseq_to_deseq2(ps, ~Factor)
+geoMeans = apply(counts(r), 1, gm_mean)
+dds = estimateSizeFactors(r, geoMeans = geoMeans)
+#dds<-DESeqDataSetFromMatrix(r, sample_data(ps), design=~Factor)
+#dds = estimateSizeFactors(dds)
+if (l==1){dds = estimateDispersions(dds)} else {
+dds <- estimateDispersionsGeneEst(dds)
+ dispersions(dds) <- mcols(dds)$dispGeneEst
+  }
+vst = getVarianceStabilizedData(dds)
+deseqVST<-ps
+otu_table(deseqVST) <- otu_table(vst, taxa_are_rows = TRUE)
+deseqVST
+}
 # LimmaVST ###
 
-counts<-as.data.frame(as.matrix(otu_table(model.ps)))
-factors<-sample_data(model.ps)$Factor
-design<-model.matrix(~factors)
-dge <- DGEList(counts=counts)
-dge <- calcNormFactors(dge) #what happens if we don't do this step?
-v<-voom(dge, design, plot=F)
-LimmaVST<-model.ps
-otu_table(LimmaVST)<-otu_table(v$E, taxa_are_rows = T)
-
+make.limmaVST<-function(ps, Factor){
   
-# evenRarefied ####
-r<-as.data.frame(as.matrix(otu_table(model.ps)))
-rr<-rrarefy(t(r), 85) #use lowest value
-evenRarefied<-phyloseq(otu_table(rr, taxa_are_rows = F), sample_data(meta))
+  counts<-as.data.frame(as.matrix(otu_table(ps)))
+  factors<-unlist(sample_data(ps)[,Factor])
+  design<-model.matrix(~factors)
+  dge <- DGEList(counts=counts)
+  dge <- calcNormFactors(dge) #what happens if we don't do this step?
+  v<-voom(dge, design, plot=F)
+  LimmaVST<-ps
+  otu_table(LimmaVST)<-otu_table(v$E, taxa_are_rows = T)
+  LimmaVST
+}
 
-
-# proportionalRarefied ####
-model.ps2<-subset_samples(model.ps, sample_names(model.ps) != "site.6.2")
-d.prop<-100*sample_data(model.ps2)$Density/mean(sample_data(model.ps2)$Density)# remove samples that are too low
-r2<-as.data.frame(as.matrix(otu_table(model.ps2)))
-rr2<-rrarefy(t(r2), d.prop2)
-proportionalRarefied<-phyloseq(otu_table(rr2, taxa_are_rows = F), sample_data(meta))
-
-# scaled ####
-scaled<-data.frame(mapply(`*`, data.frame(as.matrix(otu_table(transform_sample_counts(model.ps, function(x) x/sum(x))))), sample_data(model.ps)$Density))
-names<-rownames(data.frame(as.matrix(otu_table(model.ps))))
-rownames(scaled)<-names
-scaled<-round(scaled)
 
 ```
 
+Let's now run the functions to get all the different combinations of preprocessing...
+
+
+```{r}
+
+# evenRarefied ####
+model1.eRare<-make.rarefy(model1.ps, 100)  
+model2.eRare<-make.rarefy(model2.ps, 100)
+
+
+# proportionalRarefied ####
+model1.pRare<-make.rarefy(model1.ps, 100 * sample_data(model1.ps)$DensityF.model1)  
+model2.pRare<-make.rarefy(model2.ps, 100 * sample_data(model2.ps)$DensityF.model2)  
+
+
+# scaled ####
+model1.scaled<-make.scaled(model1.ps, val=sample_data(model1.ps)$DensityF.model1, scale = 100)
+model2.scaled<-make.scaled(model2.ps, val=sample_data(model2.ps)$DensityF.model2, scale = 100)
+
+# limma vst ####
+model1.Limma.raw<-make.limmaVST(model1.ps, "Factor")
+model1.Limma.eRare<-make.limmaVST(model1.eRare, "Factor")
+model1.Limma.pRare<-make.limmaVST(model1.pRare, "Factor")
+model1.Limma.scaled<-make.limmaVST(model1.scaled, "Factor")
+
+model2.Limma.raw<-make.limmaVST(model2.ps, "Factor")
+model2.Limma.eRare<-make.limmaVST(model2.eRare, "Factor")
+model2.Limma.pRare<-make.limmaVST(model2.pRare, "Factor")
+model2.Limma.scaled<-make.limmaVST(model2.scaled, "Factor")
+
+# Deseq2 vst ####
+
+model1.deseq.raw<-make.deseqVST(model1.ps, "Factor", l=1)
+model1.deseq.eRare<-make.deseqVST(model1.eRare, "Factor", l=2) # error not enough dispersion
+model1.deseq.pRare<-make.deseqVST(model1.pRare, "Factor") # error not enough dispersion
+model1.deseq.scaled<-make.deseqVST(model1.scaled, "Factor") # error not enough dispersion
+
+model2.deseq.raw<-make.deseqVST(model2.ps, "Factor")
+model2.deseq.eRare<-make.deseqVST(model2.eRare, "Factor")
+model2.deseq.pRare<-make.deseqVST(model2.pRare, "Factor")
+model2.deseq.scaled<-make.deseqVST(model2.scaled, "Factor")
+
+```
+Build a script to run the following platforms:
+
+DESeq2
+Limma Trend <- uses EdgeR 
+EdgeR <- already there
+BBSeq  <- nope! bisulfide sequencing...
+DSS <- um...
+BaySeq <- meh
+ShrinkBayes <- meh
+PoissonSeq <- this one!!
 
 Now we build out the test key
-
 ```{r}
 # zero is no change, 1 is increase, -1 is decrease
 model.key<-data.frame("one"=c(rep(0,15)),"two"=c(rep(1,15)), "three" = c(0,0,0,0,1,-1,0,0,0,0,0,0,1,-1,0), "four" =c(rep(1, 15)), "five"= c(0,0,0,0,1,0,0,0,0,0,0,1,0,0,0), "six"=c(rep(1, 15)), "seven"=c(0,0,0,0,0,0,-1,0,0,0,0,0,0,0,-1), "eight"=c(rep(1,15)), "nine"=c(0,0,0,-1,0,-1,0,0,0,0,0,0,-1,0,0), "ten"=c(1,1,1,-1,1,-1,1,1,1,1,1,1,-1,1,1), "eleven"=c(0,0,0,0,0,0,0,0,0,0,0,0,1,1,1), "twelve"= c(1,1,1,1,1,1,1,1,1,1,1,1,0,0,0))
 rownames(model.key)<-paste("sp", 1:15, sep=".")
 model.key
 ```
+
+Run test of environmental correlation:
+```{r}
+<-function(x, model){
+  require(vegan)
+  a<-adonis()
+  summary(a)
+  
+}
+```
 If we want to test for all decreasing effects, we can set number two as zero in the comparison tables.
+
+
+Run test of indicators:
+```{r}
+
+library(data.table)
+model1.Raw.Limmaindics<-as.data.frame(limma.Indics(model1.ps, "Factor"))
+model1.eRare.Limmaindics<-as.data.frame(limma.Indics(model1.eRare, "Factor"))
+model1.pRare.Limmaindics<-as.data.frame(limma.Indics(model1.pRare, "Factor"))
+model1.scaled.Limmaindics<-as.data.frame(limma.Indics(model1.scaled, "Factor"))
+
+summary(aov(as.data.frame(as.matrix(t(otu_table(model1.eRare))))$sp.14~sample_data(model1.eRare)$Factor))
+t<-TukeyHSD(aov(as.data.frame(as.matrix(t(otu_table(model1.eRare))))$sp.14~sample_data(model1.eRare)$Factor))
+t2<-as.data.frame(t$`sample_data(model1.eRare)$Factor`[rownames(t$`sample_data(model1.eRare)$Factor`) %like% "one",])
+
+summary(aov(as.data.frame(as.matrix(t(otu_table(model1.pRare))))$sp.14~sample_data(model1.pRare)$Factor))
+t<-TukeyHSD(aov(as.data.frame(as.matrix(t(otu_table(model1.pRare))))$sp.14~sample_data(model1.pRare)$Factor))
+prare.t2<-as.data.frame(t$`sample_data(model1.pRare)$Factor`[rownames(t$`sample_data(model1.pRare)$Factor`) %like% "one",])
+
+summary(aov(as.data.frame(as.matrix(t(otu_table(model1.scaled))))$sp.14~sample_data(model1.scaled)$Factor))
+t<-TukeyHSD(aov(as.data.frame(as.matrix(t(otu_table(model1.scaled))))$sp.14~sample_data(model1.scaled)$Factor))
+scaled.t2<-as.data.frame(t$`sample_data(model1.scaled)$Factor`[rownames(t$`sample_data(model1.scaled)$Factor`) %like% "one",])
+
+summary(aov(as.data.frame(as.matrix(t(otu_table(model1.ps))))$sp.14~sample_data(model1.ps)$Factor))
+t<-TukeyHSD(aov(as.data.frame(as.matrix(t(otu_table(model1.ps))))$sp.14~sample_data(model1.ps)$Factor))
+raw.t2<-as.data.frame(t$`sample_data(model1.ps)$Factor`[rownames(t$`sample_data(model1.ps)$Factor`) %like% "one",])
+
+summary(aov(as.data.frame(as.matrix(t(otu_table(model1.Limma.raw))))$sp.14~sample_data(model1.Limma.raw)$Factor))
+t<-TukeyHSD(aov(as.data.frame(as.matrix(t(otu_table(model1.Limma.raw))))$sp.14~sample_data(model1.Limma.raw)$Factor))
+limmaVST.t2<-as.data.frame(t$`sample_data(model1.Limma.raw)$Factor`[rownames(t$`sample_data(model1.Limma.raw)$Factor`) %like% "one",])
+
+summary(aov(as.data.frame(as.matrix(t(otu_table(model1.deseq.raw))))$sp.14~sample_data(model1.deseq.raw)$Factor))
+t<-TukeyHSD(aov(as.data.frame(as.matrix(t(otu_table(model1.deseq.raw))))$sp.14~sample_data(model1.deseq.raw)$Factor))
+t2<-as.data.frame(t$`sample_data(model1.deseq.raw)$Factor`[rownames(t$`sample_data(model1.deseq.raw)$Factor`) %like% "one",])
+
+
+heatdf<-data.frame("AOV.scaled"=scaled.t2$`p adj`, "AOV.Prare"=prare.t2$`p adj`, "AOV.raw"=raw.t2$`p adj`, "AOV.limmaVST"=limmaVST.t2$`p adj`)
+k1<-c(1,1,0,1,0,0,1,1,1,0,1)
+k1<-c(T,T,F,T,F,F,T,T,T,F,T)
+k.df<-c(k1, k1, k1, k1)
+heatdf<-heatdf<=0.05
+
+heat.df<-heatdf==k.df
+heat.df$ID<-rownames(t2)
+
+heat<-melt(heat.df, id.var=ID)
+ggplot(heat, aes())
+
+
+rownames(heat.df)<-rownames(t2)
+heat.df<-lapply(heat.df, numeric)
+heatmap(numeric(as.character(heat.df)))
+```
+
+```{R}
+
+model2.Raw.Limmaindics<-as.data.frame(limma.Indics2(model2.ps, "Factor"))
+model2.eRare.Limmaindics<-as.data.frame(limma.Indics(model2.eRare, "Factor"))
+model2.pRare.Limmaindics<-as.data.frame(limma.Indics(model2.pRare, "Factor"))
+model2.scaled.Limmaindics<-as.data.frame(limma.Indics(model2.scaled, "Factor"))
+
+summary(aov(as.data.frame(as.matrix(t(otu_table(model1.eRare))))$sp.14~sample_data(model1.eRare)$Factor))
+t<-TukeyHSD(aov(as.data.frame(as.matrix(t(otu_table(model1.eRare))))$sp.14~sample_data(model1.eRare)$Factor))
+t2<-as.data.frame(t$`sample_data(model1.eRare)$Factor`[rownames(t$`sample_data(model1.eRare)$Factor`) %like% "one",])
+
+summary(aov(as.data.frame(as.matrix(t(otu_table(model1.pRare))))$sp.14~sample_data(model1.pRare)$Factor))
+t<-TukeyHSD(aov(as.data.frame(as.matrix(t(otu_table(model1.pRare))))$sp.14~sample_data(model1.pRare)$Factor))
+prare.t2<-as.data.frame(t$`sample_data(model1.pRare)$Factor`[rownames(t$`sample_data(model1.pRare)$Factor`) %like% "one",])
+
+summary(aov(as.data.frame(as.matrix(t(otu_table(model1.scaled))))$sp.14~sample_data(model1.scaled)$Factor))
+t<-TukeyHSD(aov(as.data.frame(as.matrix(t(otu_table(model1.scaled))))$sp.14~sample_data(model1.scaled)$Factor))
+scaled.t2<-as.data.frame(t$`sample_data(model1.scaled)$Factor`[rownames(t$`sample_data(model1.scaled)$Factor`) %like% "one",])
+
+summary(aov(as.data.frame(as.matrix(t(otu_table(model1.ps))))$sp.14~sample_data(model1.ps)$Factor))
+t<-TukeyHSD(aov(as.data.frame(as.matrix(t(otu_table(model1.ps))))$sp.14~sample_data(model1.ps)$Factor))
+raw.t2<-as.data.frame(t$`sample_data(model1.ps)$Factor`[rownames(t$`sample_data(model1.ps)$Factor`) %like% "one",])
+
+summary(aov(as.data.frame(as.matrix(t(otu_table(model1.Limma.raw))))$sp.14~sample_data(model1.Limma.raw)$Factor))
+t<-TukeyHSD(aov(as.data.frame(as.matrix(t(otu_table(model1.Limma.raw))))$sp.14~sample_data(model1.Limma.raw)$Factor))
+limmaVST.t2<-as.data.frame(t$`sample_data(model1.Limma.raw)$Factor`[rownames(t$`sample_data(model1.Limma.raw)$Factor`) %like% "one",])
+
+summary(aov(as.data.frame(as.matrix(t(otu_table(model1.deseq.raw))))$sp.14~sample_data(model1.deseq.raw)$Factor))
+t<-TukeyHSD(aov(as.data.frame(as.matrix(t(otu_table(model1.deseq.raw))))$sp.14~sample_data(model1.deseq.raw)$Factor))
+t2<-as.data.frame(t$`sample_data(model1.deseq.raw)$Factor`[rownames(t$`sample_data(model1.deseq.raw)$Factor`) %like% "one",])
+```
 
 # environmental workflow!!
 
@@ -197,6 +380,9 @@ The purpose of this next modeling framework is to illustrate how normalization a
 AllSpp<-c(paste0("spp", c(1:1724), sep="")) # trying to make a quick list of all functions
 AllSpp<-lapply(AllSpp, get)
 AllSpp<-unlist(AllSpp)
+
+names(AllSpp)<-c(paste0("spp", c(1:1724)))
+
 
 seeds<-round(rnorm(50,5000,100)) 
 set.seed(seeds[1]) # 4945
@@ -278,11 +464,13 @@ the samples so far follow the same basic distribution, with minor tweaks to the 
 ```{r}
 # the samples so far follow the same basic distribution, with minor tweaks to the order of the taxa within the distribution. What happens if we make a distribution that has substantial patchiness among samples?
 
-Fib13<-c()
-fib13<-c(1,1,2,3,5,8,13,21,34,55,89,144,233,377,610)
-fib14<-fib13*2
 
-lin13<-c()
+spp.list1<-base::sample(AllSpp, 40, replace=F)
+spp.list2<-setdiff(names(AllSpp), names(spp.list1))
+spp.list2<-lapply(spp.list2, get)
+spp.list2<-unlist(spp.list2)
+
+length(spp.list2)
 ```
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
