@@ -2278,9 +2278,9 @@ for(i in 1:length(Comm1)) {
   for(row in 1:nrow(Factors)){
    otu[row,i]<-do.call(Comm1[[i]], list(Factors[row,1],Factors[row,2],Factors[row,3],Factors[row,4],Factors[row,5]))
       }
-}}
+}
 
-otu<-make.comm(Comm1, Factors)
+#otu<-make.comm(Comm1, Factors)
 row.names(otu)<-Sites
 colnames(otu)<-names(Comm1)
 otu[otu<0]<-0
@@ -2288,6 +2288,8 @@ otu<-round(otu)
 otu<-otu_table(otu, taxa_are_rows = FALSE)
 Sa<-sample_data(Factors)
 out<-phyloseq(otu, Sa)
+out}
+
 
 t.ab<-sample_sums(out)
 sample_data(out)$total_abund<-t.ab
@@ -2340,3 +2342,123 @@ rrarefy2<-function (x, sample, replace, prob=NULL)
 }
 #####
 
+
+#### Select core 10 taxa found at all sites
+# use lists
+group<-c(1:5)
+
+df<-data.frame("group"=numeric(), "spp"=numeric())
+for (g in 2:group) {
+a<-names(sample(AllSpp, 10, replace=F))
+b<-c(rep(g, 10))
+
+df <- rbind(df, data.frame(b,a))
+
+}
+
+# need data frame with structure (sites + groups)
+library(plyr)
+
+global.spp<-names(sample(AllSpp, 10, replace=F))
+
+group.spp<-NULL
+group.spp$group1<-names(sample(AllSpp, 20, replace=F))
+group.spp$group2<-names(sample(AllSpp, 20, replace=F))
+group.spp$group3<-names(sample(AllSpp, 20, replace=F))
+group.spp$group4<-names(sample(AllSpp, 20, replace=F))
+group.spp$group5<-names(sample(AllSpp, 20, replace=F))
+group.spp$group6<-names(sample(AllSpp, 20, replace=F))
+
+rando.spp<-NULL
+rando.spp$Site1<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group1), global.spp))
+rando.spp$Site2<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group1), global.spp))
+rando.spp$Site3<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group1), global.spp))
+rando.spp$Site4<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group1), global.spp))
+rando.spp$Site5<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group1), global.spp))
+rando.spp$Site6<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group2), global.spp))
+rando.spp$Site7<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group2), global.spp))
+rando.spp$Site8<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group2), global.spp))
+rando.spp$Site9<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group2), global.spp))
+rando.spp$Site10<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group2), global.spp))
+rando.spp$Site11<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group3), global.spp))
+rando.spp$Site12<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group3), global.spp))
+rando.spp$Site13<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group3), global.spp))
+rando.spp$Site14<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group3), global.spp))
+rando.spp$Site15<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group3), global.spp))
+rando.spp$Site16<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group4), global.spp))
+rando.spp$Site17<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group4), global.spp))
+rando.spp$Site18<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group4), global.spp))
+rando.spp$Site19<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group4), global.spp))
+rando.spp$Site20<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group4), global.spp))
+rando.spp$Site21<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group5), global.spp))
+rando.spp$Site22<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group5), global.spp))
+rando.spp$Site23<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group5), global.spp))
+rando.spp$Site24<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group5), global.spp))
+rando.spp$Site25<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group5), global.spp))
+rando.spp$Site26<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group6), global.spp))
+rando.spp$Site27<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group6), global.spp))
+rando.spp$Site28<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group6), global.spp))
+rando.spp$Site29<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group6), global.spp))
+rando.spp$Site30<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group6), global.spp))
+
+rando.spp
+final.list<-NULL
+final.list$Site1<-lapply(rando.spp$Site1, get)
+final.list$Site2<-lapply(rando.spp$Site2, get)
+final.list$Site3<-lapply(rando.spp$Site3, get)
+final.list$Site4<-lapply(rando.spp$Site4, get)
+final.list$Site5<-lapply(rando.spp$Site5, get)
+final.list$Site6<-lapply(rando.spp$Site6, get)
+final.list$Site7<-lapply(rando.spp$Site7, get)
+final.list$Site8<-lapply(rando.spp$Site8, get)
+final.list$Site9<-lapply(rando.spp$Site9, get)
+final.list$Site10<-lapply(rando.spp$Site10, get)
+final.list$Site11<-lapply(rando.spp$Site11, get)
+final.list$Site12<-lapply(rando.spp$Site12, get)
+final.list$Site13<-lapply(rando.spp$Site13, get)
+final.list$Site14<-lapply(rando.spp$Site14, get)
+final.list$Site15<-lapply(rando.spp$Site15, get)
+final.list$Site16<-lapply(rando.spp$Site16, get)
+final.list$Site17<-lapply(rando.spp$Site17, get)
+final.list$Site18<-lapply(rando.spp$Site18, get)
+final.list$Site19<-lapply(rando.spp$Site19, get)
+final.list$Site20<-lapply(rando.spp$Site20, get)
+final.list$Site21<-lapply(rando.spp$Site21, get)
+final.list$Site22<-lapply(rando.spp$Site22, get)
+final.list$Site23<-lapply(rando.spp$Site23, get)
+final.list$Site24<-lapply(rando.spp$Site24, get)
+final.list$Site25<-lapply(rando.spp$Site25, get)
+final.list$Site26<-lapply(rando.spp$Site26, get)
+final.list$Site27<-lapply(rando.spp$Site27, get)
+final.list$Site28<-lapply(rando.spp$Site28, get)
+final.list$Site29<-lapply(rando.spp$Site29, get)
+final.list$Site30<-lapply(rando.spp$Site30, get)
+
+names(final.list)<-names(rando.spp)
+
+
+
+make.comm2<-function(rando.spp, Factors){
+l1<-NULL
+for (i in 1:length(rando.spp[[1]])){
+  l1[i]<-do.call(rando.spp[[1]][i], list(Factors[1,1],Factors[1,2],Factors[1,3],Factors[1,4],Factors[1,5]))
+  }
+#l1<-data.frame("Site1"=l1, "Spp"=rando.spp[[1]])
+names(l1)<-rando.spp[[1]]
+for (r in 2:nrow(Factors)) # for each site...
+{ l2<-NULL
+  for (i in 1:length(rando.spp[[r]])){  # for each species in site...
+    l2[i]<-do.call(rando.spp[[r]][i], list(Factors[r,1],Factors[r,2],Factors[r,3],Factors[r,4],Factors[r,5]))
+    }
+  names(l2)<-rando.spp[[r]]
+  l1<-merge(as.data.frame(l1),as.data.frame(l2), by=0, all=T)
+  rownames(l1)<-l1$Row.names
+  colnames(l1)[colnames(l1) == "l1"] <- "Site1"
+ colnames(l1)[colnames(l1) == "l2"] <- paste("Site", r, sep="")
+ l1<-l1[,-1]
+  }
+l1<-round(l1)
+l1[is.na(l1)]<-0
+l1[l1<0]<-0
+l1
+}

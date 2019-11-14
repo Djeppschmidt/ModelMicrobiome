@@ -289,6 +289,35 @@ If we want to test for all decreasing effects, we can set number two as zero in 
 Run test of indicators:
 ```{r}
 
+limma.Indics<-function(ps, Factor){
+  
+  counts<-as.data.frame(as.matrix(otu_table(ps)))
+  factors<-sample_data(ps)$Factor
+  factors<-factor(factors, levels(factors)[c(6,12,10,4,3,8,7,1,5,9,2,11)])
+  design<-model.matrix(~0+factors)
+  contr.matrix<- makeContrasts(
+  TwoVOne = factorstwo-factorsone, 
+  ThreeVOne = factorsthree-factorsone, 
+  FourVOne = factorsfour-factorsone, 
+  FiveVOne = factorsfive-factorsone,
+  SixVOne = factorssix-factorsone,
+  SevenVOne = factorsseven-factorsone,
+  EightVOne = factorseight-factorsone,
+  NineVOne = factorsnine-factorsone,
+  TenVOne = factorsten-factorsone, 
+  ElevenVOne = factorseleven-factorsone,
+  TwelveVOne = factorstwelve-factorsone, 
+  levels = colnames(design))
+  dge <- DGEList(counts=counts)
+  dge <- calcNormFactors(dge) #what happens if we don't do this step?
+  v<-voom(dge, design, plot=F)
+  fitV <- lmFit(v, design)
+  fitV <- contrasts.fit(fitV, contrasts=contr.matrix)
+  fitV <- eBayes(fitV, trend=TRUE)
+  sig<-decideTests(fitV)
+  sig
+}
+
 library(data.table)
 model1.Raw.Limmaindics<-as.data.frame(limma.Indics(model1.ps, "Factor"))
 model1.eRare.Limmaindics<-as.data.frame(limma.Indics(model1.eRare, "Factor"))
@@ -377,20 +406,20 @@ the samples so far follow the same basic distribution, with minor tweaks to the 
 The purpose of this next modeling framework is to illustrate how normalization affects inference of both environmental gradient detection, and interacts with more realistic uncertainty.
 
 ```{r pressure, echo=FALSE}
-AllSpp<-c(paste0("spp", c(1:1724), sep="")) # trying to make a quick list of all functions
-AllSpp<-lapply(AllSpp, get)
-AllSpp<-unlist(AllSpp)
+AllSpp<-c(paste0("spp", c(1:1724), sep="")) # make a quick list of all species functions
+AllSpp<-lapply(AllSpp, get) # connect function to name
+AllSpp<-unlist(AllSpp)  # format to be read by downstream functions
 
 names(AllSpp)<-c(paste0("spp", c(1:1724)))
 
 
 seeds<-round(rnorm(50,5000,100)) 
 set.seed(seeds[1]) # 4945
-Comm1<-base::sample(AllSpp, 200, replace=F)
+Comm1<-base::sample(AllSpp, 200, replace=F) # pick 200 random taxa from pool
 set.seed(seeds[2]) # 4902
-Comm2<-base::sample(AllSpp, 200, replace=F)
+Comm2<-base::sample(AllSpp, 200, replace=F) # pick 200 random taxa from pool
 set.seed(seeds[4]) # 5098
-Comm3<-base::sample(AllSpp, 200, replace=F)
+Comm3<-base::sample(AllSpp, 200, replace=F) # pick 200 random taxa from pool
 
 names(Comm1)
 names(Comm2)
@@ -400,41 +429,41 @@ names(Comm3)
 
 
 library(reshape2)
-f1c1<-c(5,5,5,5,5,5)
-f1c2<-c(1,3,10,15,3,15)
-f1c3<-c(0.5,0.5,3,3,1,5)
-F1.frame<-mapply(rnorm, f1c1,f1c2,f1c3)
+f1c1<-c(5,5,5,5,5,5) # number of selections
+f1c2<-c(1,3,10,15,3,15) # mean value of selections
+f1c3<-c(0.5,0.5,3,3,1,5) # SD of selections
+F1.frame<-mapply(rnorm, f1c1,f1c2,f1c3) # pick Factor 1 value for each site
 F1<-melt(F1.frame)
 
 #F2
-f2c1<-c(5,5,5,5,5,5)
-f2c2<-c(34,30,50,55,35,60)
-f2c3<-c(0.5,0.5,3,3,1,5)
-F2.frame<-mapply(rnorm, f2c1,f2c2,f2c3)
+f2c1<-c(5,5,5,5,5,5) # number of selections
+f2c2<-c(34,30,50,55,35,60) # mean value of selections
+f2c3<-c(0.5,0.5,3,3,1,5) # SD of selections
+F2.frame<-mapply(rnorm, f2c1,f2c2,f2c3) # pick Factor 2 value for each site
 F2<-melt(F2.frame)
 
 #F3
-f3c1<-c(5,5,5,5,5,5)
-f3c2<-c(1,3,10,15,3,15)
-f3c3<-c(0.5,0.5,3,3,1,5)
-F3.frame<-mapply(rnorm, f3c1,f3c2,f3c3)
+f3c1<-c(5,5,5,5,5,5) # number of selections
+f3c2<-c(1,3,10,15,3,15) # mean value of selections
+f3c3<-c(0.5,0.5,3,3,1,5) # SD of selections
+F3.frame<-mapply(rnorm, f3c1,f3c2,f3c3) # pick Factor 3 value for each site
 F3<-melt(F3.frame)
 
 #F4
-f4c1<-c(5,5,5,5,5,5)
-f4c2<-c(1,3,10,15,3,15)
-f4c3<-c(0.5,0.5,3,3,1,5)
-F4.frame<-mapply(rnorm, f4c1,f4c2,f4c3)
+f4c1<-c(5,5,5,5,5,5) # number of selections
+f4c2<-c(1,3,10,15,3,15) # mean value of selections
+f4c3<-c(0.5,0.5,3,3,1,5) # SD of selections
+F4.frame<-mapply(rnorm, f4c1,f4c2,f4c3) # pick Factor 4 value for each site
 F4<-melt(F4.frame)
 
 #F5
-f5c1<-c(5,5,5,5,5,5)
-f5c2<-c(1,3,10,15,3,15)
-f5c3<-c(0.5,0.5,3,3,1,5)
-F5.frame<-mapply(rnorm, f5c1,f5c2,f5c3)
+f5c1<-c(5,5,5,5,5,5) # number of selections
+f5c2<-c(1,3,10,15,3,15) # mean value of selections
+f5c3<-c(0.5,0.5,3,3,1,5) # SD of selections
+F5.frame<-mapply(rnorm, f5c1,f5c2,f5c3) # pick Factor 5 value for each site
 F5<-melt(F5.frame)
 
-Factors<-data.frame(F1$value,F2$value,F3$value,F4$value,F5$value) # environment
+Factors<-data.frame(F1$value,F2$value,F3$value,F4$value,F5$value) # combine factors into data table
 Sites<-c(paste0("Site", 1:30))
 rownames(Factors)<-Sites
 colnames(Factors)<-c("F1","F2","F3","F4","F5")
@@ -444,7 +473,16 @@ saveRDS(Factors, "~/Documents/Github/ModelMicrobiome/Model_environment.RDS") # s
 
 #### output response table ###
 
-otu<-make.comm(Comm1, Factors)
+# builds an OTU table from species equations and factors
+make.comm<-function(Comm1, Factors){
+otu<-matrix(data=NA, nrow=nrow(Factors), ncol = length(Comm1))
+Sites<-c(paste0("Site", 1:30))
+for(i in 1:length(Comm1)) {
+  for(row in 1:nrow(Factors)){
+   otu[row,i]<-do.call(Comm1[[i]], list(Factors[row,1],Factors[row,2],Factors[row,3],Factors[row,4],Factors[row,5]))
+      }
+}
+
 row.names(otu)<-Sites
 colnames(otu)<-names(Comm1)
 otu[otu<0]<-0
@@ -452,26 +490,142 @@ otu<-round(otu)
 otu<-otu_table(otu, taxa_are_rows = FALSE)
 Sa<-sample_data(Factors)
 out<-phyloseq(otu, Sa)
-t.ab<-sample_sums(out)
-sample_data(out)$total_abund<-t.ab
-out
+out}
+
+model3<-make.comm(Comm1, Factors)
+t.ab<-sample_sums(model3)
+sample_data(model3)$total_abund<-t.ab
+model3 # needs to be subsampled yet in order to represent sequencing process
 
 saveRDS(out, "~/Documents/GitHub/ModelMicrobiome/PS_envComm.RDS")
 ```
 
-the samples so far follow the same basic distribution, with minor tweaks to the order of the taxa within the distribution. What happens if we make a distribution that has substantial patchiness among samples? This requires a very different modeling approach.
+Now let's benchmark this community:
+```{R}
+
+
+```
+
+
+the samples so far follow the same basic distribution, with minor tweaks to the order of the taxa within the distribution. What happens if we make a distribution that has substantial patchiness among samples? This requires a very different modeling approach. Here we construct a community where the samples are primarily occupied by uniique taxa. In this instance there are 10 taxa that are randomly chosen to be globally distributed. For each sampling category, there are 20 taxa that are randomly chosen to be regionally distributed. And then for each sample, there are 70 taxa that are chosen to be abundant in that sample. These taxa are chosen from a pool of YYYY taxa and are chosen with replacement between selection rounds, but without replacement within each selection round. Therefore a taxon may be chosen in the global taxon selection, the regional taxon selection and the sample-wise taxon selection. Therefore total alpha diversity among samples varies somewhat and sometimes does not equal 100. Again, between samples there may be some minor overlap between selections for sample-wise taxa; and between regions there may be some overlap between region-wise taxa. This is desireable as a representation of actual multi-scalar diversity in distribution of individual taxa. Since we have the species lists, we have a key to correct any incorrect inference about the distribution of taxa. 
+
+It is also important to realize that the taxon abundances are modeled based on the environmental parameters. Therefore, although we have selected a taxon to exist in a site, the taxon itself may not survive in those conditions. Thus we are inflating the number of absences compared to our previous sampling approach. However, the advantage of this method over the previous one is that now we have taxa whose abundance is not solely modeled on known paramters.
 
 ```{r}
 # the samples so far follow the same basic distribution, with minor tweaks to the order of the taxa within the distribution. What happens if we make a distribution that has substantial patchiness among samples?
 
+AllSpp<-c(paste0("spp", c(1:1724), sep="")) # trying to make a quick list of all functions
+AllSpp<-lapply(AllSpp, get)
+AllSpp<-unlist(AllSpp)
 
-spp.list1<-base::sample(AllSpp, 40, replace=F)
-spp.list2<-setdiff(names(AllSpp), names(spp.list1))
-spp.list2<-lapply(spp.list2, get)
-spp.list2<-unlist(spp.list2)
+names(AllSpp)<-c(paste0("spp", c(1:1724)))
 
-length(spp.list2)
+library(plyr)
+# Define list of 10 species w/ global distribution
+global.spp<-names(sample(AllSpp, 10, replace=F))
+
+# define list of species w/ regional distribution
+group.spp<-NULL
+group.spp$group1<-names(sample(AllSpp, 20, replace=F))
+group.spp$group2<-names(sample(AllSpp, 20, replace=F))
+group.spp$group3<-names(sample(AllSpp, 20, replace=F))
+group.spp$group4<-names(sample(AllSpp, 20, replace=F))
+group.spp$group5<-names(sample(AllSpp, 20, replace=F))
+group.spp$group6<-names(sample(AllSpp, 20, replace=F))
+
+# define list of species found at each site
+rando.spp<-NULL
+rando.spp$Site1<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group1), global.spp))
+rando.spp$Site2<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group1), global.spp))
+rando.spp$Site3<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group1), global.spp))
+rando.spp$Site4<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group1), global.spp))
+rando.spp$Site5<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group1), global.spp))
+rando.spp$Site6<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group2), global.spp))
+rando.spp$Site7<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group2), global.spp))
+rando.spp$Site8<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group2), global.spp))
+rando.spp$Site9<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group2), global.spp))
+rando.spp$Site10<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group2), global.spp))
+rando.spp$Site11<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group3), global.spp))
+rando.spp$Site12<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group3), global.spp))
+rando.spp$Site13<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group3), global.spp))
+rando.spp$Site14<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group3), global.spp))
+rando.spp$Site15<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group3), global.spp))
+rando.spp$Site16<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group4), global.spp))
+rando.spp$Site17<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group4), global.spp))
+rando.spp$Site18<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group4), global.spp))
+rando.spp$Site19<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group4), global.spp))
+rando.spp$Site20<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group4), global.spp))
+rando.spp$Site21<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group5), global.spp))
+rando.spp$Site22<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group5), global.spp))
+rando.spp$Site23<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group5), global.spp))
+rando.spp$Site24<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group5), global.spp))
+rando.spp$Site25<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group5), global.spp))
+rando.spp$Site26<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group6), global.spp))
+rando.spp$Site27<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group6), global.spp))
+rando.spp$Site28<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group6), global.spp))
+rando.spp$Site29<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group6), global.spp))
+rando.spp$Site30<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group6), global.spp))
+
+rando.spp # examine lists
+
+# format lists to be read by downstream functions
+final.list<-for(i in rando.spp){
+  l<-lapply(names(rando.spp[i]), get)
+  names(l)<-names(i)
+  l
+  }
+
+# function for making the environmental community !!
+make.comm2<-function(rando.spp, Factors){
+l1<-NULL
+for (i in 1:length(rando.spp[[1]])){
+  l1[i]<-do.call(rando.spp[[1]][i], list(Factors[1,1],Factors[1,2],Factors[1,3],Factors[1,4],Factors[1,5]))
+  }
+#l1<-data.frame("Site1"=l1, "Spp"=rando.spp[[1]])
+names(l1)<-rando.spp[[1]]
+for (r in 2:nrow(Factors)) # for each site...
+{ l2<-NULL
+  for (i in 1:length(rando.spp[[r]])){  # for each species in site...
+    l2[i]<-do.call(rando.spp[[r]][i], list(Factors[r,1],Factors[r,2],Factors[r,3],Factors[r,4],Factors[r,5]))
+    }
+  names(l2)<-rando.spp[[r]]
+  l1<-merge(as.data.frame(l1),as.data.frame(l2), by=0, all=T)
+  rownames(l1)<-l1$Row.names
+  colnames(l1)[colnames(l1) == "l1"] <- "Site1"
+ colnames(l1)[colnames(l1) == "l2"] <- paste("Site", r, sep="")
+ l1<-l1[,-1]
+  }
+l1<-round(l1)
+l1[is.na(l1)]<-0
+l1[l1<0]<-0
+otu<-otu_table(l1, taxa_are_rows = T)
+Sa<-sample_data(Factors)
+out<-phyloseq(otu, Sa)
+out
+}
+
+model4<-make.comm2(rando.spp, Factors)
+model4 # still needs to be subsampled to replicate sequencing.
+
 ```
+
+
+Now let's benchmark this community:
+```{R}
+
+
+```
+
+
+
+What is the effect of increasing the variation of sequencing depth? 
+```{R}
+
+
+```
+
+
+
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
 
