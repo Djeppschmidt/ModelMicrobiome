@@ -5,12 +5,7 @@ date: "7/25/2019"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-## introduction
-
+## introducti
 For some time there has been contentious debate over the appropriate data handling techniques for microbial sequence data. The center of the controversy is the question of whether we should or should not rarefy our samples. In this case, rarefaction means subsampling each sample to a certain threshold. Typically, the practitioner will determine an arbitrary minimum count and rarefy all samples down to this count. This technique is employed to adress the lack of uniform sampling effort that is inherent in sequence data (CITATION). It should be pointed out here that subsampling sequences to an equal number of sequences is not in fact normalizing sampling effort. McMurdie and Holmes argued in 2014 that no sequences should be omitted for the purpose of normalizing sampling effort. Their argument essentially is that to do causes us to lose the power to detect taxa that respond, and increased in false positives. Later, Weiss et al countered that their method unfairly handicapped rarefied datasets in their modeling. The center of the dispute was in how the mock community was constructed, and scored. McCmurdie and Holmes had manually increased the abundance of certain taxa in the dataset. They only counted those that they had manipulated as being true positives. But if one taxon should increase in abundance, then as a proportion all other taxa will decrease. These are true effects in the sense that the relative abundance of each taxon is actually changing within the dataset. McMurdie and Holmes, however, scored those detections as false positives and found that rarefied data had a much higher probability of detecting such false positives. Weiss et all argued that in fact these were true positives, suggesting that rarefaction actually increased the sensitivity of the differential abundance analysis. They proposed using a mock community where manipulated taxa are reciprocally balanced such that they do not affect the relative abundance of any other taxon (if one taxon is increased by 10, another is decreased by 10 for balance). This differential abundance test showing that rarefaction did sometimes improve true positive detection, depending on the context. It should be pointed out here that strictly speaking, this type of behavior (i.e. perfectly balanced differences in taxon abundance) does not occure in nature.
 
 What is perhaps most curious about this debate is what is not addressed: the underlying reason that ecologists seek to rarefy data. The concept of effort in sampling is quite literally a representation of physical effort in much of macro-ecology. It seeks to ensure that, for example, the dimensions of area surveyed in each sampling location of a study are equal so that the results are directly comparable. In sequencing studies, effort cannot be controled a priori either physically or procedurally by the scientist because the sequencing machine acts much like a random number generator in determining how many counts (often interpreted as effort) is devoted to each sample. But counts themselves are not intrinsically a measure of effort. If population A has twice the density of organisms than population B, then if samples of both are represented by the same number of sequences, then twice the effort has been expended on sampling population B compared to population A. Effort per unit sampled is important to normalize because it provides a standardization that allows the scientist to infer the density of the organisms. Therefore, to control effort is to normalize for organismal density in the real world. This key observation is lost in the discussion as none of the parties (and none of the softwares employed) include a standard protocol for normalizing for population density across samples. This is because the major publicly available softwares in this realm (particularly DESeq2, EdgeR, and Limma) were developed to determine differential expression of genes within organisms - not the differential abundance of organisms in the environment. They were designed to work with either with RNA-seq data, and often are expansions of software originally developed for micro-array analysis. In this data context, the overall abundance of RNA in the cell is rarely, if ever, an important factor to consider. Since gene expression is highly interdependent within an organism, expression data is best understood as a distribution where autocorrelation of the sequence counts is assumed. Therefore, all of these algorithms include normalization protocol for sample-wise sequencing depth within the GLM. However, for microbiome work the density of the overall community is of paramount importance. The diversity of metabolic strategies is such that groups of microbes may be essentially independent in their growth, each either relying on or being limited by different substrates. If one group becomes more abundant while the other remains at the same abundance level, it is impossible to parse whether one grew or the other died off simply using distributional (or proportional) data. In order to accurately infer the environmental drivers of each taxon, the practicioner needs to model a population density correction into the GLM. Thus, to understand how the environment shapes any microbial community, there must be an independent measure of overall community abundance. The power of external normalization has recently been demonstrated as a XYZ et. al published a paper where they were able to achieve nearly quantitative estimation of taxon abundance using QPCR as an external measure of total bacterial density. 
@@ -101,19 +96,24 @@ model.rarefy<-function(comm, rep){
  }
 
 
+# add CSS!!
+
+library(metagenomeSeq)
 
 
 model1.otu<-model.rarefy(comm, 3) # works
 s.order1<-c("site.1.1", "site.1.2", "site.1.3", "site.2.1", "site.2.2", "site.2.3", "site.3.1", "site.3.2", "site.3.3", "site.4.1", "site.4.2", "site.4.3", "site.5.1","site.5.2","site.5.3", "site.6.1","site.6.2","site.6.3", "site.7.1","site.7.2","site.7.3", "site.8.1","site.8.2","site.8.3", "site.9.1","site.9.2","site.9.3", "site.10.1","site.10.2","site.10.3", "site.11.1","site.11.2","site.11.3", "site.12.1","site.12.2","site.12.3")
 model1.otu<-model1.otu[,s.order1]
 
-model2.otu<-model.rarefy(comm=comm2, 5) # works
-s.order2<-c("site.1.1", "site.1.2", "site.1.3", "site.1.4", "site.1.5", "site.2.1", "site.2.2", "site.2.3", "site.2.4","site.2.5","site.3.1", "site.3.2", "site.3.3","site.3.4","site.3.5", "site.4.1", "site.4.2", "site.4.3","site.4.4","site.4.5", "site.5.1","site.5.2","site.5.3", "site.5.4","site.5.5")
-model2.otu<-model2.otu[,s.order2]
+
+ 
+#model2.otu<-model.rarefy(comm=comm2, 5) # works
+#s.order2<-c("site.1.1", "site.1.2", "site.1.3", "site.1.4", "site.1.5", "site.2.1", "site.2.2", "site.2.3", "site.2.4","site.2.5","site.3.1", "site.3.2", "site.3.3","site.3.4","site.3.5", "site.4.1", "site.4.2", "site.4.3","site.4.4","site.4.5", "site.5.1","site.5.2","site.5.3", "site.5.4","site.5.5")
+#model2.otu<-model2.otu[,s.order2]
 
 # construct the metadata
 meta1<-data.frame("Factor" = as.factor(c(rep("one",3), rep("two",3),rep("three",3),rep("four",3), rep("five",3), rep("six",3),rep("seven",3),rep("eight",3),rep("nine",3),rep("ten",3),rep("eleven",3),rep("twelve",3))), "Sample" = c("site.1.1", "site.1.2", "site.1.3", "site.2.1", "site.2.2", "site.2.3", "site.3.1", "site.3.2", "site.3.3", "site.4.1", "site.4.2", "site.4.3", "site.5.1","site.5.2","site.5.3", "site.6.1","site.6.2","site.6.3", "site.7.1","site.7.2","site.7.3", "site.8.1","site.8.2","site.8.3", "site.9.1","site.9.2","site.9.3", "site.10.1","site.10.2","site.10.3", "site.11.1","site.11.2","site.11.3", "site.12.1","site.12.2","site.12.3"), "Density"=c(rep(sum(fib1), 3),rep(sum(fib2), 3),rep(sum(fib3), 3),rep(sum(fib4), 3),rep(sum(fib5), 3),rep(sum(fib6), 3),rep(sum(fib7), 3),rep(sum(fib8), 3),rep(sum(fib9), 3),rep(sum(fib10), 3),rep(sum(fib11), 3),rep(sum(fib12), 3)))
-rownames(meta1)<-meta$Sample
+rownames(meta1)<-meta1$Sample
 model1.ps<-phyloseq(otu_table(model1.otu, taxa_are_rows = T), sample_data(meta1))
 sample_data(model1.ps)$Total_abundance<-sample_sums(model1.ps)
 sample_data(model1.ps)$DensityF.model1<-sample_data(model1.ps)$Density/mean(sample_data(model1.ps)$Density)
@@ -133,23 +133,24 @@ There are several philosophies about how to normalize the sample data. Some say 
 
 ```{r}
 
-make.rarefy<-function(x, level){
+make.rarefy2<-function(x, level){
   require(phyloseq)
   require(vegan)
   
+  sample_data(x)$adj<-level
+  
   if (length(level)==1){
-     p<-prune_samples(sample_sums(x)>=level, x)
+     p<-prune_samples(sample_sums(x)>level, x) # define samples we want to keep, discard rest
   
   if (nsamples(x)>nsamples(p)){warning(as.character(nsamples(x)-nsamples(p)), " samples have been removed because they are lower than rarefaction limit")}
      
   r<-as.data.frame(as.matrix(otu_table(p)))
   meta<-sample_data(p)
-  rr<-rrarefy(t(r), level) #use lowest value
+  rr<-rrarefy(t(r), meta$adj)
   ps<-phyloseq(otu_table(t(rr), taxa_are_rows = T), sample_data(meta))
   ps} else {
-    sample_data(x)$adj<-level
     
-     p<-prune_samples(sample_sums(x)>=level, x)
+     p<-prune_samples(sample_sums(x)>level, x)
   if (nsamples(x)>nsamples(p)){warning(as.character(nsamples(x)-nsamples(p)), " samples have been removed because they are lower than rarefaction limit")}
     
     r<-as.data.frame(as.matrix(otu_table(p)))
@@ -160,7 +161,46 @@ make.rarefy<-function(x, level){
   }
 }
 
-make.scaled<-function(ps, val, scale){
+make.scaled2<-function(ps, val, scale){
+  scaled<-data.frame(mapply(`*`, data.frame(as.matrix(otu_table(transform_sample_counts(ps, function(x) x/sum(x))))), scale * val))# sample_data(ps)$val))
+  names<-rownames(data.frame(as.matrix(otu_table(ps))))
+  rownames(scaled)<-names
+  scaled<-round(scaled)
+
+  p2<-ps
+  otu_table(p2)<- otu_table(scaled, taxa_are_rows=T)
+  p2
+}
+
+make.rarefy1<-function(x, level){
+  require(phyloseq)
+  require(vegan)
+  
+  sample_data(x)$adj<-level
+  
+  if (length(level)==1){
+     p<-prune_samples(sample_sums(x)>level, x) # define samples we want to keep, discard rest
+  
+  if (nsamples(x)>nsamples(p)){warning(as.character(nsamples(x)-nsamples(p)), " samples have been removed because they are lower than rarefaction limit")}
+     
+  r<-as.matrix(otu_table(p))
+  meta<-sample_data(p)
+  rr<-rrarefy(r, meta$adj)
+  ps<-phyloseq(otu_table(t(rr), taxa_are_rows = T), sample_data(meta))
+  ps} else {
+    
+     p<-prune_samples(sample_sums(x)>level, x)
+  if (nsamples(x)>nsamples(p)){warning(as.character(nsamples(x)-nsamples(p)), " samples have been removed because they are lower than rarefaction limit")}
+    
+    r<-as.matrix(otu_table(p))
+  meta<-sample_data(p)
+  rr<-rrarefy(r, meta$adj)
+  ps<-phyloseq(otu_table(t(rr), taxa_are_rows = T), sample_data(meta))
+  ps
+  }
+}
+
+make.scaled1<-function(ps, val, scale){
   scaled<-data.frame(mapply(`*`, data.frame(as.matrix(otu_table(transform_sample_counts(ps, function(x) x/sum(x))))), scale * val))# sample_data(ps)$val))
   names<-rownames(data.frame(as.matrix(otu_table(ps))))
   rownames(scaled)<-names
@@ -172,14 +212,14 @@ make.scaled<-function(ps, val, scale){
 }
 
 # untouched ####
-untouched<-model.ps
+untouched<-model1.ps
 
 # deseqVST ####
 gm_mean = function(x, na.rm=TRUE){
   exp(sum(log(x[x > 0]), na.rm=na.rm) / length(x))
 } # relative abundance
 
-make.deseqVST<-function(ps, Factor, l){
+make.deseqVST<-function(ps, Factor, l=1){
 r<-phyloseq_to_deseq2(ps, ~Factor)
 geoMeans = apply(counts(r), 1, gm_mean)
 dds = estimateSizeFactors(r, geoMeans = geoMeans)
@@ -197,7 +237,8 @@ deseqVST
 # LimmaVST ###
 
 make.limmaVST<-function(ps, Factor){
-  
+  require(phyloseq)
+  ps<-filter_taxa(ps, function(x) sum(x)>0, T)
   counts<-as.data.frame(as.matrix(otu_table(ps)))
   factors<-unlist(sample_data(ps)[,Factor])
   design<-model.matrix(~factors)
@@ -218,18 +259,18 @@ Let's now run the functions to get all the different combinations of preprocessi
 ```{r}
 
 # evenRarefied ####
-model1.eRare<-make.rarefy(model1.ps, 100)  
-model2.eRare<-make.rarefy(model2.ps, 100)
+model1.eRare<-make.rarefy2(model1.ps, 100)  
+#model2.eRare<-make.rarefy2(model2.ps, 100)
 
 
 # proportionalRarefied ####
-model1.pRare<-make.rarefy(model1.ps, 100 * sample_data(model1.ps)$DensityF.model1)  
-model2.pRare<-make.rarefy(model2.ps, 100 * sample_data(model2.ps)$DensityF.model2)  
+model1.pRare<-make.rarefy2(model1.ps, 100 * sample_data(model1.ps)$DensityF.model1)  # define DensityF.model1 etc
+#model2.pRare<-make.rarefy2(model2.ps, 100 * sample_data(model2.ps)$DensityF.model2) # skip??
 
 
 # scaled ####
-model1.scaled<-make.scaled(model1.ps, val=sample_data(model1.ps)$DensityF.model1, scale = 100)
-model2.scaled<-make.scaled(model2.ps, val=sample_data(model2.ps)$DensityF.model2, scale = 100)
+model1.scaled<-make.scaled1(model1.ps, val=sample_data(model1.ps)$DensityF.model1, scale = 100)
+#model2.scaled<-make.scaled(model2.ps, val=sample_data(model2.ps)$DensityF.model2, scale = 100) # skipp??
 
 # limma vst ####
 model1.Limma.raw<-make.limmaVST(model1.ps, "Factor")
@@ -237,22 +278,22 @@ model1.Limma.eRare<-make.limmaVST(model1.eRare, "Factor")
 model1.Limma.pRare<-make.limmaVST(model1.pRare, "Factor")
 model1.Limma.scaled<-make.limmaVST(model1.scaled, "Factor")
 
-model2.Limma.raw<-make.limmaVST(model2.ps, "Factor")
-model2.Limma.eRare<-make.limmaVST(model2.eRare, "Factor")
-model2.Limma.pRare<-make.limmaVST(model2.pRare, "Factor")
-model2.Limma.scaled<-make.limmaVST(model2.scaled, "Factor")
+#model2.Limma.raw<-make.limmaVST(model2.ps, "Factor")
+#model2.Limma.eRare<-make.limmaVST(model2.eRare, "Factor")
+#model2.Limma.pRare<-make.limmaVST(model2.pRare, "Factor")
+#model2.Limma.scaled<-make.limmaVST(model2.scaled, "Factor")
 
 # Deseq2 vst ####
 
 model1.deseq.raw<-make.deseqVST(model1.ps, "Factor", l=1)
-model1.deseq.eRare<-make.deseqVST(model1.eRare, "Factor", l=2) # error not enough dispersion
-model1.deseq.pRare<-make.deseqVST(model1.pRare, "Factor") # error not enough dispersion
+model1.deseq.eRare<-make.deseqVST(model1.eRare, "Factor", l=1) 
+model1.deseq.pRare<-make.deseqVST(model1.pRare, "Factor", l=1) # error not enough dispersion
 model1.deseq.scaled<-make.deseqVST(model1.scaled, "Factor") # error not enough dispersion
 
-model2.deseq.raw<-make.deseqVST(model2.ps, "Factor")
-model2.deseq.eRare<-make.deseqVST(model2.eRare, "Factor")
-model2.deseq.pRare<-make.deseqVST(model2.pRare, "Factor")
-model2.deseq.scaled<-make.deseqVST(model2.scaled, "Factor")
+#model2.deseq.raw<-make.deseqVST(model2.ps, "Factor")
+#model2.deseq.eRare<-make.deseqVST(model2.eRare, "Factor")
+#model2.deseq.pRare<-make.deseqVST(model2.pRare, "Factor")
+#model2.deseq.scaled<-make.deseqVST(model2.scaled, "Factor")
 
 ```
 Build a script to run the following platforms:
@@ -406,20 +447,20 @@ the samples so far follow the same basic distribution, with minor tweaks to the 
 The purpose of this next modeling framework is to illustrate how normalization affects inference of both environmental gradient detection, and interacts with more realistic uncertainty.
 
 ```{r pressure, echo=FALSE}
-AllSpp<-c(paste0("spp", c(1:1724), sep="")) # make a quick list of all species functions
+AllSpp<-c(paste0("spp", c(1:700), sep="")) # make a quick list of all species functions
 AllSpp<-lapply(AllSpp, get) # connect function to name
 AllSpp<-unlist(AllSpp)  # format to be read by downstream functions
 
-names(AllSpp)<-c(paste0("spp", c(1:1724)))
+names(AllSpp)<-c(paste0("spp", c(1:700)))
 
 
 seeds<-round(rnorm(50,5000,100)) 
 set.seed(seeds[1]) # 4945
-Comm1<-base::sample(AllSpp, 200, replace=F) # pick 200 random taxa from pool
+Comm1<-base::sample(AllSpp, 50, replace=F) # pick 200 random taxa from pool
 set.seed(seeds[2]) # 4902
-Comm2<-base::sample(AllSpp, 200, replace=F) # pick 200 random taxa from pool
+Comm2<-base::sample(AllSpp, 50, replace=F) # pick 200 random taxa from pool
 set.seed(seeds[4]) # 5098
-Comm3<-base::sample(AllSpp, 200, replace=F) # pick 200 random taxa from pool
+Comm3<-base::sample(AllSpp, 50, replace=F) # pick 200 random taxa from pool
 
 names(Comm1)
 names(Comm2)
@@ -430,38 +471,38 @@ names(Comm3)
 
 library(reshape2)
 f1c1<-c(5,5,5,5,5,5) # number of selections
-f1c2<-c(1,3,10,15,3,15) # mean value of selections
-f1c3<-c(0.5,0.5,3,3,1,5) # SD of selections
+f1c2<-c(1,3,10,30,60,15) # mean value of selections
+f1c3<-c(0.5,1,4,10,20,5) # SD of selections
 F1.frame<-mapply(rnorm, f1c1,f1c2,f1c3) # pick Factor 1 value for each site
-F1<-melt(F1.frame)
+F1<-reshape2::melt(F1.frame)
 
 #F2
 f2c1<-c(5,5,5,5,5,5) # number of selections
-f2c2<-c(34,30,50,55,35,60) # mean value of selections
-f2c3<-c(0.5,0.5,3,3,1,5) # SD of selections
+f2c2<-c(34,30,10,55,35,60) # mean value of selections
+f2c3<-c(10,10,3,10,1,20) # SD of selections
 F2.frame<-mapply(rnorm, f2c1,f2c2,f2c3) # pick Factor 2 value for each site
-F2<-melt(F2.frame)
+F2<-reshape2::melt(F2.frame)
 
 #F3
 f3c1<-c(5,5,5,5,5,5) # number of selections
 f3c2<-c(1,3,10,15,3,15) # mean value of selections
-f3c3<-c(0.5,0.5,3,3,1,5) # SD of selections
+f3c3<-c(0.5,1,3,3,1,5) # SD of selections
 F3.frame<-mapply(rnorm, f3c1,f3c2,f3c3) # pick Factor 3 value for each site
-F3<-melt(F3.frame)
+F3<-reshape2::melt(F3.frame)
 
 #F4
 f4c1<-c(5,5,5,5,5,5) # number of selections
 f4c2<-c(1,3,10,15,3,15) # mean value of selections
 f4c3<-c(0.5,0.5,3,3,1,5) # SD of selections
 F4.frame<-mapply(rnorm, f4c1,f4c2,f4c3) # pick Factor 4 value for each site
-F4<-melt(F4.frame)
+F4<-reshape2::melt(F4.frame)
 
 #F5
 f5c1<-c(5,5,5,5,5,5) # number of selections
-f5c2<-c(1,3,10,15,3,15) # mean value of selections
-f5c3<-c(0.5,0.5,3,3,1,5) # SD of selections
+f5c2<-c(50,40,30,20,10,15) # mean value of selections
+f5c3<-c(20,10,10,5,3,5) # SD of selections
 F5.frame<-mapply(rnorm, f5c1,f5c2,f5c3) # pick Factor 5 value for each site
-F5<-melt(F5.frame)
+F5<-reshape2::melt(F5.frame)
 
 Factors<-data.frame(F1$value,F2$value,F3$value,F4$value,F5$value) # combine factors into data table
 Sites<-c(paste0("Site", 1:30))
@@ -485,6 +526,9 @@ for(i in 1:length(Comm1)) {
 
 row.names(otu)<-Sites
 colnames(otu)<-names(Comm1)
+otu[mapply(is.infinite, otu)] <- NA
+otu[is.nan(otu)]<-NA
+otu[is.na(otu)]<-0
 otu[otu<0]<-0
 otu<-round(otu)
 otu<-otu_table(otu, taxa_are_rows = FALSE)
@@ -492,21 +536,55 @@ Sa<-sample_data(Factors)
 out<-phyloseq(otu, Sa)
 out}
 
-model3<-make.comm(Comm1, Factors)
-t.ab<-sample_sums(model3)
-sample_data(model3)$total_abund<-t.ab
-model3 # needs to be subsampled yet in order to represent sequencing process
+model2<-make.comm(Comm1, Factors)
+sample_data(model2)$total_abund<-sample_sums(model2)
+model2 # needs to be subsampled yet in order to represent sequencing process
+sample_sums(model2)
 
-saveRDS(out, "~/Documents/GitHub/ModelMicrobiome/PS_envComm.RDS")
+#saveRDS(out, "~/Documents/GitHub/ModelMicrobiome/PS_envComm.RDS")
 ```
 
-Now let's benchmark this community:
+Now let's preprossess the sample data
+```{R}
+sample2<-rnorm(30, 2000, 1000)
+sample2<-round(abs(sample2)) # Sequencing depth to sample
+model2.raw<-make.rarefy1(model2, sample2)
+otu_table(model2.raw)
+sample_sums(model2.raw)
+
+sample_data(model2.raw)$Factor<-as.factor(c(rep("one",5),rep("two",5),rep("three",5),rep("four",5),rep("five",5),rep("six",5)))
+sample_data(model2.raw)$Factor2<-as.factor(c(rep(1,5),rep(2,5),rep(3,5),rep(4,5),rep(5,5),rep(6,5)))
+
+```
+
+Most rarefaction protocols select a single value to subsample the entire community to. This looks something like this:
 ```{R}
 
-
+model2.eRare<-make.rarefy2(model2.raw, min(sample_sums(model2.raw))-1)
 ```
 
+An alternative is to use an external measure of community density, such as QPCR to scale the depth of sampling. In this case we use the sequencing-independent relative density of each sample to correct the overal sampling depth. A key challenge here is that this means that even the most well-sequenced samples may end up getting thrown out because they are still undersampled compared to other samples. But, if community densities are within a few orders of magnitude, and each sample has close to a hundred thousand sequences, then most samples should be preserved.
 
+```{R}
+norm.model2<-round((sample_data(model2.raw)$total_abund/mean(sample_data(model2.raw)$total_abund))*400)
+model2.pRare<-make.rarefy2(model2.raw, norm.model2)
+```
+
+An alternative is to use the sequencing as a distribution and scale the total abundance to the independent measure of community density. 
+```{R}
+model2.scaled<-make.scaled2(model2.raw, val=norm.model2/400, scale = 1000)
+model2.scaled
+```
+
+```{R}
+model2.limmaVST<-make.limmaVST(model2.raw, "Factor")
+model2.limmaVST
+```
+
+```{R}
+model2.DeseqVST<-make.limmaVST(model2.raw, "Factor")
+model2.DeseqVST
+```
 the samples so far follow the same basic distribution, with minor tweaks to the order of the taxa within the distribution. What happens if we make a distribution that has substantial patchiness among samples? This requires a very different modeling approach. Here we construct a community where the samples are primarily occupied by uniique taxa. In this instance there are 10 taxa that are randomly chosen to be globally distributed. For each sampling category, there are 20 taxa that are randomly chosen to be regionally distributed. And then for each sample, there are 70 taxa that are chosen to be abundant in that sample. These taxa are chosen from a pool of YYYY taxa and are chosen with replacement between selection rounds, but without replacement within each selection round. Therefore a taxon may be chosen in the global taxon selection, the regional taxon selection and the sample-wise taxon selection. Therefore total alpha diversity among samples varies somewhat and sometimes does not equal 100. Again, between samples there may be some minor overlap between selections for sample-wise taxa; and between regions there may be some overlap between region-wise taxa. This is desireable as a representation of actual multi-scalar diversity in distribution of individual taxa. Since we have the species lists, we have a key to correct any incorrect inference about the distribution of taxa. 
 
 It is also important to realize that the taxon abundances are modeled based on the environmental parameters. Therefore, although we have selected a taxon to exist in a site, the taxon itself may not survive in those conditions. Thus we are inflating the number of absences compared to our previous sampling approach. However, the advantage of this method over the previous one is that now we have taxa whose abundance is not solely modeled on known paramters.
@@ -514,15 +592,15 @@ It is also important to realize that the taxon abundances are modeled based on t
 ```{r}
 # the samples so far follow the same basic distribution, with minor tweaks to the order of the taxa within the distribution. What happens if we make a distribution that has substantial patchiness among samples?
 
-AllSpp<-c(paste0("spp", c(1:1724), sep="")) # trying to make a quick list of all functions
+AllSpp<-c(paste0("spp", c(1:700), sep="")) # trying to make a quick list of all functions
 AllSpp<-lapply(AllSpp, get)
 AllSpp<-unlist(AllSpp)
 
-names(AllSpp)<-c(paste0("spp", c(1:1724)))
+names(AllSpp)<-c(paste0("spp", c(1:700)))
 
 library(plyr)
-# Define list of 10 species w/ global distribution
-global.spp<-names(sample(AllSpp, 10, replace=F))
+# Define list of 5 species w/ global distribution
+global.spp<-names(sample(AllSpp, 5, replace=F))
 
 # define list of species w/ regional distribution
 group.spp<-NULL
@@ -535,45 +613,39 @@ group.spp$group6<-names(sample(AllSpp, 20, replace=F))
 
 # define list of species found at each site
 rando.spp<-NULL
-rando.spp$Site1<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group1), global.spp))
-rando.spp$Site2<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group1), global.spp))
-rando.spp$Site3<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group1), global.spp))
-rando.spp$Site4<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group1), global.spp))
-rando.spp$Site5<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group1), global.spp))
-rando.spp$Site6<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group2), global.spp))
-rando.spp$Site7<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group2), global.spp))
-rando.spp$Site8<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group2), global.spp))
-rando.spp$Site9<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group2), global.spp))
-rando.spp$Site10<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group2), global.spp))
-rando.spp$Site11<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group3), global.spp))
-rando.spp$Site12<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group3), global.spp))
-rando.spp$Site13<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group3), global.spp))
-rando.spp$Site14<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group3), global.spp))
-rando.spp$Site15<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group3), global.spp))
-rando.spp$Site16<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group4), global.spp))
-rando.spp$Site17<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group4), global.spp))
-rando.spp$Site18<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group4), global.spp))
-rando.spp$Site19<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group4), global.spp))
-rando.spp$Site20<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group4), global.spp))
-rando.spp$Site21<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group5), global.spp))
-rando.spp$Site22<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group5), global.spp))
-rando.spp$Site23<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group5), global.spp))
-rando.spp$Site24<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group5), global.spp))
-rando.spp$Site25<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group5), global.spp))
-rando.spp$Site26<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group6), global.spp))
-rando.spp$Site27<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group6), global.spp))
-rando.spp$Site28<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group6), global.spp))
-rando.spp$Site29<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group6), global.spp))
-rando.spp$Site30<-unique(c(names(sample(AllSpp, 70, replace=F)), c(group.spp$group6), global.spp))
+rando.spp$Site1<-unique(c(names(sample(AllSpp, 50, replace=F)), c(group.spp$group1), global.spp))
+rando.spp$Site2<-unique(c(names(sample(AllSpp, 50, replace=F)), c(group.spp$group1), global.spp))
+rando.spp$Site3<-unique(c(names(sample(AllSpp, 50, replace=F)), c(group.spp$group1), global.spp))
+rando.spp$Site4<-unique(c(names(sample(AllSpp, 50, replace=F)), c(group.spp$group1), global.spp))
+rando.spp$Site5<-unique(c(names(sample(AllSpp, 50, replace=F)), c(group.spp$group1), global.spp))
+rando.spp$Site6<-unique(c(names(sample(AllSpp, 50, replace=F)), c(group.spp$group2), global.spp))
+rando.spp$Site7<-unique(c(names(sample(AllSpp, 50, replace=F)), c(group.spp$group2), global.spp))
+rando.spp$Site8<-unique(c(names(sample(AllSpp, 50, replace=F)), c(group.spp$group2), global.spp))
+rando.spp$Site9<-unique(c(names(sample(AllSpp, 50, replace=F)), c(group.spp$group2), global.spp))
+rando.spp$Site10<-unique(c(names(sample(AllSpp,50, replace=F)), c(group.spp$group2), global.spp))
+rando.spp$Site11<-unique(c(names(sample(AllSpp, 50, replace=F)), c(group.spp$group3), global.spp))
+rando.spp$Site12<-unique(c(names(sample(AllSpp, 50, replace=F)), c(group.spp$group3), global.spp))
+rando.spp$Site13<-unique(c(names(sample(AllSpp, 50, replace=F)), c(group.spp$group3), global.spp))
+rando.spp$Site14<-unique(c(names(sample(AllSpp, 50, replace=F)), c(group.spp$group3), global.spp))
+rando.spp$Site15<-unique(c(names(sample(AllSpp, 50, replace=F)), c(group.spp$group3), global.spp))
+rando.spp$Site16<-unique(c(names(sample(AllSpp, 50, replace=F)), c(group.spp$group4), global.spp))
+rando.spp$Site17<-unique(c(names(sample(AllSpp, 50, replace=F)), c(group.spp$group4), global.spp))
+rando.spp$Site18<-unique(c(names(sample(AllSpp, 50, replace=F)), c(group.spp$group4), global.spp))
+rando.spp$Site19<-unique(c(names(sample(AllSpp, 50, replace=F)), c(group.spp$group4), global.spp))
+rando.spp$Site20<-unique(c(names(sample(AllSpp, 50, replace=F)), c(group.spp$group4), global.spp))
+rando.spp$Site21<-unique(c(names(sample(AllSpp, 50, replace=F)), c(group.spp$group5), global.spp))
+rando.spp$Site22<-unique(c(names(sample(AllSpp, 50, replace=F)), c(group.spp$group5), global.spp))
+rando.spp$Site23<-unique(c(names(sample(AllSpp, 50, replace=F)), c(group.spp$group5), global.spp))
+rando.spp$Site24<-unique(c(names(sample(AllSpp, 50, replace=F)), c(group.spp$group5), global.spp))
+rando.spp$Site25<-unique(c(names(sample(AllSpp, 50, replace=F)), c(group.spp$group5), global.spp))
+rando.spp$Site26<-unique(c(names(sample(AllSpp, 50, replace=F)), c(group.spp$group6), global.spp))
+rando.spp$Site27<-unique(c(names(sample(AllSpp, 50, replace=F)), c(group.spp$group6), global.spp))
+rando.spp$Site28<-unique(c(names(sample(AllSpp, 50, replace=F)), c(group.spp$group6), global.spp))
+rando.spp$Site29<-unique(c(names(sample(AllSpp, 50, replace=F)), c(group.spp$group6), global.spp))
+rando.spp$Site30<-unique(c(names(sample(AllSpp, 50, replace=F)), c(group.spp$group6), global.spp))
 
 rando.spp # examine lists
 
-# format lists to be read by downstream functions
-final.list<-for(i in rando.spp){
-  l<-lapply(names(rando.spp[i]), get)
-  names(l)<-names(i)
-  l
-  }
 
 # function for making the environmental community !!
 make.comm2<-function(rando.spp, Factors){
@@ -596,6 +668,7 @@ for (r in 2:nrow(Factors)) # for each site...
  l1<-l1[,-1]
   }
 l1<-round(l1)
+l1[mapply(is.infinite, l1)] <- NA
 l1[is.na(l1)]<-0
 l1[l1<0]<-0
 otu<-otu_table(l1, taxa_are_rows = T)
@@ -604,27 +677,475 @@ out<-phyloseq(otu, Sa)
 out
 }
 
-model4<-make.comm2(rando.spp, Factors)
-model4 # still needs to be subsampled to replicate sequencing.
+```
+
+```{r}
+# Define list of 50 species w/ global distribution
+global2.spp<-names(sample(AllSpp, 50, replace=F))
+
+# define list of species w/ regional distribution
+group2.spp<-NULL
+group2.spp$group1<-names(sample(AllSpp, 20, replace=F))
+group2.spp$group2<-names(sample(AllSpp, 20, replace=F))
+group2.spp$group3<-names(sample(AllSpp, 20, replace=F))
+group2.spp$group4<-names(sample(AllSpp, 20, replace=F))
+group2.spp$group5<-names(sample(AllSpp, 20, replace=F))
+group2.spp$group6<-names(sample(AllSpp, 20, replace=F))
+
+# define list of species found at each site
+rando2.spp<-NULL
+rando2.spp$Site1<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group1), global2.spp))
+rando2.spp$Site2<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group1), global2.spp))
+rando2.spp$Site3<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group1), global2.spp))
+rando2.spp$Site4<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group1), global2.spp))
+rando2.spp$Site5<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group1), global2.spp))
+rando2.spp$Site6<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group2), global2.spp))
+rando2.spp$Site7<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group2), global2.spp))
+rando2.spp$Site8<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group2), global2.spp))
+rando2.spp$Site9<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group2), global2.spp))
+rando2.spp$Site10<-unique(c(names(sample(AllSpp,10, replace=F)), c(group2.spp$group2), global2.spp))
+rando2.spp$Site11<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group3), global2.spp))
+rando2.spp$Site12<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group3), global2.spp))
+rando2.spp$Site13<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group3), global2.spp))
+rando2.spp$Site14<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group3), global2.spp))
+rando2.spp$Site15<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group3), global2.spp))
+rando2.spp$Site16<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group4), global2.spp))
+rando2.spp$Site17<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group4), global2.spp))
+rando2.spp$Site18<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group4), global2.spp))
+rando2.spp$Site19<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group4), global2.spp))
+rando2.spp$Site20<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group4), global2.spp))
+rando2.spp$Site21<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group5), global2.spp))
+rando2.spp$Site22<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group5), global2.spp))
+rando2.spp$Site23<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group5), global2.spp))
+rando2.spp$Site24<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group5), global2.spp))
+rando2.spp$Site25<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group5), global2.spp))
+rando2.spp$Site26<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group6), global2.spp))
+rando2.spp$Site27<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group6), global2.spp))
+rando2.spp$Site28<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group6), global2.spp))
+rando2.spp$Site29<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group6), global2.spp))
+rando2.spp$Site30<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group6), global2.spp))
+
+rando2.spp # examine lists
+```
+
+Do the different pre-prosessing and differential expression analyses...
+
+```{R}
+model3<-make.comm2(rando.spp, Factors)
+model3<-filter_taxa(model3, function(x) sum(x)>0, TRUE) # remove samples that are filtered out by the environmnet
+
+model4<-make.comm2(rando2.spp, Factors)
+model4<-filter_taxa(model4, function(x) sum(x)>0, TRUE)
+
+# validate
+#sample_sums(model4)
+#otu_table(model4)[otu_table(model4)[,29]==max(otu_table(model4)[,29]),29]
+# do some testing
+#test.mtrx<-t(as.data.frame(as.matrix(otu_table(model4))))
+
+test.nainf<-otu_table(model3.raw)
+table(apply(test.nainf, 2, function(x) any(is.na(x)| is.infinite(x)))) # should all be false!!
+
+test.nainf<-otu_table(model4.raw)
+table(apply(test.nainf, 2, function(x) any(is.na(x)| is.infinite(x)))) # should all be false!!
+# now move on
+
+sample<-rnorm(30, 2000, 1000) # model sequencing depth
+sample<-round(abs(sample)) # model sequencing depth
+
+# explanation: We will use the same sequencing depth for both communities in order to directly compare the effect of sparcity on the results
+
+sample_sums(model3) # check sample sums
+sample_sums(model4) # check sample sums
+
+model3.raw<-make.rarefy2(model3, sample)
+model4.raw<-make.rarefy2(model4, sample)
+
+sample_data(model3.raw)$Factor<-as.factor(c(rep("one",5),rep("two",5),rep("three",5),rep("four",5),rep("five",5),rep("six",5)))
+sample_data(model3.raw)$Factor2<-as.factor(c(rep(1,5),rep(2,5),rep(3,5),rep(4,5),rep(5,5),rep(6,5)))
+
+sample_data(model3.raw)$Density<-sample_sums(model3)
+sample_data(model3.raw)$DensityF.model3<-sample_data(model3.raw)$Density/mean(sample_data(model3.raw)$Density)
+
+sample_data(model4.raw)$Factor<-as.factor(c(rep("one",5),rep("two",5),rep("three",5),rep("four",5),rep("five",5),rep("six",5)))
+sample_data(model4.raw)$Factor2<-as.factor(c(rep(1,5),rep(2,5),rep(3,5),rep(4,5),rep(5,5),rep(6,5)))
+
+sample_data(model4.raw)$Density<-sample_sums(model4)
+sample_data(model4.raw)$DensityF.model4<-sample_data(model4.raw)$Density/mean(sample_data(model4.raw)$Density)
+```
+
+Common filtering schemes:
+
+Many filtering schemes remove many of the more sparsely represented species. This may result in an under representation of the rare microbiome. Here I demonstrate in principle this effect. Later we will see the effect on real datasets.
+```{r}
+# phyloseq tutorial: https://joey711.github.io/phyloseq/preprocess.html
+# this filtering uses minimum mean abundance, and removes singletons. The tutorial also includes a filtering step for coefficient of variation, but this is inappropriate since it could be highly biasing
+G.3f = filter_taxa(model3.raw, function(x) sum(x > 3) > (0.2*length(x)), TRUE)
+G.3  = transform_sample_counts(G3.f, function(x) x / sum(x) )
+G.3 = filter_taxa(G.3, function(x) mean(x) > 1e-5, TRUE)
+G.3
+
+G.4f = filter_taxa(model4.raw, function(x) sum(x > 3) > (0.2*length(x)), TRUE)
+G.4  = transform_sample_counts(G4.f, function(x) x / sum(x) )
+G.4 = filter_taxa(G.4, function(x) mean(x) > 1e-5, TRUE)
+G.4
+
+# DESeq2 SOP: http://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#pre-filtering
+# filter to at least 10 counts per taxon
+
+dd.3<-filter_taxa(model3.raw, function(x) sum(x) > 10, TRUE)
+dd.4<-filter_taxa(model4.raw, function(x) sum(x) > 10, TRUE)
+
+# limma-voom SOP:
+# machine learning approach to keeping genes, ends up being quite conservative
+filter.limma<-function(ps){
+  x<-as.data.frame(as.matrix(otu_table(ps)))
+  group=sample_data(ps)$Factor2
+  keep.exprs <- filterByExpr(x, group=group)
+  x <- x[keep.exprs,, keep.lib.sizes=FALSE]
+  otu_table(ps)<-otu_table(x, taxa_are_rows = TRUE)
+  ps
+}
+
+x.3<-filter.limma(model3)
+x.4<-filter.limma(model4)
+
+lost.tax<-data.frame("model3"=c(ntaxa(G.3), ntaxa(dd.3), ntaxa(x.3)), "model4"=cntaxa(G.4), ntaxa(dd.4), ntaxa(x.4))
+rownames(lost.tax)<-c("Phyloseq", "Deseq", "Limma")
 
 ```
 
+```{r}
+# run each on the normalized model data
+
+```
+
+
+```{r}
+model3.scaled<-make.scaled1(model3.raw, val=sample_data(model3.raw)$DensityF.model3, scale = 1000)
+model3.eRare<-make.rarefy2(model3.raw, 900) # get as much depth as possible without losing samples
+model3.pRare<-make.rarefy2(model3.raw, 300 * sample_data(model3.raw)$DensityF.model3)
+
+model4.scaled<-make.scaled1(model4.raw, val=sample_data(model4.raw)$DensityF.model4, scale = 1000)
+model4.eRare<-make.rarefy2(model4.raw, 900) # get as much depth as possible without losing samples
+model4.pRare<-make.rarefy2(model4.raw, 300 * sample_data(model4.raw)$DensityF.model4)
+
+model3.deseq.raw<-make.deseqVST(model3.raw, "Factor")
+model3.deseq.eRare<-make.deseqVST(model3.eRare, "Factor")
+model3.deseq.pRare<-make.deseqVST(model3.pRare, "Factor")
+model3.deseq.scaled<-make.deseqVST(model3.scaled, "Factor")
+
+model4.deseq.raw<-make.deseqVST(model4.raw, "Factor")
+model4.deseq.eRare<-make.deseqVST(model4.eRare, "Factor")
+model4.deseq.pRare<-make.deseqVST(model4.pRare, "Factor")
+model4.deseq.scaled<-make.deseqVST(model4.scaled, "Factor")
+
+model3.Limma.raw<-make.limmaVST(model3.raw, "Factor")
+model3.Limma.eRare<-make.limmaVST(model3.eRare, "Factor")
+model3.Limma.pRare<-make.limmaVST(model3.pRare, "Factor")
+model3.Limma.scaled<-make.limmaVST(model3.scaled, "Factor")
+
+model4.Limma.raw<-make.limmaVST(model4.raw, "Factor")
+model4.Limma.eRare<-make.limmaVST(model4.eRare, "Factor")
+model4.Limma.pRare<-make.limmaVST(model4.pRare, "Factor")
+model4.Limma.scaled<-make.limmaVST(model4.scaled, "Factor")
+```
+
+```{R}
+limma.Indics3<-function(ps, Factor){
+  ps<-filter_taxa(ps, function(x) sum(x)>0, T)
+  counts<-as.data.frame(as.matrix(otu_table(ps)))
+  factors<-sample_data(ps)$Factor
+  factors<-factor(factors, levels(factors)[c(3,6,5,2,1,4)])
+  design<-model.matrix(~0+factors)
+  contr.matrix<- makeContrasts(
+  TwoVOne = factorstwo-factorsone, 
+  ThreeVOne = factorsthree-factorsone, 
+  FourVOne = factorsfour-factorsone, 
+  FiveVOne = factorsfive-factorsone,
+  SixVOne = factorssix-factorsone,
+  levels = colnames(design))
+  dge <- DGEList(counts=counts)
+  dge <- calcNormFactors(dge) #what happens if we don't do this step?
+  v<-voom(dge, design, plot=F)
+  fitV <- lmFit(v, design)
+  fitV <- contrasts.fit(fitV, contrasts=contr.matrix)
+  fitV <- eBayes(fitV, trend=TRUE)
+  sig<-decideTests(fitV)
+  sig
+}
+
+model3.Raw.Limmaindics<-as.data.frame(limma.Indics3(model3.raw, "Factor"))
+model3.eRare.Limmaindics<-as.data.frame(limma.Indics3(model3.eRare, "Factor"))
+model3.pRare.Limmaindics<-as.data.frame(limma.Indics3(model3.pRare, "Factor"))
+model3.scaled.Limmaindics<-as.data.frame(limma.Indics3(model3.scaled, "Factor"))
+
+model4.Raw.Limmaindics<-as.data.frame(limma.Indics3(model4.raw, "Factor"))
+model4.eRare.Limmaindics<-as.data.frame(limma.Indics3(model4.eRare, "Factor"))
+model4.pRare.Limmaindics<-as.data.frame(limma.Indics3(model4.pRare, "Factor"))
+model4.scaled.Limmaindics<-as.data.frame(limma.Indics3(model4.scaled, "Factor"))
+
+
+```
+```{r}
+# Deseq indics
+deseqIndics<-function(){
+  
+  
+}
+```
+
+```{R}
+library(vegan)
+library(indicspecies)
+
+indicspp<-function(ps){
+  require(phyloseq)
+  require(indicspecies)
+  ps<-filter_taxa(ps, function(x) sum(x)>0, T)
+  p<-as.data.frame(as.matrix(t(otu_table(ps))))
+  e<-sample_data(ps)$Factor
+  
+  m<-multipatt(p, e, control=how(nperm=999))
+  m.s<-m$sign
+  m.s[is.na(m.s$p.value), 9]<-1.000
+  m.s[m.s$p.value>0.05,1:6]<-0
+  m.s[is.na(m.s)]<-0
+  m.s
+  }
+
+indicspp.model3.raw<-indicspp(model3.raw)
+indicspp.model3.raw
+```
+
+```{r}
+# framework for benchmarking:
+# for each test/normalization combination, make object with:
+
+# indicators by group [table of 0 or 1 or -1]
+# input objects as a list
+# produce a summary table of each metric
+
+# then make an ouput table with percent correct by object
+
+df<-ldply()
+```
 
 Now let's benchmark this community:
 ```{R}
+# here ps is a phyloseq object that represents true abundance before subsampling/sequence simmulation
+plotserieslines <- function(yvar){
+    ggplot(test.tab, aes_(x=~levels,y=as.name(yvar))) +
+        geom_boxplot()
+        #facet_wrap(~Month)
+}
+
+model4
+test.tab<-as.data.frame(as.matrix(t(otu_table(model4))))
+test.tab$levels<-test.env$Factor# is this the original before subsampling?
+test.env<-sample_data(model4.scaled)
+
+par(mfrow=c(20,16))
+# from: https://rstudio-pubs-static.s3.amazonaws.com/232094_a8de2e47b78b4556a108e58c808b37cb.html
+
+lapply(names(test.tab), plotserieslines)
+
+
+
 
 
 ```
 
+```{R}
+# here ps is a phyloseq object that represents true abundance before subsampling/sequence simmulation
+model3
+test.tab<-as.data.frame(as.matrix(t(otu_table(model3))))
+test.tab$levels<-test.env$Factor# is this the original before subsampling?
+test.env<-sample_data(model3.scaled)
+
+par(mfrow=c(20,16))
+# from: https://rstudio-pubs-static.s3.amazonaws.com/232094_a8de2e47b78b4556a108e58c808b37cb.html
+lapply(names(test.tab), plotserieslines)
+
+```
+
+Community ecology approach:
 
 
+Environmental correlation/permanova tests
+```{R}
+# Raw counts Model 3
+
+make.PERMANOVA<-function(ps){
+  require(vegan)
+  require(phyloseq)
+  ps<-filter_taxa(ps, function(x) sum(x)>0, T)
+  x<-as.data.frame(t(as.matrix(otu_table(ps))))
+  y<-data.frame(as.matrix(sample_data(ps)))
+  y$F1<-as.numeric(as.character(y$F1))
+  y$F2<-as.numeric(as.character(y$F2))
+  y$F3<-as.numeric(as.character(y$F3))
+  y$F4<-as.numeric(as.character(y$F4))
+  y$F5<-as.numeric(as.character(y$F5))
+  a<-adonis(x~Factor2+F1+F2+F3+F4+F5, data=y)
+  a
+}
+
+```
+
+
+```{R}
+# Raw counts Model 3
+
+permanova.model3Raw<-make.PERMANOVA(model3.raw)
+permanova.model3Raw
+```
+
+```{R}
+# Even Rarefied counts Model 3
+permanova.model3eRare<-make.PERMANOVA(model3.eRare)
+permanova.model3eRare
+```
+
+```{R}
+# Proportional Rarefied Counts Model 3
+permanova.model3pRare<-make.PERMANOVA(model3.pRare)
+permanova.model3pRare
+```
+
+```{R}
+# Scaled Counts Model 3
+permanova.model3scaled<-make.PERMANOVA(model3.scaled)
+permanova.model3scaled
+```
+
+```{R}
+# DESeqVST Counts Model 3
+permanova.model3DeseqVST<-make.PERMANOVA(model3.DeseqVST)
+permanova.model3DeseqVST
+```
+
+```{R}
+# LimmaVST Counts Model 3
+permanova.model3limmaVST<-make.PERMANOVA(model3.limmaVST)
+permanova.model3limmaVST
+```
+
+Table of model 3 R^2
+```{R}
+Table3<-data.frame("raw"=permanova.model3Raw$aov.tab$R2, "eRare"=permanova.model3eRare$aov.tab$R2, "pRare"=permanova.model3pRare$aov.tab$R2, "scaled"=permanova.model3scaled$aov.tab$R2, "limmaVST"=permanova.model3limmaVST$aov.tab$R2, "DeseqVST"=permanova.model3DeseqVST$aov.tab$R2)
+rownames(Table3)<-rownames(permanova.model3Raw$aov.tab)
+Table3
+
+```
+
+
+```{R}
+# Raw counts Model 4
+permanova.model4raw<-make.PERMANOVA(model4.raw)
+permanova.model4raw
+
+```
+
+```{R}
+# Even Rarefied counts Model 4
+permanova.model4eRare<-make.PERMANOVA(model4.eRare)
+permanova.model4eRare
+
+```
+
+```{R}
+# Proportional Rarefied Counts Model 4
+permanova.model4pRare<-make.PERMANOVA(model4.pRare)
+permanova.model4pRare
+
+```
+
+```{R}
+# Scaled Counts Model 4
+permanova.model4scaled<-make.PERMANOVA(model4.scaled)
+permanova.model4scaled
+
+```
+
+```{R}
+# DESeqVST Counts Model 4
+model4.deseq.raw2<-model4.deseq.raw
+z<-as.data.frame(as.matrix(otu_table(model4.deseq.raw)))
+z<-z+7
+otu_table(model4.deseq.raw2)<-otu_table(z,taxa_are_rows = T)
+
+permanova.model4deseqVST<-make.PERMANOVA(model4.deseq.raw2)
+permanova.model4deseqVST
+```
+
+```{R}
+# LimmaVST Counts Model 4
+permanova.model4LimmaVST<-make.PERMANOVA(model4.Limma.raw)
+permanova.model4LimmaVST
+```
 What is the effect of increasing the variation of sequencing depth? 
 ```{R}
-
+Table4<-data.frame("raw"=permanova.model4raw$aov.tab$R2, "eRare"=permanova.model4eRare$aov.tab$R2, "pRare"=permanova.model4pRare$aov.tab$R2, "scaled"=permanova.model4scaled$aov.tab$R2, "limmaVST"=permanova.model4LimmaVST$aov.tab$R2, "deseqVST"=permanova.model4deseqVST$aov.tab$R2)
+rownames(Table4)<-rownames(permanova.model4raw$aov.tab)
+Table4
 
 ```
 
 
+```{r}
+
+# here ps is a phyloseq object that represents true abundance before subsampling/sequence simmulation
+model4
+test.tab<-as.data.frame(as.matrix(t(otu_table(model4))))
+test.tab$levels<-test.env$Factor# is this the original before subsampling?
+test.env<-sample_data(model4.scaled)
+
+par(mfrow=c(20,16))
+# from: https://rstudio-pubs-static.s3.amazonaws.com/232094_a8de2e47b78b4556a108e58c808b37cb.html
+plotserieslines <- function(yvar){
+    ggplot(test.tab, aes_(x=~levels,y=as.name(yvar))) +
+        geom_boxplot()
+        #facet_wrap(~Month)
+}
+lapply(names(test.tab), plotserieslines)
+
+# indicspecies analysis:
+
+library(indicspecies)
+
+pattern1<-multipatt(x, groups, control = how(nperm=999), duleg = T) # duleg = T -> only consider single sites, not combination of sites... could look at all combinations but this would be exhaustive... maybe should also use for modeling?
+
+pattern2<-multipatt(x, groups, control = how(nperm=999))
+
+summary(pattern1)
+summary(pattern2)
+
+pattern1$sign # find ones w/ p = NA so that can find which ones are global indicators ...
+pattern2$sign
+
+# or do species combinations: 
+combinespecies() # very computationally demanding for actual dataset ...
+
+
+# subset pattern -> select global indicators -> do aov() with correction to determine effects
+pattern1.na<-names(pattern1$sign[is.na(pattern1$sign$p.value)])
+
+# subset otu table by pattern1.na then run aov on each species... compile into table
+
+```
+
+Metrics to keep for the real sets:
+```{r}
+# number of significant indicators that are removed in filtering
+# number of significant indicators that are retained after filtering, but do not have log-fold change
+# number of significant log-fold change that are not signficant indicators or ANOVA
+# number of spp found in anovas that do not have log-fold change
+# correlation of species to environmental variables
+
+```
+
+It's not just about the taxa that are driving a pattern. We may want to know which of the rare taxa are responding to changes in the environment, and determine what environmental changes are determining the abundance of these rare organisms. In this case we want a discriminating method that is able to successfully identify taxa that are responding to our experimental conditions.
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
@@ -639,3 +1160,10 @@ DSS
 BaySeq
 ShrinkBayes
 PoissonSeq
+
+
+References:
+
+http://joey711.github.io/waste-not-supplemental/simulation-differential-abundance/simulation-differential-abundance-server.html
+
+https://rachaellappan.github.io/16S-analysis/differential-abundance-with-metagenomeseqs-fitzig.html#normalising-the-data
