@@ -1249,18 +1249,31 @@ out
 
 
 Delta.sppcount<-function(ps, method=0){
-  out<-as.data.frame(t(as.matrix(otu_table(ps))))
+  tab<-as.data.frame(as.matrix(otu_table(model4)))
+  tab[]<-0
+  env<-sample_data(model4)
+  tab<-phyloseq(otu_table(tab, taxa_are_rows = TRUE), sample_data(env))
+  #make phyloseq object, subset phyloseq then merge second phyloseq.
   
+  #merge_phyloseq()
+  out<-as.data.frame(t(as.matrix(otu_table(ps))))
+  out1<-as.data.frame(t(as.matrix(otu_table(ps))))
   if(method==1){
     out<-exp(out)
     out<-sapply(seq.int(dim(out)[2]), function(i) out[,i]/sum(out[,i]))
     out[is.nan(out)]<-0
+    rownames(out)<-rownames(out1)
+    colnames(out)<-colnames(out1)
     ps<-otu_table(out, taxa_are_rows = F)
+    ps<-merge_phyloseq(ps, tab)
     ps
   } else {
     out<-sapply(seq.int(dim(out)[2]), function(i) out[,i]/sum(out[,i]))
     out[is.nan(out)]<-0
+    rownames(out)<-rownames(out1)
+    colnames(out)<-colnames(out1)
     ps<-otu_table(out, taxa_are_rows = F)
+    ps<-merge_phyloseq(ps, tab)
     ps
   }
 }
@@ -1270,14 +1283,27 @@ DSpp.model4.raw<-as.data.frame(t(as.matrix(otu_table(Delta.sppcount(model4.raw, 
 DSpp.model4.eRare<-as.data.frame(t(as.matrix(otu_table(Delta.sppcount(model4.eRare, method=0)))))
 DSpp.model4.pRare<-as.data.frame(t(as.matrix(otu_table(Delta.sppcount(model4.pRare, method=0)))))
 DSpp.model4.scaled<-as.data.frame(t(as.matrix(otu_table(Delta.sppcount(model4.scaled, method=0)))))
+model4list<-list("DSpp.model4.raw"=DSpp.model4.raw,"DSpp.model4.eRare"=DSpp.model4.eRare,"DSpp.model4.pRare"=DSpp.model4.pRare,"DSpp.model4.scaled"=DSpp.model4.scaled)
+model4list<-list(DSpp.model4.raw,DSpp.model4.eRare,DSpp.model4.pRare,DSpp.model4.scaled)
 
 DSpp.model4.ref<-as.data.frame(t(as.matrix(otu_table(Delta.sppcount(model4.deseq.raw, method=1)))))
 
-function(){
-  for(l in )
-  sum(sapply(seq.int(dim(R)[2]), function(i) sum(abs(R[,i] - A[,i]))))
-}
-R
+Dspp.index<-function(l.tab, R){ R<-as.matrix(R)
+lapply(l.tab, function(a) {
+   A<-as.matrix(a)
+  sum(sapply(seq.int(dim(R)[2]), function(i) sum(abs(R[,i] - A[,i]))))})
+ }
+
+test.DsppIndex<-Dspp.index(model4list, R=DSpp.model4.ref)
+  
+
+### need to somehow put place holder for zeros for samples that have been dropped in the rarefied/subsampled samples
+  
+
+rownames(as.data.frame(t(as.matrix(otu_table(model4.eRare)))))
+rownames(as.data.frame(t(as.matrix(otu_table(model4.pRare)))))
+
+
 A <- as.matrix(anova.otu1)
 B <- as.matrix(anova.otu2)
 C <- as.matrix(anova.otu3)
