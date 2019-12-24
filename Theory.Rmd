@@ -238,7 +238,7 @@ deseqVST
 
 make.limmaVST<-function(ps, Factor){
   require(phyloseq)
-  ps<-filter_taxa(ps, function(x) sum(x)>0, T)
+  #ps<-filter_taxa(ps, function(x) sum(x)>0, T)
   counts<-as.data.frame(as.matrix(otu_table(ps)))
   factors<-unlist(sample_data(ps)[,Factor])
   design<-model.matrix(~factors)
@@ -514,6 +514,37 @@ saveRDS(Factors, "~/Documents/Github/ModelMicrobiome/Model_environment.RDS") # s
 
 #### output response table ###
 
+# modeled environment ... 
+
+f1c1.2<-c(1000,1000,1000,1000,1000,1000) # number of selections
+F1.frame2<-mapply(rnorm, f1c1.2,f1c2,f1c3) # pick Factor 1 value for each site
+F1.2<-reshape2::melt(F1.frame2)
+
+#F2
+f2c1.2<-c(1000,1000,1000,1000,1000,1000) # number of selections
+F2.frame2<-mapply(rnorm, f2c1.2,f2c2,f2c3) # pick Factor 2 value for each site
+F2.2<-reshape2::melt(F2.frame2)
+
+#F3
+f3c1.2<-c(1000,1000,1000,1000,1000,1000) # number of selections
+F3.frame2<-mapply(rnorm, f3c1.2,f3c2,f3c3) # pick Factor 3 value for each site
+F3.2<-reshape2::melt(F3.frame2)
+
+#F4
+f4c1.2<-c(1000,1000,1000,1000,1000,1000) # number of selections
+F4.frame2<-mapply(rnorm, f4c1.2,f4c2,f4c3) # pick Factor 4 value for each site
+F4.2<-reshape2::melt(F4.frame2)
+
+#F5
+f5c1.2<-c(1000,1000,1000,1000,1000,1000) # number of selections
+F5.frame2<-mapply(rnorm, f5c1.2,f5c2,f5c3) # pick Factor 5 value for each site
+F5.2<-reshape2::melt(F5.frame2)
+
+Factors.2<-data.frame(F1.2$value,F2.2$value,F3.2$value,F4.2$value,F5.2$value) # combine factors into data table
+Sites.2<-c(paste0("Site", 1:6000))
+rownames(Factors.2)<-Sites.2
+colnames(Factors.2)<-c("F1","F2","F3","F4","F5")
+
 # builds an OTU table from species equations and factors
 make.comm<-function(Comm1, Factors){
 otu<-matrix(data=NA, nrow=nrow(Factors), ncol = length(Comm1))
@@ -731,6 +762,68 @@ rando2.spp # examine lists
 Do the different pre-prosessing and differential expression analyses...
 
 ```{R}
+make.refcomm<-function(rando.spp, Factors){
+l1<-NULL
+for (i in 1:length(rando.spp[[1]])){
+  l1[i]<-do.call(rando.spp[[1]][i], list(Factors[1,1],Factors[1,2],Factors[1,3],Factors[1,4],Factors[1,5]))
+  }
+#l1<-data.frame("Site1"=l1, "Spp"=rando.spp[[1]])
+names(l1)<-rando.spp[[1]]
+for (r in 2:nrow(Factors)) # for each site...
+{ l2<-NULL
+  for (i in 1:length(rando.spp[[r]])){  # for each species in site...
+    l2[i]<-do.call(rando.spp[[r]][i], list(Factors[r,1],Factors[r,2],Factors[r,3],Factors[r,4],Factors[r,5]))
+    }
+  names(l2)<-rando.spp[[r]]
+  l1<-merge(as.data.frame(l1),as.data.frame(l2), by=0, all=T)
+  rownames(l1)<-l1$Row.names
+  colnames(l1)[colnames(l1) == "l1"] <- "Site1"
+ colnames(l1)[colnames(l1) == "l2"] <- paste("Site", r, sep="")
+ l1<-l1[,-1]
+  }
+l1<-round(l1)
+l1[mapply(is.infinite, l1)] <- NA
+l1[is.na(l1)]<-0
+l1[l1<0]<-0
+otu<-otu_table(l1, taxa_are_rows = T)
+Sa<-sample_data(Factors)
+out<-phyloseq(otu, Sa)
+out
+}
+
+site.list<-paste("site", 1:6000, sep = "")
+spp.list<-names(AllSpp)
+sppKey<-lapply(site.list, function(x) x<-spp.list)
+names(sppKey)<-paste("site", 1:6000, sep = "")
+
+
+null.model<-make.refcomm(sppKey, Factors.2) #can take some time...
+sample_data(null.model)$Factor<-c(rep("one", 1000), rep("two", 1000), rep("three", 1000), rep("four", 1000), rep("five", 1000), rep("six", 1000))
+
+```
+
+
+```{R}
+# make the sample key table for taxa
+
+Key.Tab.ab<-merge_samples(null.model, "Factor", fun=mean)
+Key.Tab.ab<-as.data.frame(as.matrix(otu_table(Key.Tab.ab)))
+
+Key.Tab.sd<-merge_samples(null.model, "Factor", fun=sd)
+Key.Tab.sd<-as.data.frame(as.matrix(otu_table(Key.Tab.sd)))
+
+select.key<-function(ps, s.key){
+  require(phyloseq)
+  
+  sp<-taxa_names(ps)
+  k<-s.key[c(sp),] # this doesn't work because some species randomly might not exist...
+  
+}
+
+```
+
+
+```{R}
 model3<-make.comm2(rando.spp, Factors)
 model3<-filter_taxa(model3, function(x) sum(x)>0, TRUE) # remove samples that are filtered out by the environmnet
 
@@ -772,6 +865,8 @@ sample_data(model4.raw)$Factor2<-as.factor(c(rep(1,5),rep(2,5),rep(3,5),rep(4,5)
 
 sample_data(model4.raw)$Density<-sample_sums(model4)
 sample_data(model4.raw)$DensityF.model4<-sample_data(model4.raw)$Density/mean(sample_data(model4.raw)$Density)
+
+sample_data(model4)$Factor<-as.factor(c(rep("one",5),rep("two",5),rep("three",5),rep("four",5),rep("five",5),rep("six",5)))
 ```
 
 Common filtering schemes:
@@ -849,6 +944,7 @@ model4.Limma.raw<-make.limmaVST(model4.raw, "Factor")
 model4.Limma.eRare<-make.limmaVST(model4.eRare, "Factor")
 model4.Limma.pRare<-make.limmaVST(model4.pRare, "Factor")
 model4.Limma.scaled<-make.limmaVST(model4.scaled, "Factor")
+
 ```
 
 ```{R}
@@ -889,10 +985,48 @@ model4.scaled.Limmaindics<-as.data.frame(limma.Indics3(model4.scaled, "Factor"))
 ```
 ```{r}
 # Deseq indics
-deseqIndics<-function(){
-  
-  
+test.df<-phyloseq_to_deseq2(model3.raw, ~Factor)
+test.df$condition <- relevel(test.df$condition, ref = "one")
+test.geomeans=apply(counts(test.df),1, gm_mean)
+test.dds<-estimateSizeFactors(test.df, geoMeans=test.geomeans)
+test.dds<-DESeq(test.dds)
+test.res<-results(test.dds)
+
+deseq.res<-function(x){
+  sample_data(x)$Factor <- relevel(sample_data(x)$Factor, "one")
+  r<-phyloseq_to_deseq2(x, ~Factor)
+  geoMeans = apply(counts(r), 1, gm_mean)
+  dds = estimateSizeFactors(r, geoMeans = geoMeans)
+  dds<-DESeq(dds)
+  res <- results(dds)
+  res.p<-res$padj
+  names(res.p)<-res@rownames
+  res.p}
+
+test.resp<-deseq.res(r1)
+
+deseqIndics<-function(ps){
+  require(phyloseq)
+  require(DESeq2)
+  r1<-subset_samples(ps, Factor=="one"|Factor=="two")
+  r2<-subset_samples(ps, Factor=="one"|Factor=="three")
+  r3<-subset_samples(ps, Factor=="one"|Factor=="four")
+  r4<-subset_samples(ps, Factor=="one"|Factor=="five")
+  r5<-subset_samples(ps, Factor=="one"|Factor=="six")
+  tab<-ldply(list(r1,r2,r3,r4,r5), deseq.res)
+  tab<-t(tab)
+  tab[tab > 0.05]<-NA
+  tab[tab < 0.05]<-1
+  tab[is.na(tab)]<-0
+  #tab[tab > 0.05]<-0
+  colnames(tab)<-c("OneVTwo", "OneVThree", "OneVFour", "OneVFive", "OneVSix")
+  tab
 }
+
+Deseq.ind.raw<-deseqIndics(model4.raw)
+Deseq.ind.eRare<-deseqIndics(model4.eRare)
+Deseq.ind.pRare<-deseqIndics(model4.pRare)
+Deseq.ind.scaled<-deseqIndics(model4.scaled)
 ```
 
 ```{R}
@@ -902,25 +1036,289 @@ library(indicspecies)
 indicspp<-function(ps){
   require(phyloseq)
   require(indicspecies)
-  ps<-filter_taxa(ps, function(x) sum(x)>0, T)
+  #ps<-filter_taxa(ps, function(x) sum(x)>0, T)
   p<-as.data.frame(as.matrix(t(otu_table(ps))))
   e<-sample_data(ps)$Factor
   
-  m<-multipatt(p, e, control=how(nperm=999))
+  m<-multipatt(p, e, control=how(nperm=999), duleg=TRUE)
   m.s<-m$sign
   m.s[is.na(m.s$p.value), 9]<-1.000
   m.s[m.s$p.value>0.05,1:6]<-0
   m.s[is.na(m.s)]<-0
   m.s
   }
+indicsummary<-function(ps){
+  require(phyloseq)
+  require(indicspecies)
+  #ps<-filter_taxa(ps, function(x) sum(x)>0, T)
+  p<-as.data.frame(as.matrix(t(otu_table(ps))))
+  e<-sample_data(ps)$Factor
+  
+  m<-multipatt(p, e, control=how(nperm=999))
+  summary(m)
+  }
+model3.raw.indicspp<-indicspp(model3.raw)
+model3.erare.indicspp<-indicspp(model3.eRare)
+model3.prare.indicspp<-indicspp(model3.pRare)
+model3.scaled.indicspp<-indicspp(model3.scaled)
 
-indicspp.model3.raw<-indicspp(model3.raw)
-indicspp.model3.raw
+model4.raw.indicspp<-indicspp(model4.raw)
+model4.indicspp<-indicspp(model4)
+model4.eRare.indicspp<-indicspp(model4.eRare)
+model4.pRare.indicspp<-indicspp(model4.pRare)
+model4.scaled.indicspp<-indicspp(model4.scaled)
+
+indicsummary(model4.raw)
+indicsummary(model4)
+indicsummary(model4.eRare)
+indicsummary(model4.pRare)
+indicsummary(model4.scaled)
+
+rownames(model4.scaled.indicspp[model4.scaled.indicspp$s.one>0, ])
+group2.spp$group1
+```
+
+```{r}
+# anova tests
+anova.otu<-as.data.frame(t(as.matrix(otu_table(model4))))
+anova.env<-data.frame(as.matrix(sample_data(model4)))
+anova.env$F1<-as.numeric(as.character(anova.env$F1))
+anova.env$F2<-as.numeric(as.character(anova.env$F2))
+anova.env$F3<-as.numeric(as.character(anova.env$F3))
+anova.env$F4<-as.numeric(as.character(anova.env$F4))
+anova.env$F5<-as.numeric(as.character(anova.env$F5))
+
+anova.dat<-data.frame(anova.otu, anova.env)
+anova.out<-aov(spp663~Factor+F1+F2+F3+F4+F5, data=anova.dat)
+lm.out<-lm(spp663~Factor+F1+F2+F3+F4+F5, data=anova.dat)
+summ<-summary(anova.out)
+summ.lm<-summary(lm.out)
+tukey.out<-TukeyHSD(anova.out)
+
+anova.output<-colnames(anova.otu)
+names(anova.output)<-colnames(anova.otu)
+
+testaov<-apply(anova.otu, 2, function(x) {
+  l1=summary(aov(x~anova.env$Factor))
+  l2=TukeyHSD(aov(x~anova.env$Factor))
+  a=l2
+  b=l1[[1]]$`Pr(>F)`
+  return(list("Tukey"=a,"P"=b))})
+
+
+test.summary<-c(1:length(aov))
+for(i in 1:length (testaov)){
+  if(testaov[[i]]$P[1]<0.05){test.summary[i]<-1}
+  if(testaov[[i]]$P[1]>0.05){test.summary[i]<-0}
+  names(test.summary[i])<-names(testaov)[i]
+  }
+names(test.summary)<-names(testaov)
+test.summary
+
+intersect(group2.spp$group1,group2.spp$group2)
+intersect(group2.spp$group1,group2.spp$group3)
+intersect(group2.spp$group1,group2.spp$group4)
+intersect(group2.spp$group1,group2.spp$group5)
+intersect(group2.spp$group1,group2.spp$group6)
+
+
+# make index of difference explained
+# aov -> spp ~ Factor + F1:F2:F3:F4:F5
+# for each spp, select percent explained; aggregate var explained overall
+# 
+lm.test<-function(ps){
+anova.otu<-as.data.frame(t(as.matrix(otu_table(ps))))
+anova.env<-data.frame(as.matrix(sample_data(ps)))
+anova.env$F1<-as.numeric(as.character(anova.env$F1))
+anova.env$F2<-as.numeric(as.character(anova.env$F2))
+anova.env$F3<-as.numeric(as.character(anova.env$F3))
+anova.env$F4<-as.numeric(as.character(anova.env$F4))
+anova.env$F5<-as.numeric(as.character(anova.env$F5))
+
+testlm<-apply(anova.otu, 2, function(x) {
+  #l1=summary(lm(x~anova.env$Factor+anova.env$F1+anova.env$F2+anova.env$F3+anova.env$F4+anova.env$F5))
+  l1=summary(lm(x~anova.env$F1+anova.env$F2+anova.env$F3+anova.env$F4+anova.env$F5))
+  return(l1$r.squared)
+  })
+testlm[is.na(testlm)]<-0
+lost<-length(testlm[testlm==0])
+out<-list("lm"=testlm, "lost"=lost)
+out
+}
+
+
+# ps1 is the reference (model 4)
+# ps2 is the test case (model4.raw/model4.eRare/model4.pRare/model4.scaled)
+# order matters
+
+SVI<-function(ps1, ps2){
+  reference<-lm.test(ps1)
+  trt<-lm.test(ps2)
+  sum(reference$lm-trt$lm)
+}
+
+# species variance index
+SVI(model4, model4.raw)
+SVI(model4, model4.eRare)
+SVI(model4, model4.pRare)
+SVI(model4, model4.scaled)
+SVI(model4, model4.deseq.raw)
+SVI(model4, model4.deseq.eRare)
+SVI(model4, model4.deseq.pRare)
+SVI(model4, model4.deseq.scaled)
+SVI(model4, model4.Limma.raw)
+SVI(model4, model4.Limma.eRare)
+SVI(model4, model4.Limma.pRare)
+SVI(model4, model4.Limma.scaled)
+
+model4.lm<-lm.test(model4)
+model4.raw.lm<-lm.test(model4.raw)
+model4.eRare.lm<-lm.test(model4.eRare)
+model4.pRare.lm<-lm.test(model4.pRare)
+model4.scaled.lm<-lm.test(model4.scaled)
+model4.deseq.raw.lm<-lm.test(model4.deseq.raw)
+model4.deseq.eRare.lm<-lm.test(model4.deseq.eRare)
+model4.deseq.pRare.lm<-lm.test(model4.deseq.pRare)
+model4.deseq.scaled.lm<-lm.test(model4.deseq.scaled)
+model4.limma.raw.lm<-lm.test(model4.Limma.raw)
+model4.limma.eRare.lm<-lm.test(model4.Limma.eRare)
+model4.limma.pRare.lm<-lm.test(model4.Limma.pRare)
+model4.limma.scaled.lm<-lm.test(model4.Limma.scaled)
+
+
+model4.lm$lost
+model4.raw.lm$lost
+model4.eRare.lm$lost
+model4.pRare.lm$lost
+model4.scaled.lm$lost
+model4.deseq.raw.lm$lost
+
+length(model4.limma.raw.lm$lm)
+model4.limma.raw.lm$lost
+data.frame(model4.lm$lm, model4.raw.lm$lm, model4.deseq.raw.lm$lm, model4.limma.raw.lm$lm)
+
+sum(model4.lm$lm-model4.scaled.lm$lm)
+
+
+names(test.summary)<-names(testaov)
+test.summary
+
+```
+```{r}
+anova.otu1<-as.data.frame(t(as.matrix(otu_table(model4))))
+anova.otu2<-as.data.frame(t(as.matrix(otu_table(model4.deseq.raw))))
+anova.otu3<-as.data.frame(t(as.matrix(otu_table(model4.scaled))))
+anova.otu4<-as.data.frame(t(as.matrix(otu_table(model4.raw))))
+
+A <- as.matrix(anova.otu1)
+B <- as.matrix(anova.otu2)
+C <- as.matrix(anova.otu3)
+D <- as.matrix(anova.otu4)
+df.test<-data.frame(sapply(seq.int(dim(A)[2]), function(i) cor(A[,i], B[,i])), sapply(seq.int(dim(A)[2]), function(i) cor(A[,i], C[,i])), sapply(seq.int(dim(A)[2]), function(i) cor(A[,i], D[,i])))
+
+df.test[is.na(df.test)]<-0
+sum(df.test$sapply.seq.int.dim.A..2....function.i..cor.A...i...B...i...)
+sum(df.test$sapply.seq.int.dim.A..2....function.i..cor.A...i...C...i...)
+sum(df.test$sapply.seq.int.dim.A..2....function.i..cor.A...i...D...i...)
+ 
+!identical(colnames(anova.otu1),colnames(anova.otu1))
+spp.corr<-function(ps1, ps2){
+anova.otu1<-as.data.frame(t(as.matrix(otu_table(ps1))))
+anova.otu2<-as.data.frame(t(as.matrix(otu_table(ps2))))
+if(!identical(colnames(ps1), colnames(ps2))) {print("Species do not match, check taxa_names()")}
+#anova.env<-data.frame(as.matrix(sample_data(ps)))
+#anova.env$F1<-as.numeric(as.character(anova.env$F1))
+#anova.env$F2<-as.numeric(as.character(anova.env$F2))
+#anova.env$F3<-as.numeric(as.character(anova.env$F3))
+#anova.env$F4<-as.numeric(as.character(anova.env$F4))
+#anova.env$F5<-as.numeric(as.character(anova.env$F5))
+out<-list(colnames)
+testlm<-apply(anova.otu1, 2, function(x) {
+  #l1=summary(lm(x~anova.env$Factor+anova.env$F1+anova.env$F2+anova.env$F3+anova.env$F4+anova.env$F5))
+  l1=summary(lm(x~anova.env$F1+anova.env$F2+anova.env$F3+anova.env$F4+anova.env$F5))
+  return(l1$r.squared)
+  })
+testlm[is.na(testlm)]<-0
+lost<-length(testlm[testlm==0])
+out<-list("lm"=testlm, "lost"=lost)
+out
+}
+
+# make the difference between predicted values and actual normalized values of species abundance for each normalization method
+# index using sum of difference for each method between predicted and actual abundance for each spp and all spp
+
+
+Delta.sppcount<-function(ps, method=0){
+  out<-as.data.frame(t(as.matrix(otu_table(ps))))
+  
+  if(method==1){
+    out<-exp(out)
+    out<-sapply(seq.int(dim(out)[2]), function(i) out[,i]/sum(out[,i]))
+    out[is.nan(out)]<-0
+    ps<-otu_table(out, taxa_are_rows = F)
+    ps
+  } else {
+    out<-sapply(seq.int(dim(out)[2]), function(i) out[,i]/sum(out[,i]))
+    out[is.nan(out)]<-0
+    ps<-otu_table(out, taxa_are_rows = F)
+    ps
+  }
+}
+
+DSpp.model4.ref<-as.data.frame(t(as.matrix(otu_table(Delta.sppcount(model4, method=0)))))
+DSpp.model4.raw<-as.data.frame(t(as.matrix(otu_table(Delta.sppcount(model4.raw, method=0)))))
+DSpp.model4.eRare<-as.data.frame(t(as.matrix(otu_table(Delta.sppcount(model4.eRare, method=0)))))
+DSpp.model4.pRare<-as.data.frame(t(as.matrix(otu_table(Delta.sppcount(model4.pRare, method=0)))))
+DSpp.model4.scaled<-as.data.frame(t(as.matrix(otu_table(Delta.sppcount(model4.scaled, method=0)))))
+
+DSpp.model4.ref<-as.data.frame(t(as.matrix(otu_table(Delta.sppcount(model4.deseq.raw, method=1)))))
+
+function(){
+  for(l in )
+  sum(sapply(seq.int(dim(R)[2]), function(i) sum(abs(R[,i] - A[,i]))))
+}
+R
+A <- as.matrix(anova.otu1)
+B <- as.matrix(anova.otu2)
+C <- as.matrix(anova.otu3)
+D <- as.matrix(anova.otu4)
+
+sum(sapply(seq.int(dim(A)[2]), function(i) sum(abs(A[,i] - B[,i]))))
+sum(sapply(seq.int(dim(A)[2]), function(i) sum(abs(A[,i] - C[,i]))))
+sum(sapply(seq.int(dim(A)[2]), function(i) sum(abs(A[,i] - D[,i]))))
+
+```
+
+
+```{r}
+
+make.PERMANOVA<-function(ps){
+  require(vegan)
+  require(phyloseq)
+  ps<-filter_taxa(ps, function(x) sum(x)>0, T)
+  x<-as.data.frame(t(as.matrix(otu_table(ps))))
+  y<-data.frame(as.matrix(sample_data(ps)))
+  y$F1<-as.numeric(as.character(y$F1))
+  y$F2<-as.numeric(as.character(y$F2))
+  y$F3<-as.numeric(as.character(y$F3))
+  y$F4<-as.numeric(as.character(y$F4))
+  y$F5<-as.numeric(as.character(y$F5))
+  data.frame(x,y)
+  a<-adonis(x~Factor2+F1+F2+F3+F4+F5, data=y)
+  a
+}
+
+
+
+
+
+
 ```
 
 ```{r}
 # framework for benchmarking:
 # for each test/normalization combination, make object with:
+
 
 # indicators by group [table of 0 or 1 or -1]
 # input objects as a list
@@ -936,7 +1334,7 @@ Now let's benchmark this community:
 # here ps is a phyloseq object that represents true abundance before subsampling/sequence simmulation
 plotserieslines <- function(yvar){
     ggplot(test.tab, aes_(x=~levels,y=as.name(yvar))) +
-        geom_boxplot()
+        geom_boxplot()+ggtitle(as.name(yvar))
         #facet_wrap(~Month)
 }
 
@@ -971,6 +1369,11 @@ lapply(names(test.tab), plotserieslines)
 
 Community ecology approach:
 
+```{r}
+
+
+
+```
 
 Environmental correlation/permanova tests
 ```{R}
@@ -993,10 +1396,231 @@ make.PERMANOVA<-function(ps){
 
 ```
 
+multipatt expects that species distributions will be patchy, and that species exclusion due to certain experimental conditions is likely. Therefore it is better at capturing experimentally driven patterns in species occurence. 
 
+Because the tests operate differently, the keys need to be built using different structures. The differential abundance analysis are based off of case-control paradigm where factor 1 is a reference and the question is whether the species abundance at factor level 2 is different than at factor level 1. Whereas the inidcator species deals with occurence patterns and asks whether species is more likely to be found at factor level 1 or at factor level 2.  Build the keys:
+```{r}
+# for differential abundance; make reference
+library(phyloseq)
+ref<-merge_samples(model4, "Factor", fun = mean)
+ref<-as.data.frame(as.matrix(t(otu_table(ref))))
+ref.DA<-data.frame("OneVTwo"=ref$one-ref$two, "OneVThree"=ref$one-ref$three, "OneVFour"=ref$one-ref$four, "OneVFive"=ref$one-ref$five, "OneVSix"=ref$one-ref$six)
+rownames(ref.DA)<-rownames(ref)
+
+Deseq.ind
+
+#transform indicator spp:
+t.model4.raw.indicspp<-data.frame("OneVTwo"=model4.raw.indicspp$s.one+model4.raw.indicspp$s.two, "OneVThree"=model4.raw.indicspp$s.one+model4.raw.indicspp$s.three, "OneVFour"=model4.raw.indicspp$s.one+model4.raw.indicspp$s.four, "OneVFive"=model4.raw.indicspp$s.one+model4.raw.indicspp$s.five, "OneVSix"=model4.raw.indicspp$s.one+model4.raw.indicspp$s.six)
+rownames(t.model4.raw.indicspp)<-rownames(model4.raw.indicspp)
+
+t.model4.eRare.indicspp<-data.frame("OneVTwo"=model4.eRare.indicspp$s.one+model4.eRare.indicspp$s.two, "OneVThree"=model4.eRare.indicspp$s.one+model4.eRare.indicspp$s.three, "OneVFour"=model4.eRare.indicspp$s.one+model4.eRare.indicspp$s.four, "OneVFive"=model4.eRare.indicspp$s.one+model4.eRare.indicspp$s.five, "OneVSix"=model4.eRare.indicspp$s.one+model4.eRare.indicspp$s.six)
+rownames(t.model4.eRare.indicspp)<-rownames(model4.eRare.indicspp)
+
+t.model4.pRare.indicspp<-data.frame("OneVTwo"=model4.pRare.indicspp$s.one+model4.pRare.indicspp$s.two, "OneVThree"=model4.pRare.indicspp$s.one+model4.pRare.indicspp$s.three, "OneVFour"=model4.pRare.indicspp$s.one+model4.pRare.indicspp$s.four, "OneVFive"=model4.pRare.indicspp$s.one+model4.pRare.indicspp$s.five, "OneVSix"=model4.pRare.indicspp$s.one+model4.pRare.indicspp$s.six)
+rownames(t.model4.pRare.indicspp)<-rownames(model4.pRare.indicspp)
+
+
+t.model4.scaled.indicspp<-data.frame("OneVTwo"=model4.scaled.indicspp$s.one+model4.scaled.indicspp$s.two, "OneVThree"=model4.scaled.indicspp$s.one+model4.scaled.indicspp$s.three, "OneVFour"=model4.scaled.indicspp$s.one+model4.scaled.indicspp$s.four, "OneVFive"=model4.scaled.indicspp$s.one+model4.scaled.indicspp$s.five, "OneVSix"=model4.scaled.indicspp$s.one+model4.scaled.indicspp$s.six)
+rownames(t.model4.scaled.indicspp)<-rownames(model4.scaled.indicspp)
+
+
+library(data.table)
+m.Deseq.ind<-reshape2::melt(Deseq.ind, id.vars=rownames(Deseq.ind))
+m.ref.DA<-reshape2::melt(as.matrix(ref.DA), id.vars=rownames(ref.DA))
+mt.model4.raw.indicspp<-reshape2::melt(as.matrix(t.model4.raw.indicspp), id.vars=rownames(t.model4.raw.indicspp))
+
+# sanity check, should be TRUE:
+identical(m.Deseq.ind$Var2, m.ref.DA$Var2)
+identical(m.Deseq.ind$Var1, m.ref.DA$Var1)
+identical(mt.model4.raw.indicspp$Var1, m.ref.DA$Var1)
+identical(mt.model4.raw.indicspp$Var2, m.ref.DA$Var2)
+
+plot.dat<-data.frame("SpeciesID"=m.ref.DA$Var1, "Comparison"=m.ref.DA$Var2, "Difference"=m.ref.DA$value, "Deseq"=m.Deseq.ind$value, "Indicspp"=mt.model4.raw.indicspp$value)
+
+ggplot(plot.dat[plot.dat$Difference<100 & plot.dat$Difference>-100,], aes(x=Difference, y=Deseq, color=as.factor(Indicspp),position_dodge(0.5)))+
+  geom_point(alpha=0.1)
+  #color_
+
+ggplot(plot.dat, aes(x=Difference, y=Deseq, color=as.factor(Indicspp),position_dodge(0.5)))+
+  geom_point(alpha=0.1)
+
+  ggplot(plot.dat[plot.dat$Difference<100 & plot.dat$Difference>-100,], aes(x=Difference, y=Indicspp, color=as.factor(Deseq),position_dodge(0.5)))+
+  geom_point()
+
+  
+  # for indicator species
+# "Correct" pattern determined by group lists and species equations in the reference community
+
+
+```
+
+```{r}
+
+m.Deseq.ind.raw<-reshape2::melt(Deseq.ind.raw, id.vars=rownames(Deseq.ind.raw))
+m.Deseq.ind.eRare<-reshape2::melt(Deseq.ind.eRare, id.vars=rownames(Deseq.ind.eRare))
+m.Deseq.ind.pRare<-reshape2::melt(Deseq.ind.eRare, id.vars=rownames(Deseq.ind.pRare))
+m.Deseq.ind.scaled<-reshape2::melt(Deseq.ind.scaled, id.vars=rownames(Deseq.ind.scaled))
+#m.ref.DA<-reshape2::melt(as.matrix(ref.DA), id.vars=rownames(ref.DA))
+```
+
+```{r}
+mt.model4.raw.indicspp<-reshape2::melt(as.matrix(t.model4.raw.indicspp), id.vars=rownames(t.model4.raw.indicspp))
+mt.model4.eRare.indicspp<-reshape2::melt(as.matrix(t.model4.eRare.indicspp), id.vars=rownames(t.model4.eRare.indicspp))
+mt.model4.pRare.indicspp<-reshape2::melt(as.matrix(t.model4.pRare.indicspp), id.vars=rownames(t.model4.pRare.indicspp))
+mt.model4.scaled.indicspp<-reshape2::melt(as.matrix(t.model4.scaled.indicspp), id.vars=rownames(t.model4.scaled.indicspp))
+
+```
+
+```{r}
+# sanity check, should be TRUE:
+identical(m.Deseq.ind.scaled$Var2, m.ref.DA$Var2)
+identical(m.Deseq.ind.scaled$Var1, m.ref.DA$Var1)
+identical(mt.model4.scaled.indicspp$Var1, m.ref.DA$Var1)
+identical(mt.model4.scaled.indicspp$Var2, m.ref.DA$Var2)
+
+model4.plot.dat<-data.frame("SpeciesID"=m.ref.DA$Var1, "Comparison"=m.ref.DA$Var2, "Difference"=m.ref.DA$value, "Deseq.raw"=m.Deseq.ind.raw$value,"Deseq.eRare"=m.Deseq.ind.eRare$value,"Deseq.pRare"=m.Deseq.ind.pRare$value,"Deseq.scaled"=m.Deseq.ind.scaled$value, "Indicspp.raw"=mt.model4.raw.indicspp$value,"Indicspp.eRare"=mt.model4.eRare.indicspp$value,"Indicspp.pRare"=mt.model4.pRare.indicspp$value,"Indicspp.scaled"=mt.model4.scaled.indicspp$value)
+
+ggplot(plot.dat.scaled, aes(x=Difference, y=Deseq, color=as.factor(Indicspp),position_dodge(0.5)))+
+  geom_point(alpha=0.1)
+
+ggplot(plot.dat.scaled[plot.dat.scaled$Difference<1000 & plot.dat.scaled$Difference>-1000,], aes(x=Difference, y=Deseq, color=as.factor(Indicspp),position_dodge(0.5)))+
+  geom_point(alpha=0.1)
+  
+#ggplot(plot.dat[plot.dat$Difference<100 & plot.dat$Difference>-100,], aes(x=Difference, y=Indicspp, color=as.factor(Deseq),position_dodge(0.5)))+
+ # geom_point()
+# for indicator species
+# "Correct" pattern determined by group lists and species equations in the reference community
+
+
+```
+
+```{r}
+# indicspp raw vs erare
+par(mfrow=c(1,2))
+ggplot(model4.plot.dat, aes(x=Difference, y=Indicspp.raw, color=as.factor(Indicspp.eRare)))+
+  geom_point(alpha=0.2, position="jitter")+theme_classic()
+
+ggplot(model4.plot.dat, aes(x=Difference, y=Indicspp.eRare, color=as.factor(Indicspp.raw)))+
+  geom_point(alpha=0.2, position="jitter")+theme_classic()
+
+ggplot(model4.plot.dat, aes(x=Indicspp.eRare, y=Indicspp.raw, color=Difference))+
+  geom_point(position="jitter")+theme_classic()+scale_color_gradient2(midpoint = 0, low = "blue", mid = "white",high = "red", space = "Lab" )
+```
+
+```{r}
+# indicspp raw vs prare
+ggplot(model4.plot.dat, aes(x=Difference, y=Indicspp.raw, color=as.factor(Indicspp.pRare)))+
+  geom_point(alpha=0.2, position="jitter")+theme_classic()
+ggplot(model4.plot.dat, aes(x=Difference, y=Indicspp.eRare, color=as.factor(Indicspp.raw)))+
+  geom_point(alpha=0.2, position="jitter")+theme_classic()
+
+
+```
+
+```{r}
+# indicspp raw vs scaled
+ggplot(model4.plot.dat, aes(x=Difference, y=Indicspp.raw, color=as.factor(Indicspp.scaled)))+
+  geom_point(alpha=0.2, position="jitter")+theme_classic()
+
+ggplot(model4.plot.dat, aes(x=Difference, y=Indicspp.scaled, color=as.factor(Indicspp.raw)))+
+  geom_point(alpha=0.2, position="jitter")+theme_classic()
+```
+
+```{r}
+# Deseq raw vs erare
+ggplot(model4.plot.dat, aes(x=Difference, y=Deseq.raw, color=as.factor(Deseq.eRare)))+
+  geom_point(alpha=0.2, position="jitter")+theme_classic()
+
+ggplot(model4.plot.dat, aes(x=Difference, y=Deseq.eRare, color=as.factor(Deseq.raw)))+
+  geom_point(alpha=0.2, position="jitter")+theme_classic()
+
+```
+
+```{r}
+# Deseq raw vs prare
+ggplot(model4.plot.dat, aes(x=Difference, y=Deseq.raw, color=as.factor(Deseq.pRare)))+
+  geom_point(alpha=0.2, position="jitter")+theme_classic()
+
+ggplot(model4.plot.dat, aes(x=Difference, y=Deseq.pRare, color=as.factor(Deseq.raw)))+
+  geom_point(alpha=0.2, position="jitter")+theme_classic()
+
+```
+
+```{r}
+# Deseq raw vs scaled
+
+ggplot(model4.plot.dat, aes(x=Difference, y=Deseq.raw, color=as.factor(Deseq.scaled)))+
+  geom_point(alpha=0.2, position="jitter")+theme_classic()
+
+ggplot(model4.plot.dat, aes(x=Difference, y=Deseq.scaled, color=as.factor(Deseq.raw)))+
+  geom_point(alpha=0.2, position="jitter")+theme_classic()
+```
+```{r}
+# Deseq raw vs indicspp raw
+ggplot(model4.plot.dat, aes(x=Difference, y=Deseq.raw, color=as.factor(Indicspp.raw)))+
+  geom_point(alpha=0.2, position="jitter")+theme_classic()
+
+ggplot(model4.plot.dat, aes(x=Difference, y=Indicspp.raw, color=as.factor(Deseq.raw)))+
+  geom_point(alpha=0.2, position="jitter")+theme_classic()
+
+```
+
+```{r}
+# Deseq raw vs indicspp scaled
+ggplot(model4.plot.dat, aes(x=Difference, y=Deseq.raw, color=as.factor(Indicspp.scaled)))+
+  geom_point(alpha=0.2, position="jitter")+theme_classic()
+
+ggplot(model4.plot.dat, aes(x=Difference, y=Indicspp.scaled, color=as.factor(Deseq.raw)))+
+  geom_point(alpha=0.2, position="jitter")+theme_classic()
+```
+
+```{r}
+# Deseq scaled vs indicspp raw
+ggplot(model4.plot.dat, aes(x=Difference, y=Deseq.scaled, color=as.factor(Indicspp.raw)))+
+  geom_point(alpha=0.2, position="jitter")+theme_classic()
+
+ggplot(model4.plot.dat, aes(x=Difference, y=Indicspp.raw, color=as.factor(Deseq.scaled)))+
+  geom_point(alpha=0.2, position="jitter")+theme_classic()
+```
+
+```{r}
+# Deseq scaled vs indicspp scaled
+ggplot(model4.plot.dat, aes(x=Difference, y=Deseq.scaled, color=as.factor(Indicspp.scaled)))+
+  geom_point(alpha=0.2, position="jitter")+theme_classic()
+
+ggplot(model4.plot.dat, aes(x=Difference, y=Indicspp.scaled, color=as.factor(Deseq.scaled)))+
+  geom_point(alpha=0.2, position="jitter")+theme_classic()
+
+```
+
+```{r}
+# Limma raw vs erare
+```
+
+```{r}
+# Limma raw vs prare
+```
+
+```{r}
+# Limma raw vs scaled
+```
+
+
+Beta diversity analysis:
 ```{R}
-# Raw counts Model 3
 
+deseq.plot.dat<-data.frame("SpeciesID"=m.ref.DA$Var1, "Comparison"=m.ref.DA$Var2, "Difference"=m.ref.DA$value, "Deseq_scaled"=m.Deseq.ind.scaled$value, "Deseq_raw"=m.Deseq.ind$value)
+
+ggplot(deseq.plot.dat, aes(x=Difference, y=Deseq_raw, color=as.factor(Deseq_scaled),position_dodge(0.5)))+
+  geom_point(alpha=0.1)
+
+ggplot(deseq.plot.dat[deseq.plot.dat$Difference<100 & deseq.plot.dat$Difference>-100,], aes(x=Difference, y=Deseq_raw, color=as.factor(Deseq_scaled),position_dodge(0.5)))+
+  geom_point(alpha=0.1)
+```
+
+```{r}
+
+# Raw counts Model 3
 permanova.model3Raw<-make.PERMANOVA(model3.raw)
 permanova.model3Raw
 ```
