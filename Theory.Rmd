@@ -5,7 +5,7 @@ date: "7/25/2019"
 output: html_document
 ---
 
-## introducti
+## introduction
 For some time there has been contentious debate over the appropriate data handling techniques for microbial sequence data. The center of the controversy is the question of whether we should or should not rarefy our samples. In this case, rarefaction means subsampling each sample to a certain threshold. Typically, the practitioner will determine an arbitrary minimum count and rarefy all samples down to this count. This technique is employed to adress the lack of uniform sampling effort that is inherent in sequence data (CITATION). It should be pointed out here that subsampling sequences to an equal number of sequences is not in fact normalizing sampling effort. McMurdie and Holmes argued in 2014 that no sequences should be omitted for the purpose of normalizing sampling effort. Their argument essentially is that to do causes us to lose the power to detect taxa that respond, and increased in false positives. Later, Weiss et al countered that their method unfairly handicapped rarefied datasets in their modeling. The center of the dispute was in how the mock community was constructed, and scored. McCmurdie and Holmes had manually increased the abundance of certain taxa in the dataset. They only counted those that they had manipulated as being true positives. But if one taxon should increase in abundance, then as a proportion all other taxa will decrease. These are true effects in the sense that the relative abundance of each taxon is actually changing within the dataset. McMurdie and Holmes, however, scored those detections as false positives and found that rarefied data had a much higher probability of detecting such false positives. Weiss et all argued that in fact these were true positives, suggesting that rarefaction actually increased the sensitivity of the differential abundance analysis. They proposed using a mock community where manipulated taxa are reciprocally balanced such that they do not affect the relative abundance of any other taxon (if one taxon is increased by 10, another is decreased by 10 for balance). This differential abundance test showing that rarefaction did sometimes improve true positive detection, depending on the context. It should be pointed out here that strictly speaking, this type of behavior (i.e. perfectly balanced differences in taxon abundance) does not occure in nature.
 
 What is perhaps most curious about this debate is what is not addressed: the underlying reason that ecologists seek to rarefy data. The concept of effort in sampling is quite literally a representation of physical effort in much of macro-ecology. It seeks to ensure that, for example, the dimensions of area surveyed in each sampling location of a study are equal so that the results are directly comparable. In sequencing studies, effort cannot be controled a priori either physically or procedurally by the scientist because the sequencing machine acts much like a random number generator in determining how many counts (often interpreted as effort) is devoted to each sample. But counts themselves are not intrinsically a measure of effort. If population A has twice the density of organisms than population B, then if samples of both are represented by the same number of sequences, then twice the effort has been expended on sampling population B compared to population A. Effort per unit sampled is important to normalize because it provides a standardization that allows the scientist to infer the density of the organisms. Therefore, to control effort is to normalize for organismal density in the real world. This key observation is lost in the discussion as none of the parties (and none of the softwares employed) include a standard protocol for normalizing for population density across samples. This is because the major publicly available softwares in this realm (particularly DESeq2, EdgeR, and Limma) were developed to determine differential expression of genes within organisms - not the differential abundance of organisms in the environment. They were designed to work with either with RNA-seq data, and often are expansions of software originally developed for micro-array analysis. In this data context, the overall abundance of RNA in the cell is rarely, if ever, an important factor to consider. Since gene expression is highly interdependent within an organism, expression data is best understood as a distribution where autocorrelation of the sequence counts is assumed. Therefore, all of these algorithms include normalization protocol for sample-wise sequencing depth within the GLM. However, for microbiome work the density of the overall community is of paramount importance. The diversity of metabolic strategies is such that groups of microbes may be essentially independent in their growth, each either relying on or being limited by different substrates. If one group becomes more abundant while the other remains at the same abundance level, it is impossible to parse whether one grew or the other died off simply using distributional (or proportional) data. In order to accurately infer the environmental drivers of each taxon, the practicioner needs to model a population density correction into the GLM. Thus, to understand how the environment shapes any microbial community, there must be an independent measure of overall community abundance. The power of external normalization has recently been demonstrated as a XYZ et. al published a paper where they were able to achieve nearly quantitative estimation of taxon abundance using QPCR as an external measure of total bacterial density. 
@@ -316,13 +316,10 @@ model.key
 ```
 
 Run test of environmental correlation:
+
+
 ```{r}
-<-function(x, model){
-  require(vegan)
-  a<-adonis()
-  summary(a)
-  
-}
+
 ```
 If we want to test for all decreasing effects, we can set number two as zero in the comparison tables.
 
@@ -446,6 +443,8 @@ the samples so far follow the same basic distribution, with minor tweaks to the 
 
 The purpose of this next modeling framework is to illustrate how normalization affects inference of both environmental gradient detection, and interacts with more realistic uncertainty.
 
+We are going to examine the role of sparcity. [] illustrate that the microbial community can be viewed as being partitioned between species that are in effect randomly distributed and those that are central and abundant to a specific set of samples. The key is to distinguish these distributional patterns and extract the important environmental relationships from them. It is imporant to note that some relationships that may appear random are in fact driven by real filtering effects that are simply not being measured.
+
 ```{r pressure, echo=FALSE}
 AllSpp<-c(paste0("spp", c(1:700), sep="")) # make a quick list of all species functions
 AllSpp<-lapply(AllSpp, get) # connect function to name
@@ -454,13 +453,13 @@ AllSpp<-unlist(AllSpp)  # format to be read by downstream functions
 names(AllSpp)<-c(paste0("spp", c(1:700)))
 
 
-seeds<-round(rnorm(50,5000,100)) 
-set.seed(seeds[1]) # 4945
+# if desired: seeds<-round(rnorm(50,5000,100)) 
+# set.seed(seeds[1]) # 4945
 Comm1<-base::sample(AllSpp, 50, replace=F) # pick 200 random taxa from pool
-set.seed(seeds[2]) # 4902
-Comm2<-base::sample(AllSpp, 50, replace=F) # pick 200 random taxa from pool
-set.seed(seeds[4]) # 5098
-Comm3<-base::sample(AllSpp, 50, replace=F) # pick 200 random taxa from pool
+#set.seed(seeds[2]) # 4902
+#Comm2<-base::sample(AllSpp, 50, replace=F) # pick 200 random taxa from pool
+#set.seed(seeds[4]) # 5098
+#Comm3<-base::sample(AllSpp, 50, replace=F) # pick 200 random taxa from pool
 
 names(Comm1)
 names(Comm2)
@@ -1205,33 +1204,13 @@ test.summary
 
 ```
 ```{r}
-anova.otu1<-as.data.frame(t(as.matrix(otu_table(model4))))
-anova.otu2<-as.data.frame(t(as.matrix(otu_table(model4.deseq.raw))))
-anova.otu3<-as.data.frame(t(as.matrix(otu_table(model4.scaled))))
-anova.otu4<-as.data.frame(t(as.matrix(otu_table(model4.raw))))
 
-A <- as.matrix(anova.otu1)
-B <- as.matrix(anova.otu2)
-C <- as.matrix(anova.otu3)
-D <- as.matrix(anova.otu4)
-df.test<-data.frame(sapply(seq.int(dim(A)[2]), function(i) cor(A[,i], B[,i])), sapply(seq.int(dim(A)[2]), function(i) cor(A[,i], C[,i])), sapply(seq.int(dim(A)[2]), function(i) cor(A[,i], D[,i])))
 
-df.test[is.na(df.test)]<-0
-sum(df.test$sapply.seq.int.dim.A..2....function.i..cor.A...i...B...i...)
-sum(df.test$sapply.seq.int.dim.A..2....function.i..cor.A...i...C...i...)
-sum(df.test$sapply.seq.int.dim.A..2....function.i..cor.A...i...D...i...)
- 
-!identical(colnames(anova.otu1),colnames(anova.otu1))
+# make table of r squared for each species between two otu tables. Problematic because the predictive value of organisms that occure only in one site is 100% even if the predicted abundance is very far off.
 spp.corr<-function(ps1, ps2){
 anova.otu1<-as.data.frame(t(as.matrix(otu_table(ps1))))
 anova.otu2<-as.data.frame(t(as.matrix(otu_table(ps2))))
 if(!identical(colnames(ps1), colnames(ps2))) {print("Species do not match, check taxa_names()")}
-#anova.env<-data.frame(as.matrix(sample_data(ps)))
-#anova.env$F1<-as.numeric(as.character(anova.env$F1))
-#anova.env$F2<-as.numeric(as.character(anova.env$F2))
-#anova.env$F3<-as.numeric(as.character(anova.env$F3))
-#anova.env$F4<-as.numeric(as.character(anova.env$F4))
-#anova.env$F5<-as.numeric(as.character(anova.env$F5))
 out<-list(colnames)
 testlm<-apply(anova.otu1, 2, function(x) {
   #l1=summary(lm(x~anova.env$Factor+anova.env$F1+anova.env$F2+anova.env$F3+anova.env$F4+anova.env$F5))
@@ -1247,7 +1226,7 @@ out
 # make the difference between predicted values and actual normalized values of species abundance for each normalization method
 # index using sum of difference for each method between predicted and actual abundance for each spp and all spp
 
-
+# normalize each species count by the relative abundance of that species at each site compared to it's own abundance at each other site. This is a pecursor for an analysis to determine how well each pre-processing and normalization method approximates the actual magnitude and direction of changes in species abundance
 Delta.sppcount<-function(ps, method=0){
   tab<-as.data.frame(as.matrix(otu_table(model4)))
   tab[]<-0
@@ -1278,27 +1257,53 @@ Delta.sppcount<-function(ps, method=0){
   }
 }
 
+
+# this function estimates the difference in magnitude estimation of species abundance when compared to the actual changes in species abundance in the environment.
+Dspp.index<-function(l.tab, R){ R<-as.matrix(R)
+lapply(l.tab, function(a) {
+   A<-as.matrix(a)
+  sum(sapply(seq.int(dim(R)[2]), function(i) sum(abs(R[,i] - A[,i]))))}) # should to check operation properly!! check that they are identical, check that they go line by line...
+ }
+
+  
+```
+
+```{r}
+
+# model workflow
+anova.otu1<-as.data.frame(t(as.matrix(otu_table(model4))))
+anova.otu2<-as.data.frame(t(as.matrix(otu_table(model4.deseq.raw))))
+anova.otu3<-as.data.frame(t(as.matrix(otu_table(model4.scaled))))
+anova.otu4<-as.data.frame(t(as.matrix(otu_table(model4.raw))))
+
+A <- as.matrix(anova.otu1)
+B <- as.matrix(anova.otu2)
+C <- as.matrix(anova.otu3)
+D <- as.matrix(anova.otu4)
+df.test<-data.frame(sapply(seq.int(dim(A)[2]), function(i) cor(A[,i], B[,i])), sapply(seq.int(dim(A)[2]), function(i) cor(A[,i], C[,i])), sapply(seq.int(dim(A)[2]), function(i) cor(A[,i], D[,i])))
+
+df.test[is.na(df.test)]<-0
+sum(df.test$sapply.seq.int.dim.A..2....function.i..cor.A...i...B...i...)
+sum(df.test$sapply.seq.int.dim.A..2....function.i..cor.A...i...C...i...)
+sum(df.test$sapply.seq.int.dim.A..2....function.i..cor.A...i...D...i...)
+ 
+!identical(colnames(anova.otu1),colnames(anova.otu1))
+
+### need to somehow put place holder for zeros for samples that have been dropped in the rarefied/subsampled samples
+### test against 1  
+
+
 DSpp.model4.ref<-as.data.frame(t(as.matrix(otu_table(Delta.sppcount(model4, method=0)))))
 DSpp.model4.raw<-as.data.frame(t(as.matrix(otu_table(Delta.sppcount(model4.raw, method=0)))))
 DSpp.model4.eRare<-as.data.frame(t(as.matrix(otu_table(Delta.sppcount(model4.eRare, method=0)))))
 DSpp.model4.pRare<-as.data.frame(t(as.matrix(otu_table(Delta.sppcount(model4.pRare, method=0)))))
 DSpp.model4.scaled<-as.data.frame(t(as.matrix(otu_table(Delta.sppcount(model4.scaled, method=0)))))
 model4list<-list("DSpp.model4.raw"=DSpp.model4.raw,"DSpp.model4.eRare"=DSpp.model4.eRare,"DSpp.model4.pRare"=DSpp.model4.pRare,"DSpp.model4.scaled"=DSpp.model4.scaled)
-model4list<-list(DSpp.model4.raw,DSpp.model4.eRare,DSpp.model4.pRare,DSpp.model4.scaled)
 
 DSpp.model4.ref<-as.data.frame(t(as.matrix(otu_table(Delta.sppcount(model4.deseq.raw, method=1)))))
+Null.ref<-as.data.frame(matrix(data=1, nrow=193,ncol=30))
+model4list<-list(DSpp.model4.raw,DSpp.model4.eRare,DSpp.model4.pRare,DSpp.model4.scaled,Null.ref)
 
-Dspp.index<-function(l.tab, R){ R<-as.matrix(R)
-lapply(l.tab, function(a) {
-   A<-as.matrix(a)
-  sum(sapply(seq.int(dim(R)[2]), function(i) sum(abs(R[,i] - A[,i]))))})
- }
-
-test.DsppIndex<-Dspp.index(model4list, R=DSpp.model4.ref)
-  
-
-### need to somehow put place holder for zeros for samples that have been dropped in the rarefied/subsampled samples
-  
 
 rownames(as.data.frame(t(as.matrix(otu_table(model4.eRare)))))
 rownames(as.data.frame(t(as.matrix(otu_table(model4.pRare)))))
@@ -1312,6 +1317,9 @@ D <- as.matrix(anova.otu4)
 sum(sapply(seq.int(dim(A)[2]), function(i) sum(abs(A[,i] - B[,i]))))
 sum(sapply(seq.int(dim(A)[2]), function(i) sum(abs(A[,i] - C[,i]))))
 sum(sapply(seq.int(dim(A)[2]), function(i) sum(abs(A[,i] - D[,i]))))
+sum(sapply(seq.int(dim(A)[2]), function(i) sum(abs(A[,i] - 1))))
+
+test.DsppIndex<-Dspp.index(model4list, R=DSpp.model4.ref)
 
 ```
 
