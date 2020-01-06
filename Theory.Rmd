@@ -462,8 +462,8 @@ Comm1<-base::sample(AllSpp, 50, replace=F) # pick 200 random taxa from pool
 #Comm3<-base::sample(AllSpp, 50, replace=F) # pick 200 random taxa from pool
 
 names(Comm1)
-names(Comm2)
-names(Comm3)
+#names(Comm2)
+#names(Comm3)
 
 
 
@@ -577,6 +577,81 @@ sample_sums(model2)
 Now let's preprossess the sample data
 ```{R}
 sample2<-rnorm(30, 2000, 1000)
+sample2<-round(abs(sample2)) # Sequencing depth to sample
+model2.raw<-make.rarefy1(model2, sample2)
+otu_table(model2.raw)
+sample_sums(model2.raw)
+
+sample_data(model2.raw)$Factor<-as.factor(c(rep("one",5),rep("two",5),rep("three",5),rep("four",5),rep("five",5),rep("six",5)))
+sample_data(model2.raw)$Factor2<-as.factor(c(rep(1,5),rep(2,5),rep(3,5),rep(4,5),rep(5,5),rep(6,5)))
+
+```
+Let's explore the role that sequencing variation has on inference!
+```{R}
+
+# function for setting sequencing/sampling depth per sample
+# b = mean value
+# c = varition
+set.seqDepth<-function(b, c){
+  d1<-rnorm(30, b, c)
+  d1[d1<0]<-0
+  d2<-rnorm(30, 100, 10)# because typically there is at least some low level number of counts
+  depth=d1+d2
+  depth<-round(depth)
+  depth
+}
+
+
+# function for testing the relationship between sequencing depth/var and predictive power
+# do 10 reps across 3 levels and 5 variances is 150 points
+benchmark.norm<-function(model){
+  val<-data.frame("mean level"=c(rep(20, 50), rep(200, 50), rep(2000, 50)), "var level"=c(rep(c(rep(1, 10), rep(2, 10), rep(3, 10), rep(4, 10), rep(5, 10)), 3)), "Index"=c(rep(0, 150)))
+  val$Index=NULL
+  
+  for(i in 1:nrow(val)){
+    seq.depth<-set.seqDepth(val[i,1], val[i,2])
+    otu<-make.rarefy2(model, seq.depth)
+    
+    Ri<-as.matrix(as.data.frame(t(as.matrix(otu_table(Delta.sppcount(model, model, method=0))))))
+    Ai<-as.matrix(as.data.frame(t(as.matrix(otu_table(Delta.sppcount(otu, model, method=0))))))
+    Ci<-sum(sapply(seq.int(dim(R)[2]), function(i) sum(abs(Ri[,i] - Ai[,i]))))
+    
+    val[i,3]<-Ci
+  }
+  
+#val$Index<-Index
+val
+}
+
+BM.model4<-benchmark.norm(model=model4)
+BM.model4
+# pipeline tests
+set.seqDepth(2000,10000)
+
+# Very unsaturated/undersampled
+seq.var1<-set.seqDepth(20,1)
+seq.var2<-set.seqDepth(20,10)
+seq.var3<-set.seqDepth(20,100)
+seq.var4<-set.seqDepth(20,1000)
+seq.var5<-set.seqDepth(20,10000) # unrealistically large?
+
+seq.var6<-set.seqDepth(200,10)
+seq.var7<-set.seqDepth(200,100)
+seq.var8<-set.seqDepth(200,1000)
+seq.var9<-set.seqDepth(200,10000)
+seq.var10<-set.seqDepth(200,100000)
+
+# probably saturated
+seq.var11<-set.seqDepth(2000,10)
+seq.var12<-set.seqDepth(2000,100)
+seq.var13<-set.seqDepth(2000,1000)
+seq.var14<-set.seqDepth(2000,10000)
+seq.var15<-set.seqDepth(2000,100000)
+
+
+```
+
+```{r}
 sample2<-round(abs(sample2)) # Sequencing depth to sample
 model2.raw<-make.rarefy1(model2, sample2)
 otu_table(model2.raw)
@@ -1227,10 +1302,10 @@ out
 # index using sum of difference for each method between predicted and actual abundance for each spp and all spp
 
 # normalize each species count by the relative abundance of that species at each site compared to it's own abundance at each other site. This is a pecursor for an analysis to determine how well each pre-processing and normalization method approximates the actual magnitude and direction of changes in species abundance
-Delta.sppcount<-function(ps, method=0){
-  tab<-as.data.frame(as.matrix(otu_table(model4)))
+Delta.sppcount<-function(ps,ref, method=0){
+  tab<-as.data.frame(as.matrix(otu_table(ref)))
   tab[]<-0
-  env<-sample_data(model4)
+  env<-sample_data(ref)
   tab<-phyloseq(otu_table(tab, taxa_are_rows = TRUE), sample_data(env))
   #make phyloseq object, subset phyloseq then merge second phyloseq.
   
@@ -1320,6 +1395,7 @@ sum(sapply(seq.int(dim(A)[2]), function(i) sum(abs(A[,i] - D[,i]))))
 sum(sapply(seq.int(dim(A)[2]), function(i) sum(abs(A[,i] - 1))))
 
 test.DsppIndex<-Dspp.index(model4list, R=DSpp.model4.ref)
+
 
 ```
 
