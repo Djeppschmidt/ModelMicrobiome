@@ -587,7 +587,10 @@ sample_data(model2.raw)$Factor2<-as.factor(c(rep(1,5),rep(2,5),rep(3,5),rep(4,5)
 
 ```
 Let's explore the role that sequencing variation has on inference!
+
+Remember that model4 is defined...
 ```{R}
+# VSI ####
 
 # function for setting sequencing/sampling depth per sample
 # b = mean value
@@ -601,12 +604,11 @@ set.seqDepth<-function(b, c){
   depth
 }
 
-
 # function for testing the relationship between sequencing depth/var and predictive power
 # do 10 reps across 3 levels and 5 variances is 150 points
 benchmark.norm<-function(model){
-  val<-data.frame("mean level"=c(rep(20, 50), rep(200, 50), rep(2000, 50)), "var level"=c(rep(c(rep(1, 10), rep(2, 10), rep(3, 10), rep(4, 10), rep(5, 10)), 3)), "Index"=c(rep(0, 150)))
-  val$Index=NULL
+  val<-data.frame("mean level"=c(rep(20, 50), rep(200, 50), rep(2000, 50)), "var level"=c(rep(c(rep(1, 10), rep(10, 10), rep(100, 10), rep(1000, 10), rep(10000, 10)), 3)), "Index"=c(rep(0, 150)))
+  Index=NULL
   
   for(i in 1:nrow(val)){
     seq.depth<-set.seqDepth(val[i,1], val[i,2])
@@ -616,10 +618,12 @@ benchmark.norm<-function(model){
     Ai<-as.matrix(as.data.frame(t(as.matrix(otu_table(Delta.sppcount(otu, model, method=0))))))
     Ci<-sum(sapply(seq.int(dim(R)[2]), function(i) sum(abs(Ri[,i] - Ai[,i]))))
     
-    val[i,3]<-Ci
+    #val[i,3]<-Ci
+    Index[i]<-Ci
   }
   
 #val$Index<-Index
+val$Index<-Index
 val
 }
 
@@ -628,25 +632,22 @@ BM.model4
 # pipeline tests
 set.seqDepth(2000,10000)
 
-# Very unsaturated/undersampled
-seq.var1<-set.seqDepth(20,1)
-seq.var2<-set.seqDepth(20,10)
-seq.var3<-set.seqDepth(20,100)
-seq.var4<-set.seqDepth(20,1000)
-seq.var5<-set.seqDepth(20,10000) # unrealistically large?
 
-seq.var6<-set.seqDepth(200,10)
-seq.var7<-set.seqDepth(200,100)
-seq.var8<-set.seqDepth(200,1000)
-seq.var9<-set.seqDepth(200,10000)
-seq.var10<-set.seqDepth(200,100000)
+BM.model4$mv.Ratio<-BM.model4$var.level/BM.model4$mean.level
 
-# probably saturated
-seq.var11<-set.seqDepth(2000,10)
-seq.var12<-set.seqDepth(2000,100)
-seq.var13<-set.seqDepth(2000,1000)
-seq.var14<-set.seqDepth(2000,10000)
-seq.var15<-set.seqDepth(2000,100000)
+
+with(BM.model4, plot(Index~jitter(mean.level), col=var.level))
+
+with(BM.model4, plot(Index~jitter(log(mv.Ratio)), col=var.level))
+
+ggplot(BM.model4, aes(y=Index, x=log(mv.Ratio), color=as.factor(mean.level)))+theme_classic()+geom_point()
+ggplot(BM.model4, aes(y=Index, x=log(mv.Ratio), color=as.factor(var.level)))+theme_classic()+geom_point()
+
+View(BM.model4)
+```
+
+```{r}
+# Benchmark normalization ####
 
 
 ```
@@ -1218,7 +1219,7 @@ testlm[is.na(testlm)]<-0
 lost<-length(testlm[testlm==0])
 out<-list("lm"=testlm, "lost"=lost)
 out
-}
+} # challenging because the r squared is not necessarily the best indicator...
 
 
 # ps1 is the reference (model 4)
@@ -1229,6 +1230,57 @@ SVI<-function(ps1, ps2){
   reference<-lm.test(ps1)
   trt<-lm.test(ps2)
   sum(reference$lm-trt$lm)
+}
+
+# NEW SVI ####
+SVI2 <-function(ps1.R, ps2.T){
+  reference<-as.matrix(as.data.frame(t(as.matrix(otu_table(Delta.sppcount(ps1.R, ps1.R, method=0))))))
+  treatment<-as.matrix(as.data.frame(t(as.matrix(otu_table(Delta.sppcount(ps2.T, ps1.R, method=0))))))
+  Ci<-sapply(seq.int(dim(reference)[1]), function(i) sum(abs(reference[i,] - treatment[i,])))
+  names(Ci)<-rownames(reference)
+  Ci
+}
+
+SVI2(model4, model4.raw)
+SVI2(model4, model4.eRare)
+SVI2(model4, model4.pRare)
+SVI2(model4, model4.scaled)
+SVI2(model4, model4.deseq.raw)
+SVI2(model4, model4.deseq.eRare)
+SVI2(model4, model4.deseq.pRare)
+SVI2(model4, model4.deseq.scaled)
+SVI2(model4, model4.Limma.raw)
+SVI2(model4, model4.Limma.eRare)
+SVI2(model4, model4.Limma.pRare)
+SVI2(model4, model4.Limma.scaled)
+
+sample_sums(prune_taxa("spp127", model4))
+sample_sums(prune_taxa("spp127", model4.raw))
+sample_sums(prune_taxa("spp127", model4.eRare))
+sample_sums(prune_taxa("spp127", model4.pRare))
+sample_sums(prune_taxa("spp127", model4.scaled))
+
+
+# for cannabalism:
+benchmark.norm<-function(model){
+  val<-data.frame("mean level"=c(rep(20, 50), rep(200, 50), rep(2000, 50)), "var level"=c(rep(c(rep(1, 10), rep(10, 10), rep(100, 10), rep(1000, 10), rep(10000, 10)), 3)), "Index"=c(rep(0, 150)))
+  Index=NULL
+  
+  for(i in 1:nrow(val)){
+    seq.depth<-set.seqDepth(val[i,1], val[i,2])
+    otu<-make.rarefy2(model, seq.depth)
+    
+    Ri<-as.matrix(as.data.frame(t(as.matrix(otu_table(Delta.sppcount(model, model, method=0))))))
+    Ai<-as.matrix(as.data.frame(t(as.matrix(otu_table(Delta.sppcount(otu, model, method=0))))))
+    Ci<-sum(sapply(seq.int(dim(R)[2]), function(i) sum(abs(Ri[,i] - Ai[,i]))))
+    
+    #val[i,3]<-Ci
+    Index[i]<-Ci
+  }
+  
+#val$Index<-Index
+val$Index<-Index
+val
 }
 
 # species variance index
@@ -1244,6 +1296,8 @@ SVI(model4, model4.Limma.raw)
 SVI(model4, model4.Limma.eRare)
 SVI(model4, model4.Limma.pRare)
 SVI(model4, model4.Limma.scaled)
+
+
 
 model4.lm<-lm.test(model4)
 model4.raw.lm<-lm.test(model4.raw)
@@ -1278,6 +1332,7 @@ names(test.summary)<-names(testaov)
 test.summary
 
 ```
+
 ```{r}
 
 
@@ -1665,6 +1720,7 @@ ggplot(model4.plot.dat, aes(x=Difference, y=Deseq.raw, color=as.factor(Deseq.sca
 ggplot(model4.plot.dat, aes(x=Difference, y=Deseq.scaled, color=as.factor(Deseq.raw)))+
   geom_point(alpha=0.2, position="jitter")+theme_classic()
 ```
+
 ```{r}
 # Deseq raw vs indicspp raw
 ggplot(model4.plot.dat, aes(x=Difference, y=Deseq.raw, color=as.factor(Indicspp.raw)))+
@@ -1876,6 +1932,133 @@ Metrics to keep for the real sets:
 # number of significant log-fold change that are not signficant indicators or ANOVA
 # number of spp found in anovas that do not have log-fold change
 # correlation of species to environmental variables
+
+
+# make index of endemism: proportion of taxa that are unique to a site
+# phylogenetic distance matrix ...
+
+# false discovery rate ####
+generate.key<-function(){
+  
+}
+benchmark.FDR<-function(commonN, groupN, singleN, N){
+  require(plyr)
+  require()
+  out<-NULL
+AllSpp<-c(paste0("spp", c(1:700), sep="")) # make a quick list of all species functions
+AllSpp<-lapply(AllSpp, get) # connect function to name
+AllSpp<-unlist(AllSpp)  # format to be read by downstream functions
+names(AllSpp)<-c(paste0("spp", c(1:700)))
+# Define list of 5 species w/ global distribution
+global.spp<-names(sample(AllSpp, commonN, replace=F))
+
+N<-list(c(1:N)) # ?? do for loop instead? what will be easier for htis?
+
+# define list of species w/ regional distribution
+group.spp<-NULL
+group.spp$group1<-names(sample(AllSpp, groupN, replace=F))
+group.spp$group2<-names(sample(AllSpp, groupN, replace=F))
+group.spp$group3<-names(sample(AllSpp, groupN, replace=F))
+group.spp$group4<-names(sample(AllSpp, groupN, replace=F))
+group.spp$group5<-names(sample(AllSpp, groupN, replace=F))
+group.spp$group6<-names(sample(AllSpp, groupN, replace=F))
+
+# define list of species found at each site
+rando.spp<-NULL
+rando.spp$Site1<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group1), global.spp))
+rando.spp$Site2<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group1), global.spp))
+rando.spp$Site3<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group1), global.spp))
+rando.spp$Site4<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group1), global.spp))
+rando.spp$Site5<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group1), global.spp))
+rando.spp$Site6<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group2), global.spp))
+rando.spp$Site7<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group2), global.spp))
+rando.spp$Site8<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group2), global.spp))
+rando.spp$Site9<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group2), global.spp))
+rando.spp$Site10<-unique(c(names(sample(AllSpp,singleN, replace=F)), c(group.spp$group2), global.spp))
+rando.spp$Site11<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group3), global.spp))
+rando.spp$Site12<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group3), global.spp))
+rando.spp$Site13<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group3), global.spp))
+rando.spp$Site14<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group3), global.spp))
+rando.spp$Site15<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group3), global.spp))
+rando.spp$Site16<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group4), global.spp))
+rando.spp$Site17<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group4), global.spp))
+rando.spp$Site18<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group4), global.spp))
+rando.spp$Site19<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group4), global.spp))
+rando.spp$Site20<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group4), global.spp))
+rando.spp$Site21<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group5), global.spp))
+rando.spp$Site22<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group5), global.spp))
+rando.spp$Site23<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group5), global.spp))
+rando.spp$Site24<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group5), global.spp))
+rando.spp$Site25<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group5), global.spp))
+rando.spp$Site26<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group6), global.spp))
+rando.spp$Site27<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group6), global.spp))
+rando.spp$Site28<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group6), global.spp))
+rando.spp$Site29<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group6), global.spp))
+rando.spp$Site30<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group6), global.spp))
+
+# make list of unique species arrays
+
+library(reshape2)
+f1c1<-c(5,5,5,5,5,5) # number of selections
+f1c2<-c(1,3,10,30,60,15) # mean value of selections
+f1c3<-c(0.5,1,4,10,20,5) # SD of selections
+F1.frame<-mapply(rnorm, f1c1,f1c2,f1c3) # pick Factor 1 value for each site
+F1<-reshape2::melt(F1.frame)
+
+#F2
+f2c1<-c(5,5,5,5,5,5) # number of selections
+f2c2<-c(34,30,10,55,35,60) # mean value of selections
+f2c3<-c(10,10,3,10,1,20) # SD of selections
+F2.frame<-mapply(rnorm, f2c1,f2c2,f2c3) # pick Factor 2 value for each site
+F2<-reshape2::melt(F2.frame)
+
+#F3
+f3c1<-c(5,5,5,5,5,5) # number of selections
+f3c2<-c(1,3,10,15,3,15) # mean value of selections
+f3c3<-c(0.5,1,3,3,1,5) # SD of selections
+F3.frame<-mapply(rnorm, f3c1,f3c2,f3c3) # pick Factor 3 value for each site
+F3<-reshape2::melt(F3.frame)
+
+#F4
+f4c1<-c(5,5,5,5,5,5) # number of selections
+f4c2<-c(1,3,10,15,3,15) # mean value of selections
+f4c3<-c(0.5,0.5,3,3,1,5) # SD of selections
+F4.frame<-mapply(rnorm, f4c1,f4c2,f4c3) # pick Factor 4 value for each site
+F4<-reshape2::melt(F4.frame)
+
+#F5
+f5c1<-c(5,5,5,5,5,5) # number of selections
+f5c2<-c(50,40,30,20,10,15) # mean value of selections
+f5c3<-c(20,10,10,5,3,5) # SD of selections
+F5.frame<-mapply(rnorm, f5c1,f5c2,f5c3) # pick Factor 5 value for each site
+F5<-reshape2::melt(F5.frame)
+Factors<-data.frame(F1$value,F2$value,F3$value,F4$value,F5$value) # combine factors into data table
+
+env<-lapply(,) # make list of env data.frames
+Sites<-c(paste0("Site", 1:30))
+rownames(Factors)<-Sites
+colnames(Factors)<-c("F1","F2","F3","F4","F5")
+head(Factors)
+
+
+# make list of OTU tables ...
+
+# run each normalization on the list of otu tables to generate outputs
+  
+# plot outputs
+
+
+########### next ... 
+  out$plotVSI2<-ggplot()+geom_bar()+theme_classic()
+  out$plotVSI<-ggplot()+geom_bar()+theme_classic()
+  out$plotFDR<-ggplot()+geom_line()+theme_classic()
+  out
+}
+
+# true discovery rate ####
+
+# Power to detect #### ( undiscovered true positives )
+
 
 ```
 
