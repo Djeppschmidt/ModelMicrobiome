@@ -647,7 +647,7 @@ View(BM.model4)
 ```
 
 ```{r}
-# Benchmark normalization ####
+
 
 
 ```
@@ -1229,7 +1229,8 @@ out
 SVI<-function(ps1, ps2){
   reference<-lm.test(ps1)
   trt<-lm.test(ps2)
-  sum(reference$lm-trt$lm)
+  o<-reference$lm-trt$lm
+  o
 }
 
 # NEW SVI ####
@@ -1241,15 +1242,15 @@ SVI2 <-function(ps1.R, ps2.T){
   Ci
 }
 
-SVI2(model4, model4.raw)
-SVI2(model4, model4.eRare)
-SVI2(model4, model4.pRare)
-SVI2(model4, model4.scaled)
-SVI2(model4, model4.deseq.raw)
+svi2.model4.raw<-SVI2(model4, model4.raw)
+svi2.model4.eRare<-SVI2(model4, model4.eRare)
+svi2.model4.pRare<-SVI2(model4, model4.pRare)
+svi2.model4.scaled<-SVI2(model4, model4.scaled)
+svi2.model4.deseq.raw<-SVI2(model4, model4.deseq.raw)
 SVI2(model4, model4.deseq.eRare)
 SVI2(model4, model4.deseq.pRare)
 SVI2(model4, model4.deseq.scaled)
-SVI2(model4, model4.Limma.raw)
+svi2.model4.limma.raw<-SVI2(model4, model4.Limma.raw)
 SVI2(model4, model4.Limma.eRare)
 SVI2(model4, model4.Limma.pRare)
 SVI2(model4, model4.Limma.scaled)
@@ -1283,22 +1284,70 @@ val$Index<-Index
 val
 }
 
+length(SVI(model4, model4.raw))
+length(SVI(model4, model4.eRare))
+length(SVI(model4, model4.pRare))
+length(SVI(model4, model4.scaled))
+length(SVI(model4, model4.deseq.raw))
+length(SVI(model4, model4.deseq.eRare))
+length(SVI(model4, model4.deseq.pRare))
+length(SVI(model4, model4.deseq.scaled))
+length(SVI(model4, model4.Limma.raw))
+length(SVI(model4, model4.Limma.eRare))
+length(SVI(model4, model4.Limma.pRare))
+length(SVI(model4, model4.Limma.scaled)) # all same length; therefore, can automate making a dataframe out of them
+
+svi1.model4.raw<-SVI(model4, model4.raw)
+svi1.model4.eRare<-SVI(model4, model4.eRare)
+svi1.model4.pRare<-SVI(model4, model4.pRare)
+svi1.model4.scaled<-SVI(model4, model4.scaled)
+svi1.model4.deseq.raw<-SVI(model4, model4.deseq.raw)
+#length(SVI(model4, model4.deseq.eRare)
+#length(SVI(model4, model4.deseq.pRare)
+#length(SVI(model4, model4.deseq.scaled)
+svi1.model4.limma.raw<-SVI(model4, model4.Limma.raw)
+l#ength(SVI(model4, model4.Limma.eRare)
+#length(SVI(model4, model4.Limma.pRare)
+#length(SVI(model4, model4.Limma.scaled)
+
+
 # species variance index
-SVI(model4, model4.raw)
-SVI(model4, model4.eRare)
-SVI(model4, model4.pRare)
-SVI(model4, model4.scaled)
-SVI(model4, model4.deseq.raw)
-SVI(model4, model4.deseq.eRare)
-SVI(model4, model4.deseq.pRare)
-SVI(model4, model4.deseq.scaled)
-SVI(model4, model4.Limma.raw)
-SVI(model4, model4.Limma.eRare)
-SVI(model4, model4.Limma.pRare)
-SVI(model4, model4.Limma.scaled)
+S.var1<-data.frame("raw"=svi1.model4.raw,
+"eRare"=svi1.model4.eRare,
+"pRare"=svi1.model4.pRare,
+"scaled"=svi1.model4.scaled,
+"deseq"=svi1.model4.deseq.raw,
+"Limma"=svi1.model4.limma.raw
+)
+S.var1$Taxa<-rownames(S.var1)
+
+S.var1a<-reshape2::melt(S.var1, id.vars="Taxa")
+ggplot(S.var1a, aes(variable,value))+geom_boxplot()+geom_hline(yintercept=0, linetype="dashed", color="red")+theme_classic()
+
+S.var2<-data.frame("raw"=svi2.model4.raw,
+"eRare"=svi2.model4.eRare,
+"pRare"=svi2.model4.pRare,
+"scaled"=svi2.model4.scaled,
+"deseq"=svi2.model4.deseq.raw,
+"Limma"=svi2.model4.limma.raw
+)
+S.var2$Taxa<-rownames(S.var2)
+
+S.var2a<-reshape2::melt(S.var2, id.vars="Taxa")
+
+ggplot(S.var2a, aes(variable,value))+geom_boxplot()+theme_classic()
 
 
+#SVI(model4, model4.deseq.eRare),
+#SVI(model4, model4.deseq.pRare),
+#SVI(model4, model4.deseq.scaled),
+#SVI(model4, model4.Limma.eRare),
+#SVI(model4, model4.Limma.pRare),
+#SVI(model4, model4.Limma.scaled)
 
+```
+
+```{r}
 model4.lm<-lm.test(model4)
 model4.raw.lm<-lm.test(model4.raw)
 model4.eRare.lm<-lm.test(model4.eRare)
@@ -1472,11 +1521,6 @@ make.PERMANOVA<-function(ps){
   a<-adonis(x~Factor2+F1+F2+F3+F4+F5, data=y)
   a
 }
-
-
-
-
-
 
 ```
 
@@ -1941,98 +1985,121 @@ Metrics to keep for the real sets:
 generate.key<-function(){
   
 }
+
+# N is number of replicates
 benchmark.FDR<-function(commonN, groupN, singleN, N){
   require(plyr)
   require()
   out<-NULL
-AllSpp<-c(paste0("spp", c(1:700), sep="")) # make a quick list of all species functions
-AllSpp<-lapply(AllSpp, get) # connect function to name
-AllSpp<-unlist(AllSpp)  # format to be read by downstream functions
-names(AllSpp)<-c(paste0("spp", c(1:700)))
-# Define list of 5 species w/ global distribution
-global.spp<-names(sample(AllSpp, commonN, replace=F))
 
-N<-list(c(1:N)) # ?? do for loop instead? what will be easier for htis?
+
+  # define environment and community
+  # commonN = number of common spp
+  # groupN = number of spp for each group
+  # singleN = number of spp for each site
+  # D = subsampling depth
+  pick.tax<-function(commonN, groupN, singleN, D){
+    AllSpp<-c(paste0("spp", c(1:700), sep="")) # make a quick list of all species functions
+    AllSpp<-lapply(AllSpp, get) # connect function to name
+    AllSpp<-unlist(AllSpp)  # format to be read by downstream functions
+    names(AllSpp)<-c(paste0("spp", c(1:700)))
+
+    # Define list of 5 species w/ global distribution
+    global.spp<-names(sample(AllSpp, commonN, replace=F))
 
 # define list of species w/ regional distribution
-group.spp<-NULL
-group.spp$group1<-names(sample(AllSpp, groupN, replace=F))
-group.spp$group2<-names(sample(AllSpp, groupN, replace=F))
-group.spp$group3<-names(sample(AllSpp, groupN, replace=F))
-group.spp$group4<-names(sample(AllSpp, groupN, replace=F))
-group.spp$group5<-names(sample(AllSpp, groupN, replace=F))
-group.spp$group6<-names(sample(AllSpp, groupN, replace=F))
+    group.spp<-NULL
+    group.spp$group1<-names(sample(AllSpp, groupN, replace=F))
+    group.spp$group2<-names(sample(AllSpp, groupN, replace=F))
+    group.spp$group3<-names(sample(AllSpp, groupN, replace=F))
+    group.spp$group4<-names(sample(AllSpp, groupN, replace=F))
+    group.spp$group5<-names(sample(AllSpp, groupN, replace=F))
+    group.spp$group6<-names(sample(AllSpp, groupN, replace=F))
 
 # define list of species found at each site
-rando.spp<-NULL
-rando.spp$Site1<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group1), global.spp))
-rando.spp$Site2<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group1), global.spp))
-rando.spp$Site3<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group1), global.spp))
-rando.spp$Site4<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group1), global.spp))
-rando.spp$Site5<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group1), global.spp))
-rando.spp$Site6<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group2), global.spp))
-rando.spp$Site7<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group2), global.spp))
-rando.spp$Site8<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group2), global.spp))
-rando.spp$Site9<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group2), global.spp))
-rando.spp$Site10<-unique(c(names(sample(AllSpp,singleN, replace=F)), c(group.spp$group2), global.spp))
-rando.spp$Site11<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group3), global.spp))
-rando.spp$Site12<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group3), global.spp))
-rando.spp$Site13<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group3), global.spp))
-rando.spp$Site14<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group3), global.spp))
-rando.spp$Site15<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group3), global.spp))
-rando.spp$Site16<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group4), global.spp))
-rando.spp$Site17<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group4), global.spp))
-rando.spp$Site18<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group4), global.spp))
-rando.spp$Site19<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group4), global.spp))
-rando.spp$Site20<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group4), global.spp))
-rando.spp$Site21<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group5), global.spp))
-rando.spp$Site22<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group5), global.spp))
-rando.spp$Site23<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group5), global.spp))
-rando.spp$Site24<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group5), global.spp))
-rando.spp$Site25<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group5), global.spp))
-rando.spp$Site26<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group6), global.spp))
-rando.spp$Site27<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group6), global.spp))
-rando.spp$Site28<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group6), global.spp))
-rando.spp$Site29<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group6), global.spp))
-rando.spp$Site30<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group6), global.spp))
+    rando.spp<-NULL
+    rando.spp$Site1<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group1), global.spp))
+    rando.spp$Site2<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group1), global.spp))
+    rando.spp$Site3<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group1), global.spp))
+    rando.spp$Site4<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group1), global.spp))
+    rando.spp$Site5<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group1), global.spp))
+    rando.spp$Site6<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group2), global.spp))
+    rando.spp$Site7<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group2), global.spp))
+    rando.spp$Site8<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group2), global.spp))
+    rando.spp$Site9<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group2), global.spp))
+    rando.spp$Site10<-unique(c(names(sample(AllSpp,singleN, replace=F)), c(group.spp$group2), global.spp))
+    rando.spp$Site11<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group3), global.spp))
+    rando.spp$Site12<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group3), global.spp))
+    rando.spp$Site13<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group3), global.spp))
+    rando.spp$Site14<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group3), global.spp))
+    rando.spp$Site15<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group3), global.spp))
+    rando.spp$Site16<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group4), global.spp))
+    rando.spp$Site17<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group4), global.spp))
+    rando.spp$Site18<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group4), global.spp))
+    rando.spp$Site19<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group4), global.spp))
+    rando.spp$Site20<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group4), global.spp))
+    rando.spp$Site21<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group5), global.spp))
+    rando.spp$Site22<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group5), global.spp))
+    rando.spp$Site23<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group5), global.spp))
+    rando.spp$Site24<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group5), global.spp))
+    rando.spp$Site25<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group5), global.spp))
+    rando.spp$Site26<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group6), global.spp))
+    rando.spp$Site27<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group6), global.spp))
+    rando.spp$Site28<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group6), global.spp))
+    rando.spp$Site29<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group6), global.spp))
+    rando.spp$Site30<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group6), global.spp))
 
 # make list of unique species arrays
 
-library(reshape2)
-f1c1<-c(5,5,5,5,5,5) # number of selections
-f1c2<-c(1,3,10,30,60,15) # mean value of selections
-f1c3<-c(0.5,1,4,10,20,5) # SD of selections
-F1.frame<-mapply(rnorm, f1c1,f1c2,f1c3) # pick Factor 1 value for each site
-F1<-reshape2::melt(F1.frame)
+    library(reshape2)
+    f1c1<-c(5,5,5,5,5,5) # number of selections
+    f1c2<-c(1,3,10,30,60,15) # mean value of selections
+    f1c3<-c(0.5,1,4,10,20,5) # SD of selections
+    F1.frame<-mapply(rnorm, f1c1,f1c2,f1c3) # pick Factor 1 value for each site
+    F1<-reshape2::melt(F1.frame)
 
 #F2
-f2c1<-c(5,5,5,5,5,5) # number of selections
-f2c2<-c(34,30,10,55,35,60) # mean value of selections
-f2c3<-c(10,10,3,10,1,20) # SD of selections
-F2.frame<-mapply(rnorm, f2c1,f2c2,f2c3) # pick Factor 2 value for each site
-F2<-reshape2::melt(F2.frame)
+    f2c1<-c(5,5,5,5,5,5) # number of selections
+    f2c2<-c(34,30,10,55,35,60) # mean value of selections
+    f2c3<-c(10,10,3,10,1,20) # SD of selections
+    F2.frame<-mapply(rnorm, f2c1,f2c2,f2c3) # pick Factor 2 value for each site
+    F2<-reshape2::melt(F2.frame)
 
 #F3
-f3c1<-c(5,5,5,5,5,5) # number of selections
-f3c2<-c(1,3,10,15,3,15) # mean value of selections
-f3c3<-c(0.5,1,3,3,1,5) # SD of selections
-F3.frame<-mapply(rnorm, f3c1,f3c2,f3c3) # pick Factor 3 value for each site
-F3<-reshape2::melt(F3.frame)
+    f3c1<-c(5,5,5,5,5,5) # number of selections
+    f3c2<-c(1,3,10,15,3,15) # mean value of selections
+    f3c3<-c(0.5,1,3,3,1,5) # SD of selections
+    F3.frame<-mapply(rnorm, f3c1,f3c2,f3c3) # pick Factor 3 value for each site
+    F3<-reshape2::melt(F3.frame)
 
 #F4
-f4c1<-c(5,5,5,5,5,5) # number of selections
-f4c2<-c(1,3,10,15,3,15) # mean value of selections
-f4c3<-c(0.5,0.5,3,3,1,5) # SD of selections
-F4.frame<-mapply(rnorm, f4c1,f4c2,f4c3) # pick Factor 4 value for each site
-F4<-reshape2::melt(F4.frame)
+    f4c1<-c(5,5,5,5,5,5) # number of selections
+    f4c2<-c(1,3,10,15,3,15) # mean value of selections
+    f4c3<-c(0.5,0.5,3,3,1,5) # SD of selections
+    F4.frame<-mapply(rnorm, f4c1,f4c2,f4c3) # pick Factor 4 value for each site
+    F4<-reshape2::melt(F4.frame)
 
 #F5
-f5c1<-c(5,5,5,5,5,5) # number of selections
-f5c2<-c(50,40,30,20,10,15) # mean value of selections
-f5c3<-c(20,10,10,5,3,5) # SD of selections
-F5.frame<-mapply(rnorm, f5c1,f5c2,f5c3) # pick Factor 5 value for each site
-F5<-reshape2::melt(F5.frame)
-Factors<-data.frame(F1$value,F2$value,F3$value,F4$value,F5$value) # combine factors into data table
+    f5c1<-c(5,5,5,5,5,5) # number of selections
+    f5c2<-c(50,40,30,20,10,15) # mean value of selections
+    f5c3<-c(20,10,10,5,3,5) # SD of selections
+    F5.frame<-mapply(rnorm, f5c1,f5c2,f5c3) # pick Factor 5 value for each site
+    F5<-reshape2::melt(F5.frame)
+    Factors<-data.frame(F1$value,F2$value,F3$value,F4$value,F5$value) # combine factors into data table
+
+    model<-make.comm2(rando.spp, Factors) # output a phyloseq object... will make a list of phyloseq objects
+    model
+}
+  
+  # subsample community
+  # do each of the normalize community processes
+  # output SVI index values
+  # output SVI2 index values
+  # output False discovery rate
+  # output missed discovery rate
+}
+
+
 
 env<-lapply(,) # make list of env data.frames
 Sites<-c(paste0("Site", 1:30))
@@ -2044,9 +2111,12 @@ head(Factors)
 # make list of OTU tables ...
 
 # run each normalization on the list of otu tables to generate outputs
+
+# 
   
 # plot outputs
 
+# statistics
 
 ########### next ... 
   out$plotVSI2<-ggplot()+geom_bar()+theme_classic()
