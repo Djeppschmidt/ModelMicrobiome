@@ -786,6 +786,32 @@ out
 ```
 
 ```{r}
+
+# test species-abundance curve ####
+AllSpp<-c(paste0("spp", c(1:700), sep="")) # trying to make a quick list of all functions
+AllSpp<-lapply(AllSpp, get)
+AllSpp<-unlist(AllSpp)
+
+names(AllSpp)<-c(paste0("spp", c(1:700)))
+
+global.spp<-names(AllSpp)
+
+rank.abundance<-make.comm(global.spp, Factors)
+
+par(mfrow=c(2,2))
+barplot(sort(taxa_sums(rank.abundance), TRUE), 
+    las = 2)
+barplot(sort(taxa_sums(rank.abundance), TRUE)[300:700], 
+    las = 2)
+barplot(sort(taxa_sums(rank.abundance), TRUE)[400:700], 
+    las = 2)
+barplot(sort(taxa_sums(rank.abundance), TRUE)[500:700], 
+    las = 2)
+
+names(taxa_sums(rank.abundance))[578:700]
+```
+
+```{r}
 # Define list of 50 species w/ global distribution
 global2.spp<-names(sample(AllSpp, 50, replace=F))
 
@@ -1991,13 +2017,14 @@ benchmark.FDR<-function(commonN, groupN, singleN, N){
   require(plyr)
   require()
   out<-NULL
-
+}
 
   # define environment and community
   # commonN = number of common spp
   # groupN = number of spp for each group
   # singleN = number of spp for each site
-  # D = subsampling depth
+  # D = mean subsampling depth
+  # V = variance around subsampling depth
   pick.tax<-function(commonN, groupN, singleN, D){
     AllSpp<-c(paste0("spp", c(1:700), sep="")) # make a quick list of all species functions
     AllSpp<-lapply(AllSpp, get) # connect function to name
@@ -2086,18 +2113,41 @@ benchmark.FDR<-function(commonN, groupN, singleN, N){
     F5.frame<-mapply(rnorm, f5c1,f5c2,f5c3) # pick Factor 5 value for each site
     F5<-reshape2::melt(F5.frame)
     Factors<-data.frame(F1$value,F2$value,F3$value,F4$value,F5$value) # combine factors into data table
-
-    model<-make.comm2(rando.spp, Factors) # output a phyloseq object... will make a list of phyloseq objects
-    model
+    
+    output<-NULL
+    output$spplist<-rando.spp
+    output$model<-make.comm2(rando.spp, Factors) # output a phyloseq object... will make a list of phyloseq objects
+    sample_data(model)$sums<-sample_sums(model)# add sample sums
+    # subsample community
+    sample<-set.seqDepth(D,V)
+    output$model.raw<-make.rarefy2(model, sample)
+    
+    # do each of the normalize community processes
+    output$sums<-sample_sums(model.raw)
+    output$model.eRare<-make.rarefy2(model.raw, min(sums))   ### fill in details !!
+    output$model.pRare<-make.rarefy2() 
+    output$model.scaled<-make.scaled1(model.raw, , )
+    output$model.raw.deseq<-make.deseqVST()
+    output$model.scaled.deseq<-make.deseqVST()
+    output$model.eRare.deseq<-make.deseqVST()
+    output$model.pRare.deseq<-make.deseqVST()
+    output$model.raw.limma<-make.limmaVST()
+    output$model.eRare.limma<-make.limmaVST()
+    output$model.pRare.limma<-make.limmaVST()
+    output$model.scaled.limma<-make.limmaVST()
+    
+    output
 }
   
-  # subsample community
-  # do each of the normalize community processes
+
+  plotSVI<-function(){}
+  plotSVI2<-function(){}
+  plotFDR<-function(){}
+  plotMDR<-function(){}
   # output SVI index values
   # output SVI2 index values
   # output False discovery rate
   # output missed discovery rate
-}
 
 
 
