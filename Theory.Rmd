@@ -799,16 +799,16 @@ global.spp<-names(AllSpp)
 rank.abundance<-make.comm(global.spp, Factors)
 
 par(mfrow=c(2,2))
-barplot(sort(taxa_sums(rank.abundance), TRUE), 
-    las = 2)
+barplot(sort(taxa_sums(rank.abundance), TRUE)[1:30], 
+    las = 2, main ="Rank Abundance 1-30")
 barplot(sort(taxa_sums(rank.abundance), TRUE)[300:700], 
-    las = 2)
-barplot(sort(taxa_sums(rank.abundance), TRUE)[400:700], 
-    las = 2)
+    las = 2, main ="Rank Abundance 300-700")
 barplot(sort(taxa_sums(rank.abundance), TRUE)[500:700], 
-    las = 2)
+    las = 2, main ="Rank Abundance 500-700")
+barplot(sort(taxa_sums(rank.abundance), TRUE)[690:700], 
+    las = 2, main ="Rank Abundance 690-700")
 
-names(taxa_sums(rank.abundance))[578:700]
+names(sort(taxa_sums(rank.abundance), TRUE))[1:30] # to ID taxa that have all 0
 ```
 
 ```{r}
@@ -1281,6 +1281,70 @@ SVI2(model4, model4.Limma.eRare)
 SVI2(model4, model4.Limma.pRare)
 SVI2(model4, model4.Limma.scaled)
 
+# SVI Plot 1:
+
+ref<-as.matrix(as.data.frame(t(as.matrix(otu_table(Delta.sppcount(model4, model4, method=0))))))
+treat.raw<-as.matrix(as.data.frame(t(as.matrix(otu_table(Delta.sppcount(model4.raw, model4, method=0))))))
+treat.scaled<-as.matrix(as.data.frame(t(as.matrix(otu_table(Delta.sppcount(model4.scaled, model4, method=0))))))
+treat.deseq<-as.matrix(as.data.frame(t(as.matrix(otu_table(Delta.sppcount(model4.deseq.raw, model4, method=0))))))
+treat.deseq1<-as.matrix(as.data.frame(t(as.matrix(otu_table(Delta.sppcount(model4.deseq.raw, model4, method=1))))))
+
+example.plot<-data.frame("sites"=colnames(ref), "reference"=ref[rownames(ref)=="spp653",], "raw"=treat.raw[rownames(treat.raw)=="spp653",], "scaled"=treat.scaled[rownames(treat.scaled)=="spp653",], "deseq"=treat.deseq[rownames(treat.deseq)=="spp653",])
+example.plot2<-data.frame("sites"=colnames(ref), "reference"=ref[rownames(ref)=="spp653",], "raw"=treat.raw[rownames(treat.raw)=="spp653",], "scaled"=treat.scaled[rownames(treat.scaled)=="spp653",], "deseq"=treat.deseq1[rownames(treat.deseq1)=="spp653",])
+melt.example<-reshape2::melt(example.plot, id.vars="sites")
+melt.example2<-reshape2::melt(example.plot2, id.vars="sites")
+
+refaaa<-melt.example[melt.example$variable=="reference",3]
+melt.example$ref<-c(rep(refaaa, 4))
+ggplot(melt.example[melt.example$variable=="scaled"|melt.example$variable=="reference"|melt.example$variable=="deseq", ], aes(x=ref, y=value, color=variable))+geom_point()+theme_classic()+scale_color_viridis_d()
+#ggplot(melt.example[melt.example$variable=="deseq"|melt.example$variable=="reference", ], aes(x=ref, y=value, color=variable))+geom_point()+theme_classic()+scale_color_viridis_d()
+
+
+tt<-summary(lm(example.plot$reference~example.plot$scaled))
+summary(lm(example.plot2$reference~example.plot2$deseq))
+```
+
+```{r}
+ggplot(melt.example[melt.example2$variable=="scaled"|melt.example2$variable=="reference"|melt.example2$variable=="deseq", ], aes(x=sites, y=value, color=variable))+geom_point()+theme_classic()+scale_color_viridis_d()+theme(axis.text.x  = element_text(angle=90))
+```
+```{r}
+#lost information index####
+LII <-function(ps1.R, ps2.T){
+  reference<-as.matrix(as.data.frame(t(as.matrix(otu_table(Delta.sppcount(ps1.R, ps1.R, method=0))))))
+  reference2<-as.matrix(as.data.frame(t(as.matrix(otu_table(Delta.sppcount(ps1.R, ps1.R, method=0))))))
+  treatment<-as.matrix(as.data.frame(t(as.matrix(otu_table(Delta.sppcount(ps2.T, ps1.R, method=0))))))
+  
+  Ci<-sapply(seq.int(dim(reference)[1]), function(i) summary(lm(reference[i,] ~ treatment[i,]))$r.squared)
+  Ci2<-sapply(seq.int(dim(reference)[1]), function(i) summary(lm(reference[i,] ~ reference2[i,]))$r.squared)
+  out<-sum(Ci2-Ci)
+  out
+}
+
+# test
+model4.Ref<-model4
+eference<-t(as.data.frame(as.matrix(otu_table(Delta.sppcount(model4, model4, method=0)))))
+eference2<-t(as.data.frame(as.matrix(otu_table(Delta.sppcount(model4, model4, method=0)))))
+reatment1<-t(as.data.frame(as.matrix(otu_table(Delta.sppcount(model4.scaled, model4, method=0)))))
+reatment2<-t(as.data.frame(as.matrix(otu_table(Delta.sppcount(model4.raw, model4, method=0)))))
+Ci<-sapply(seq.int(dim(eference)[1]), function(i) summary(lm(eference[i,] ~ eference2[i,]))$r.squared)
+Ci2<-sapply(seq.int(dim(eference)[1]), function(i) summary(lm(eference[i,] ~ reatment1[i,]))$r.squared)
+Ci2b<-sapply(seq.int(dim(eference)[1]), function(i) summary(lm(eference[i,] ~ reatment2[i,]))$r.squared)
+identical(Ci, Ci2)
+
+c3<-Ci-Ci2
+c3b<-Ci-Ci2b
+sum(c3)
+sum(c3b)
+LII(model4, model4.scaled)
+LII(model4, model4.raw)
+LII(model4, model4)
+
+summary(lm(eference[219,]~eference2[219,]))
+summary(lm(eference[219,]~reatment[219,]))
+
+```
+
+```{r}
 sample_sums(prune_taxa("spp127", model4))
 sample_sums(prune_taxa("spp127", model4.raw))
 sample_sums(prune_taxa("spp127", model4.eRare))
@@ -1361,7 +1425,7 @@ S.var2$Taxa<-rownames(S.var2)
 
 S.var2a<-reshape2::melt(S.var2, id.vars="Taxa")
 
-ggplot(S.var2a, aes(variable,value))+geom_boxplot()+theme_classic()
+ggplot(S.var2a, aes(variable,value))+geom_boxplot()+theme_classic()+scale_color_viridis_d()
 
 
 #SVI(model4, model4.deseq.eRare),
@@ -1444,7 +1508,7 @@ Delta.sppcount<-function(ps,ref, method=0){
   out1<-as.data.frame(t(as.matrix(otu_table(ps))))
   if(method==1){
     out<-exp(out)
-    out<-sapply(seq.int(dim(out)[2]), function(i) out[,i]/sum(out[,i]))
+    out<-sapply(seq.int(dim(out)[2]), function(i) out[,i]/mean(out[,i]))
     out[is.nan(out)]<-0
     rownames(out)<-rownames(out1)
     colnames(out)<-colnames(out1)
@@ -1452,7 +1516,7 @@ Delta.sppcount<-function(ps,ref, method=0){
     ps<-merge_phyloseq(ps, tab)
     ps
   } else {
-    out<-sapply(seq.int(dim(out)[2]), function(i) out[,i]/sum(out[,i]))
+    out<-sapply(seq.int(dim(out)[2]), function(i) out[,i]/mean(out[,i]))
     out[is.nan(out)]<-0
     rownames(out)<-rownames(out1)
     colnames(out)<-colnames(out1)
@@ -1551,17 +1615,166 @@ make.PERMANOVA<-function(ps){
 ```
 
 ```{r}
-# framework for benchmarking:
-# for each test/normalization combination, make object with:
+# framework for benchmarking: ####
+# reps = number of replicate communities
+# commonN = number of common species
+# groupN = number of unique taxa to groups
+# singleN = number of unique taxa to samples
+# D = average sampling depth
+# V = variation in sampling depth
+benchmark.MM<-function(reps, commonN, groupN, singleN, D, V){
+  require(phyloseq)
+  #require(ModelMicrobiome)
+  require(limma)
+  require(DESeq2)
+  require(vegan)
+  array<-c(rep(commonN, reps))
+  names(array)<-c(paste0("rep", 1:reps, sep=""))
+  array<-lapply(array, run.analysis, groupN, singleN, D, V)
+  array
+}
+# define communities ( make list of original )
+run.analysis<-function(commonN,groupN, singleN, D, V){
+    AllSpp<-c(paste0("spp", c(1:700), sep="")) # make a quick list of all species functions
+    AllSpp<-lapply(AllSpp, get) # connect function to name
+    AllSpp<-unlist(AllSpp)  # format to be read by downstream functions
+    names(AllSpp)<-c(paste0("spp", c(1:700)))
+
+    # Define list of 5 species w/ global distribution
+    global.spp<-names(sample(AllSpp, commonN, replace=F))
+
+# define list of species w/ regional distribution
+    group.spp<-NULL
+    group.spp$group1<-names(sample(AllSpp, groupN, replace=F))
+    group.spp$group2<-names(sample(AllSpp, groupN, replace=F))
+    group.spp$group3<-names(sample(AllSpp, groupN, replace=F))
+    group.spp$group4<-names(sample(AllSpp, groupN, replace=F))
+    group.spp$group5<-names(sample(AllSpp, groupN, replace=F))
+    group.spp$group6<-names(sample(AllSpp, groupN, replace=F))
+
+# define list of species found at each site
+    rando.spp<-NULL
+    rando.spp$Site1<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group1), global.spp))
+    rando.spp$Site2<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group1), global.spp))
+    rando.spp$Site3<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group1), global.spp))
+    rando.spp$Site4<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group1), global.spp))
+    rando.spp$Site5<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group1), global.spp))
+    rando.spp$Site6<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group2), global.spp))
+    rando.spp$Site7<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group2), global.spp))
+    rando.spp$Site8<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group2), global.spp))
+    rando.spp$Site9<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group2), global.spp))
+    rando.spp$Site10<-unique(c(names(sample(AllSpp,singleN, replace=F)), c(group.spp$group2), global.spp))
+    rando.spp$Site11<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group3), global.spp))
+    rando.spp$Site12<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group3), global.spp))
+    rando.spp$Site13<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group3), global.spp))
+    rando.spp$Site14<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group3), global.spp))
+    rando.spp$Site15<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group3), global.spp))
+    rando.spp$Site16<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group4), global.spp))
+    rando.spp$Site17<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group4), global.spp))
+    rando.spp$Site18<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group4), global.spp))
+    rando.spp$Site19<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group4), global.spp))
+    rando.spp$Site20<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group4), global.spp))
+    rando.spp$Site21<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group5), global.spp))
+    rando.spp$Site22<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group5), global.spp))
+    rando.spp$Site23<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group5), global.spp))
+    rando.spp$Site24<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group5), global.spp))
+    rando.spp$Site25<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group5), global.spp))
+    rando.spp$Site26<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group6), global.spp))
+    rando.spp$Site27<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group6), global.spp))
+    rando.spp$Site28<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group6), global.spp))
+    rando.spp$Site29<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group6), global.spp))
+    rando.spp$Site30<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group6), global.spp))
+
+# make list of unique species arrays
+
+    library(reshape2)
+    f1c1<-c(5,5,5,5,5,5) # number of selections
+    f1c2<-c(1,3,10,30,60,15) # mean value of selections
+    f1c3<-c(0.5,1,4,10,20,5) # SD of selections
+    F1.frame<-mapply(rnorm, f1c1,f1c2,f1c3) # pick Factor 1 value for each site
+    F1<-reshape2::melt(F1.frame)
+
+#F2
+    f2c1<-c(5,5,5,5,5,5) # number of selections
+    f2c2<-c(34,30,10,55,35,60) # mean value of selections
+    f2c3<-c(10,10,3,10,1,20) # SD of selections
+    F2.frame<-mapply(rnorm, f2c1,f2c2,f2c3) # pick Factor 2 value for each site
+    F2<-reshape2::melt(F2.frame)
+
+#F3
+    f3c1<-c(5,5,5,5,5,5) # number of selections
+    f3c2<-c(1,3,10,15,3,15) # mean value of selections
+    f3c3<-c(0.5,1,3,3,1,5) # SD of selections
+    F3.frame<-mapply(rnorm, f3c1,f3c2,f3c3) # pick Factor 3 value for each site
+    F3<-reshape2::melt(F3.frame)
+
+#F4
+    f4c1<-c(5,5,5,5,5,5) # number of selections
+    f4c2<-c(1,3,10,15,3,15) # mean value of selections
+    f4c3<-c(0.5,0.5,3,3,1,5) # SD of selections
+    F4.frame<-mapply(rnorm, f4c1,f4c2,f4c3) # pick Factor 4 value for each site
+    F4<-reshape2::melt(F4.frame)
+
+#F5
+    f5c1<-c(5,5,5,5,5,5) # number of selections
+    f5c2<-c(50,40,30,20,10,15) # mean value of selections
+    f5c3<-c(20,10,10,5,3,5) # SD of selections
+    F5.frame<-mapply(rnorm, f5c1,f5c2,f5c3) # pick Factor 5 value for each site
+    F5<-reshape2::melt(F5.frame)
+    Factors<-data.frame(F1$value,F2$value,F3$value,F4$value,F5$value) # combine factors into data table
+    
+    output<-NULL
+    output$model<-NULL
+    output$spplist<-rando.spp
+    output$model$comm<-make.comm2(rando.spp, Factors) # output a phyloseq object... will make a list of phyloseq objects
+    sample_data(model)$sums<-sample_sums(model)# add sample sums
+    # subsample community
+    sample<-set.seqDepth(D,V)
+    output$model.raw<-make.rarefy2(model, sample)
+    
+    output$raw<-NULL
+    output$eRare<-NULL
+    output$pRare<-NULL
+    output$scaled<-NULL
+    output$deseqVST<-NULL
+    output$limma<-NULL
+    output$raw$comm<-make.rarefy(output$model$comm, sample)         # do normalizations!!
+    output$eRare$comm<-make.eRare(output$raw$comm, min(sample_sums(output$raw$comm)))
+    output$pRare$comm<-make.pRare(output$raw$comm, D*sample_sums(output$raw$comm)/mean(sample_sums(output$raw$comm)))
+    output$scaled$comm<-make.scaled2(output$raw$comm, val=D*sample_sums(output$raw$comm)/mean(sample_sums(output$raw$comm)))
+    output$deseqVST$comm<-make.deseqVST(output$raw$comm, "Factor", l=1)
+    output$limma$comm<-make.limmaVST(output$raw$comm, "Factor")   
+  # add in any additional methods we want to add
+  
+    output$raw$PERMANOVA<-make.PERMANOVA(output$raw$comm)   # make permanova tables
+    output$eRare$PERMANOVA<-make.PERMANOVA(output$eRare$comm)
+    output$pRare$PERMANOVA<-make.PERMANOVA(output$pRare$comm)
+    output$scaled$PERMANOVA<-make.PERMANOVA(output$scaled$comm)
+    output$deseqVST$PERMANOVA<-make.PERMANOVA(output$deseqVST$comm)
+    output$limma$PERMANOVA<-make.PERMANOVA(output$limma$comm)
+  # add in any additional methods we want to add
+  
+    output$raw$LII<-LII(output$model$comm, output$raw$comm)                    # show amount of information retained after corrections
+    output$eRare$LII<-LII(output$model$comm, output$eRare$comm)
+    output$pRare$LII<-make.LII(output$model$comm, output$pRare$comm)
+    output$scaled$LII<-make.LII(output$model$comm, output$scaled$comm)
+    output$deseqVST$LII<-make.LII(output$model$comm, output$deseqVST$comm)
+    output$limma$LII<-make.LII(output$model$comm, output$limma$comm)
+  # add in any additional methods we want to add
+  
+    output$raw$SVI<-SVI(output$model$comm, output$raw$comm)                  # show over-fitting of model
+    output$eRare$SVI<-SVI(output$model$comm, output$raw$comm)
+    output$pRare$SVI<-SVI(output$model$comm, output$raw$comm)
+    output$scaled$SVI<-SVI(output$model$comm, output$raw$comm)
+    output$deseqVST$SVI<-SVI(output$model$comm, output$raw$comm)
+    output$limma$SVI<-SVI(output$model$comm, output$raw$comm)
+    
+    output
+}
 
 
-# indicators by group [table of 0 or 1 or -1]
-# input objects as a list
-# produce a summary table of each metric
+# plotting function ####
 
-# then make an ouput table with percent correct by object
-
-df<-ldply()
 ```
 
 Now let's benchmark this community:
