@@ -361,6 +361,23 @@ otu_table(deseqVST) <- otu_table(vst, taxa_are_rows = TRUE)
 deseqVST
 }
 
+#' set "sequencing depth"
+#' @param b mean seq depth
+#' @param c variance of seq depth
+#' @keywords deseq variance stabilization
+#' @export
+#' @examples
+#' make.deseqVST()
+set.seqDepth<-function(b, c){
+  d1<-rnorm(30, b, c)
+  d1[d1<0]<-0
+  d2<-rnorm(30, 100, 10)# because typically there is at least some low level number of counts
+  depth=d1+d2
+  depth<-round(depth)
+  depth
+}
+
+
 #' geometric mean function for deseq functions
 #' @param x data table of community values
 #' @keywords geometric mean
