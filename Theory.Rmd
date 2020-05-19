@@ -185,7 +185,7 @@ make.rarefy1<-function(x, level){
      
   r<-as.matrix(otu_table(p))
   meta<-sample_data(p)
-  rr<-rrarefy(r, meta$adj)
+  rr<-rrarefy2(r, meta$adj, replace=TRUE)
   ps<-phyloseq(otu_table(t(rr), taxa_are_rows = T), sample_data(meta))
   ps} else {
     
@@ -813,49 +813,49 @@ names(sort(taxa_sums(rank.abundance), TRUE))[1:30] # to ID taxa that have all 0
 
 ```{r}
 # Define list of 50 species w/ global distribution
-global2.spp<-names(sample(AllSpp, 50, replace=F))
+global2.spp<-names(sample(AllSpp, 5, replace=F))
 
 # define list of species w/ regional distribution
 group2.spp<-NULL
-group2.spp$group1<-names(sample(AllSpp, 20, replace=F))
-group2.spp$group2<-names(sample(AllSpp, 20, replace=F))
-group2.spp$group3<-names(sample(AllSpp, 20, replace=F))
-group2.spp$group4<-names(sample(AllSpp, 20, replace=F))
-group2.spp$group5<-names(sample(AllSpp, 20, replace=F))
-group2.spp$group6<-names(sample(AllSpp, 20, replace=F))
+group2.spp$group1<-names(sample(AllSpp, 5, replace=F))
+group2.spp$group2<-names(sample(AllSpp, 5, replace=F))
+group2.spp$group3<-names(sample(AllSpp, 5, replace=F))
+group2.spp$group4<-names(sample(AllSpp, 5, replace=F))
+group2.spp$group5<-names(sample(AllSpp, 5, replace=F))
+group2.spp$group6<-names(sample(AllSpp, 5, replace=F))
 
 # define list of species found at each site
 rando2.spp<-NULL
-rando2.spp$Site1<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group1), global2.spp))
-rando2.spp$Site2<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group1), global2.spp))
-rando2.spp$Site3<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group1), global2.spp))
-rando2.spp$Site4<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group1), global2.spp))
-rando2.spp$Site5<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group1), global2.spp))
-rando2.spp$Site6<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group2), global2.spp))
-rando2.spp$Site7<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group2), global2.spp))
-rando2.spp$Site8<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group2), global2.spp))
-rando2.spp$Site9<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group2), global2.spp))
-rando2.spp$Site10<-unique(c(names(sample(AllSpp,10, replace=F)), c(group2.spp$group2), global2.spp))
-rando2.spp$Site11<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group3), global2.spp))
-rando2.spp$Site12<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group3), global2.spp))
-rando2.spp$Site13<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group3), global2.spp))
-rando2.spp$Site14<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group3), global2.spp))
-rando2.spp$Site15<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group3), global2.spp))
-rando2.spp$Site16<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group4), global2.spp))
-rando2.spp$Site17<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group4), global2.spp))
-rando2.spp$Site18<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group4), global2.spp))
-rando2.spp$Site19<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group4), global2.spp))
-rando2.spp$Site20<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group4), global2.spp))
-rando2.spp$Site21<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group5), global2.spp))
-rando2.spp$Site22<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group5), global2.spp))
-rando2.spp$Site23<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group5), global2.spp))
-rando2.spp$Site24<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group5), global2.spp))
-rando2.spp$Site25<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group5), global2.spp))
-rando2.spp$Site26<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group6), global2.spp))
-rando2.spp$Site27<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group6), global2.spp))
-rando2.spp$Site28<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group6), global2.spp))
-rando2.spp$Site29<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group6), global2.spp))
-rando2.spp$Site30<-unique(c(names(sample(AllSpp, 10, replace=F)), c(group2.spp$group6), global2.spp))
+rando2.spp$Site1<-unique(c(names(sample(AllSpp, 65, replace=F)), c(group2.spp$group1), global2.spp))
+rando2.spp$Site2<-unique(c(names(sample(AllSpp, 65, replace=F)), c(group2.spp$group1), global2.spp))
+rando2.spp$Site3<-unique(c(names(sample(AllSpp, 65, replace=F)), c(group2.spp$group1), global2.spp))
+rando2.spp$Site4<-unique(c(names(sample(AllSpp, 65, replace=F)), c(group2.spp$group1), global2.spp))
+rando2.spp$Site5<-unique(c(names(sample(AllSpp, 65, replace=F)), c(group2.spp$group1), global2.spp))
+rando2.spp$Site6<-unique(c(names(sample(AllSpp, 65, replace=F)), c(group2.spp$group2), global2.spp))
+rando2.spp$Site7<-unique(c(names(sample(AllSpp, 65, replace=F)), c(group2.spp$group2), global2.spp))
+rando2.spp$Site8<-unique(c(names(sample(AllSpp, 65, replace=F)), c(group2.spp$group2), global2.spp))
+rando2.spp$Site9<-unique(c(names(sample(AllSpp, 65, replace=F)), c(group2.spp$group2), global2.spp))
+rando2.spp$Site10<-unique(c(names(sample(AllSpp,65, replace=F)), c(group2.spp$group2), global2.spp))
+rando2.spp$Site11<-unique(c(names(sample(AllSpp, 65, replace=F)), c(group2.spp$group3), global2.spp))
+rando2.spp$Site12<-unique(c(names(sample(AllSpp, 65, replace=F)), c(group2.spp$group3), global2.spp))
+rando2.spp$Site13<-unique(c(names(sample(AllSpp, 65, replace=F)), c(group2.spp$group3), global2.spp))
+rando2.spp$Site14<-unique(c(names(sample(AllSpp, 65, replace=F)), c(group2.spp$group3), global2.spp))
+rando2.spp$Site15<-unique(c(names(sample(AllSpp, 65, replace=F)), c(group2.spp$group3), global2.spp))
+rando2.spp$Site16<-unique(c(names(sample(AllSpp, 65, replace=F)), c(group2.spp$group4), global2.spp))
+rando2.spp$Site17<-unique(c(names(sample(AllSpp, 65, replace=F)), c(group2.spp$group4), global2.spp))
+rando2.spp$Site18<-unique(c(names(sample(AllSpp, 65, replace=F)), c(group2.spp$group4), global2.spp))
+rando2.spp$Site19<-unique(c(names(sample(AllSpp, 65, replace=F)), c(group2.spp$group4), global2.spp))
+rando2.spp$Site20<-unique(c(names(sample(AllSpp, 65, replace=F)), c(group2.spp$group4), global2.spp))
+rando2.spp$Site21<-unique(c(names(sample(AllSpp, 65, replace=F)), c(group2.spp$group5), global2.spp))
+rando2.spp$Site22<-unique(c(names(sample(AllSpp, 65, replace=F)), c(group2.spp$group5), global2.spp))
+rando2.spp$Site23<-unique(c(names(sample(AllSpp, 65, replace=F)), c(group2.spp$group5), global2.spp))
+rando2.spp$Site24<-unique(c(names(sample(AllSpp, 65, replace=F)), c(group2.spp$group5), global2.spp))
+rando2.spp$Site25<-unique(c(names(sample(AllSpp, 65, replace=F)), c(group2.spp$group5), global2.spp))
+rando2.spp$Site26<-unique(c(names(sample(AllSpp, 65, replace=F)), c(group2.spp$group6), global2.spp))
+rando2.spp$Site27<-unique(c(names(sample(AllSpp, 65, replace=F)), c(group2.spp$group6), global2.spp))
+rando2.spp$Site28<-unique(c(names(sample(AllSpp, 65, replace=F)), c(group2.spp$group6), global2.spp))
+rando2.spp$Site29<-unique(c(names(sample(AllSpp, 65, replace=F)), c(group2.spp$group6), global2.spp))
+rando2.spp$Site30<-unique(c(names(sample(AllSpp, 65, replace=F)), c(group2.spp$group6), global2.spp))
 
 rando2.spp # examine lists
 ```
@@ -891,6 +891,8 @@ Sa<-sample_data(Factors)
 out<-phyloseq(otu, Sa)
 out
 }
+
+test.tt<-make.refcomm(rando2.spp, Factors)
 
 site.list<-paste("site", 1:6000, sep = "")
 spp.list<-names(AllSpp)
@@ -928,7 +930,7 @@ select.key<-function(ps, s.key){
 model3<-make.comm2(rando.spp, Factors)
 model3<-filter_taxa(model3, function(x) sum(x)>0, TRUE) # remove samples that are filtered out by the environmnet
 
-model4<-make.comm2(rando2.spp, Factors)
+model4<-make.refcomm(rando2.spp, Factors)
 model4<-filter_taxa(model4, function(x) sum(x)>0, TRUE)
 
 # validate
@@ -1022,7 +1024,7 @@ model3.scaled<-make.scaled1(model3.raw, val=sample_data(model3.raw)$DensityF.mod
 model3.eRare<-make.rarefy2(model3.raw, 900) # get as much depth as possible without losing samples
 model3.pRare<-make.rarefy2(model3.raw, 300 * sample_data(model3.raw)$DensityF.model3)
 
-model4.scaled<-make.scaled1(model4.raw, val=sample_data(model4.raw)$DensityF.model4, scale = 1000)
+model4.scaled<-make.scaled2(model4.raw, val=sample_data(model4.raw)$DensityF.model4, scale = 1000)
 model4.eRare<-make.rarefy2(model4.raw, 900) # get as much depth as possible without losing samples
 model4.pRare<-make.rarefy2(model4.raw, 300 * sample_data(model4.raw)$DensityF.model4)
 
@@ -1307,6 +1309,7 @@ summary(lm(example.plot2$reference~example.plot2$deseq))
 ```{r}
 ggplot(melt.example[melt.example2$variable=="scaled"|melt.example2$variable=="reference"|melt.example2$variable=="deseq", ], aes(x=sites, y=value, color=variable))+geom_point()+theme_classic()+scale_color_viridis_d()+theme(axis.text.x  = element_text(angle=90))
 ```
+
 ```{r}
 #lost information index####
 LII <-function(ps1.R, ps2.T){
@@ -1730,29 +1733,44 @@ run.analysis<-function(commonN, groupN, singleN, D, V){
    
     #output$model<-NULL
     output$spplist<-rando.spp
+    
     output$model$comm<-make.refcomm(rando.spp, Factors) # output a phyloseq object... will make a list of phyloseq objects
+    print("spp selection complete")
     sample_data(output$model$comm)$Density<-sample_sums(output$model$comm)# add sample sums
     sample_data(output$model$comm)$DensityF<-sample_sums(output$model$comm)/mean(sample_sums(output$model$comm))
     sample_data(output$model$comm)$Factor<-as.factor(c(rep("one",5),rep("two",5),rep("three",5),rep("four",5),rep("five",5),rep("six",5)))
     sample_data(output$model$comm)$Factor2<-as.factor(c(rep(1,5),rep(2,5),rep(3,5),rep(4,5),rep(5,5),rep(6,5)))
+    print("metadata complete")
     
     sample<-set.seqDepth(D,V)
     output$raw$comm<-make.rarefy2(output$model$comm, sample)         # do normalizations!!
-    
+    print("subsampling complete")
+    print(sample_sums(output$raw$comm))
     output$eRare$comm<-make.rarefy2(output$raw$comm, min(sample_sums(output$raw$comm)))
-    output$pRare$comm<-make.rarefy2(output$raw$comm, D*sample_sums(output$raw$comm)/mean(sample_sums(output$raw$comm)))
-    output$scaled$comm<-make.scaled2(output$raw$comm, val=D*sample_sums(output$model$comm)/mean(sample_sums(output$model$comm)), scale=D)
+    print("erare complete")
+    output$pRare$comm<-make.rarefy2(output$raw$comm, min(sample_sums(output$raw$comm))*sample_sums(output$raw$comm)/mean(sample_sums(output$raw$comm)))
+    print("prare complete")
+    output$scaled$comm<-make.scaled2(output$raw$comm, val=sample_sums(output$model$comm)/mean(sample_sums(output$model$comm)), scale=D)
+    print("scaling complete")
     output$deseqVST$comm<-make.deseqVST(output$raw$comm, "Factor", l=1)
-    output$limma$comm<-make.limmaVST(output$raw$comm, "Factor")  
-    print(output$limma$comm)
+    print("deseq complete")
+    output$limma$comm<-make.limmaVST(output$raw$comm, "Factor") 
+    print("limma complete")
   # add in any additional methods we want to add
   
-    output$raw$PERMANOVA<-make.PERMANOVA(output$raw$comm)   # make permanova tables
+    output$raw$PERMANOVA<-make.PERMANOVA(output$raw$comm)
+    print("permanova raw")# make permanova tables
     output$eRare$PERMANOVA<-make.PERMANOVA(output$eRare$comm)
+    print("permanova eRare")
     output$pRare$PERMANOVA<-make.PERMANOVA(output$pRare$comm)
+    print("permanova pRare")
     output$scaled$PERMANOVA<-make.PERMANOVA(output$scaled$comm)
+    print("permanova scaled")
     output$deseqVST$PERMANOVA<-make.PERMANOVA(output$deseqVST$comm)
+    print("permanova deseq")
     output$limma$PERMANOVA<-make.PERMANOVA(output$limma$comm)
+    print("permanova limma")
+    print("PERMANOVA complete")
   # add in any additional methods we want to add
   
     output$raw$LII<-LII(output$model$comm, output$raw$comm)                    # show amount of information retained after corrections
@@ -1761,19 +1779,20 @@ run.analysis<-function(commonN, groupN, singleN, D, V){
     output$scaled$LII<-LII(output$model$comm, output$scaled$comm)
     output$deseqVST$LII<-LII(output$model$comm, output$deseqVST$comm)
     output$limma$LII<-LII(output$model$comm, output$limma$comm)
+    print("LII complete")
   # add in any additional methods we want to add
   
-    output$raw$SVI<-SVI(output$model$comm, output$raw$comm)                  # show over-fitting of model
-    output$eRare$SVI<-SVI(output$model$comm, output$eRare$comm)
-    output$pRare$SVI<-SVI(output$model$comm, output$pRare$comm)
-    output$scaled$SVI<-SVI(output$model$comm, output$scaled$comm)
-    output$deseqVST$SVI<-SVI(output$model$comm, output$deseqVST$comm)
-    output$limma$SVI<-SVI(output$model$comm, output$limma$comm)
+   output$raw$OI<-OI(output$model$comm, output$raw$comm)
+   output$eRare$OI<-OI(output$model$comm, output$eRare$comm)
+   output$pRare$OI<-OI(output$model$comm, output$pRare$comm)
+   output$scaled$OI<-OI(output$model$comm, output$scaled$comm)
+   output$deseqVST$OI<-OI(output$model$comm, output$deseqVST$comm)
+   output$limma$OI<-OI(output$model$comm, output$limma$comm)
     
     output
 }
 
-test.script<-benchmark.MM(reps=3, commonN=20, groupN=10, singleN=10, D=2000, V=1000)
+test.script<-benchmark.MM(reps=1, commonN=5, groupN=5, singleN=65, D=10000, V=5000)
 # plot PERMANOVA  ####
 ext.PERMANOVA<-function(tst){
 out<-list("raw"=c(rep(NA, length(tst))), "scaled"=c(rep(NA, length(tst))), "pRare"=c(rep(NA, length(tst))), "eRare"=c(rep(NA, length(tst))), "deseqVST"=c(rep(NA, length(tst))), "limmaVST"=c(rep(NA, length(tst))))
@@ -1811,40 +1830,388 @@ test.LII<-ext.LII(test.script)
 LII(test.script$rep1$model$comm, test.script$rep1$limma$comm)
 # plot SVI ####
 
-# benchmark with total = 50; different sequencing depth
-D2000<-benchmark.MM(reps=10, commonN=10, groupN=10, singleN=30, D=2000, V=1000)
-D10000<-benchmark.MM(reps=10, commonN=10, groupN=10, singleN=30, D=10000, V=4000)
+# seq depth at mostly universal taxa
+# benchmark with total = 75; different sequencing depth
+C.D500<-suppressWarnings(benchmark.MM(reps=10, commonN=73, groupN=1, singleN=1, D=500, V=250))
+C.D1000<-suppressWarnings(benchmark.MM(reps=10, commonN=73, groupN=1, singleN=1, D=1000, V=500))
+C.D2000<-suppressWarnings(benchmark.MM(reps=10, commonN=73, groupN=1, singleN=1, D=2000, V=1000))
+C.D10000<-suppressWarnings(benchmark.MM(reps=10, commonN=73, groupN=1, singleN=1, D=10000, V=5000))
 
-# benchmark with total = 50; different sequencing depth
-D1000<-benchmark.MM(reps=10, commonN=20, groupN=10, singleN=20, D=1000, V=400)
-D10000<-benchmark.MM(reps=10, commonN=20, groupN=10, singleN=20, D=10000, V=4000)
+# seq depth at mostly universal taxa
+# benchmark with total = 75; different sequencing depth
+# errors in otu table has zero dimensions...
+G.D500<-suppressWarnings(benchmark.MM(reps=10, commonN=50, groupN=15, singleN=10, D=500, V=250))
+G.D1000<-suppressWarnings(benchmark.MM(reps=10, commonN=50, groupN=15, singleN=10, D=1000, V=500))
+G.D2000<-suppressWarnings(benchmark.MM(reps=10, commonN=50, groupN=15, singleN=10, D=2000, V=1000))
+G.D10000<-suppressWarnings(benchmark.MM(reps=10, commonN=50, groupN=15, singleN=10, D=10000, V=5000))
+
+# seq depth at mostly universal taxa
+# benchmark with total = 75; different sequencing depth
+E.D500<-suppressWarnings(benchmark.MM(reps=10, commonN=25, groupN=25, singleN=25, D=500, V=250))
+E.D1000<-suppressWarnings(benchmark.MM(reps=10, commonN=25, groupN=25, singleN=25, D=1000, V=500))
+E.D2000<-suppressWarnings(benchmark.MM(reps=10, commonN=25, groupN=25, singleN=25, D=2000, V=1000))
+E.D10000<-suppressWarnings(benchmark.MM(reps=10, commonN=25, groupN=25, singleN=25, D=10000, V=5000))
+
+# seq depth at mostly universal taxa
+# benchmark with total = 75; different sequencing depth
+# errors in otu table has zero dimensions...
+S.D500<-suppressWarnings(benchmark.MM(reps=10, commonN=15, groupN=20, singleN=40, D=500, V=250))# produces error
+S.D1000<-suppressWarnings(benchmark.MM(reps=10, commonN=15, groupN=20, singleN=40, D=1000, V=500))# did not work
+S.D2000<-suppressWarnings(benchmark.MM(reps=10, commonN=15, groupN=20, singleN=40, D=2000, V=1000)) # did not work
+S.D10000<-suppressWarnings(benchmark.MM(reps=10, commonN=15, groupN=20, singleN=40, D=10000, V=5000)) # worked
+
+# seq depth at mostly universal taxa
+# benchmark with total = 75; different sequencing depth
+# errors in otu table has zero dimensions...
+V.D500<-suppressWarnings(benchmark.MM(reps=10, commonN=10, groupN=15, singleN=50, D=500, V=250))
+V.D1000<-suppressWarnings(benchmark.MM(reps=10, commonN=10, groupN=15, singleN=50, D=1000, V=500))
+V.D2000<-suppressWarnings(benchmark.MM(reps=10, commonN=10, groupN=15, singleN=50, D=2000, V=1000))
+V.D10000<-suppressWarnings(benchmark.MM(reps=10, commonN=10, groupN=15, singleN=50, D=10000, V=5000))
 
 
+# (4 sequencing depths) * (3 categories) * (3 levels)
 ```
 
 Now let's benchmark this community:
 ```{R}
-# here ps is a phyloseq object that represents true abundance before subsampling/sequence simmulation
-plotserieslines <- function(yvar){
-    ggplot(test.tab, aes_(x=~levels,y=as.name(yvar))) +
-        geom_boxplot()+ggtitle(as.name(yvar))
-        #facet_wrap(~Month)
+# PERMANOVA output ####
+
+# benchmark with total = 75; different sequencing depth
+P_C.D500<-ext.PERMANOVA(C.D500)
+P_C.D1000<-ext.PERMANOVA(C.D1000)
+P_C.D2000<-ext.PERMANOVA(C.D2000)
+P_C.D10000<-ext.PERMANOVA(C.D10000)
+# seq depth at mostly universal taxa
+# benchmark with total = 75; different sequencing depth
+P_G.D500<-ext.PERMANOVA(G.D500)
+P_G.D1000<-ext.PERMANOVA(G.D1000)
+P_G.D2000<-ext.PERMANOVA(G.D2000)
+P_G.D10000<-ext.PERMANOVA(G.D10000)
+
+# seq depth at mostly universal taxa
+# benchmark with total = 75; different sequencing depth
+P_S.D500<-ext.PERMANOVA(S.D500)
+P_S.D1000<-ext.PERMANOVA(S.D1000)
+P_S.D2000<-ext.PERMANOVA(S.D2000)
+P_S.D10000<-ext.PERMANOVA(S.D10000)
+
+# seq depth at mostly universal taxa
+# benchmark with total = 75; different sequencing depth
+P_E.D500<-ext.PERMANOVA(E.D500)
+P_E.D1000<-ext.PERMANOVA(E.D1000)
+P_E.D2000<-ext.PERMANOVA(E.D2000)
+P_E.D10000<-ext.PERMANOVA(E.D10000)
+
+
+```
+
+```{R}
+# LII output ####
+
+# benchmark with total = 75; different sequencing depth
+L_C.D500<-ext.LII(C.D500)
+L_C.D1000<-ext.LII(C.D1000)
+L_C.D2000<-ext.LII(C.D2000)
+L_C.D10000<-ext.LII(C.D10000)
+# seq depth at mostly universal taxa
+# benchmark with total = 75; different sequencing depth
+L_G.D500<-ext.LII(G.D500)
+L_G.D1000<-ext.LII(G.D1000)
+L_G.D2000<-ext.LII(G.D2000)
+L_G.D10000<-ext.LII(G.D10000)
+
+# seq depth at mostly universal taxa
+# benchmark with total = 75; different sequencing depth
+L_E.D500<-ext.LII(E.D500)
+L_E.D1000<-ext.LII(E.D1000)
+L_E.D2000<-ext.LII(E.D2000)
+L_E.D10000<-ext.LII(E.D10000)
+
+# seq depth at mostly universal taxa
+# benchmark with total = 75; different sequencing depth
+L_S.D500<-ext.LII(S.D500)
+L_D.D1000<-ext.LII(S.D1000)
+L_D.D2000<-ext.LII(S.D2000)
+L_D.D10000<-ext.LII(S.D10000)
+
+
+
+```
+
+```{R}
+L_C.D500$Level<-c(rep(500, 10))
+L_C.D1000$Level<-c(rep(1000, 10))
+L_C.D2000$Level<-c(rep(2000, 10))
+L_C.D10000$Level<-c(rep(10000, 10))
+
+
+P_C.D500$Level<-c(rep(500, 10))
+P_C.D1000$Level<-c(rep(1000, 10))
+P_C.D2000$Level<-c(rep(2000, 10))
+P_C.D10000$Level<-c(rep(10000, 10))
+
+Permanova.C<-do.call("rbind", list(P_C.D500,P_C.D1000,P_C.D2000,P_C.D10000))
+Permanova.C<-melt(data=Permanova.C, id.vars="Level", measure.vars = c("raw", "scaled", "eRare", "pRare", "limmaVST", "deseqVST"))
+library(ggplot2)
+
+Permanova.C2<-data_summary2(Permanova.C, varname="value", groupnames=c("Level", "variable"))
+Permanova.C<-data_summary(Permanova.C, varname="value", groupnames=c("Level", "variable"))
+```
+
+```{R}
+
+data_summary <- function(data, varname, groupnames){
+  require(plyr)
+  summary_func <- function(x, col){
+    c(mean = mean(x[[col]], na.rm=TRUE),
+      sd = sd(x[[col]], na.rm=TRUE))
+  }
+  data_sum<-ddply(data, groupnames, .fun=summary_func,
+                  varname)
+  data_sum <- rename(data_sum, c("mean" = varname))
+ return(data_sum)
 }
 
-model4
-test.tab<-as.data.frame(as.matrix(t(otu_table(model4))))
-test.tab$levels<-test.env$Factor# is this the original before subsampling?
-test.env<-sample_data(model4.scaled)
+data_summary2 <- function(data, varname, groupnames){
+  require(plyr)
+  summary_func <- function(x, col){
+    c(median = median(x[[col]], na.rm=TRUE),
+      low = min(x[[col]], na.rm=TRUE),
+      high = max(x[[col]], na.rm=TRUE))
+  }
+  data_sum<-ddply(data, groupnames, .fun=summary_func,
+                  varname)
+  data_sum <- rename(data_sum, c("median" = varname))
+ return(data_sum)
+}
+```
 
-par(mfrow=c(20,16))
-# from: https://rstudio-pubs-static.s3.amazonaws.com/232094_a8de2e47b78b4556a108e58c808b37cb.html
+```{R}
+ggplot(Permanova.C, aes(x=Level, y=value, group = variable, color=variable))+
+  geom_errorbar(aes(ymin=value-sd, ymax=value+sd), width=.1, position=position_dodge(300)) +
+  geom_line(position=position_dodge(300))+
+  geom_point(position=position_dodge(300))+
+  xlab("Seq. Depth")+
+  ylab("PERMANOVA R.sq. Index Value (Mean +/- se)")+
+  theme_classic()
 
-lapply(names(test.tab), plotserieslines)
+
+ggplot(Permanova.C2, aes(x=Level, y=value, group = variable, color=variable))+
+  geom_errorbar(aes(ymin=low, ymax=high), width=.1, position=position_dodge(300)) +
+  geom_line(position=position_dodge(300))+
+  geom_point(position=position_dodge(300))+
+  xlab("Seq. Depth")+
+  ylab("PERMANOVA R.sq. Index Value (Median +/- min/max)")+
+  theme_classic()
+```
+
+```{R}
+
+LII.C<-do.call("rbind", list(L_C.D500,L_C.D1000,L_C.D2000,L_C.D10000))
+LII.C<-melt(data=LII.C, id.vars="Level", measure.vars = c("raw", "scaled", "eRare", "pRare", "limmaVST", "deseqVST"))
+LII.C<-data_summary2(LII.C, varname="value", groupnames=c("Level", "variable"))
+
+LII.C500<-LII.C[LII.C$Level==500,]
+LII.C1000<-LII.C[LII.C$Level==1000,]
+LII.C2000<-LII.C[LII.C$Level==2000,]
+LII.C10000<-LII.C[LII.C$Level==10000,]
+
+ggplot(LII.C, aes(x=Level, y=value, group = variable, color=variable))+
+  geom_errorbar(aes(ymin=low, ymax=high), width=.1, position=position_dodge(300)) +
+  geom_line()+
+  geom_point()+
+  xlab("Seq. Depth")+
+  ylab("Lost Information Index Value (Median +/- min/max)")+
+  theme_classic()
+
+```
+
+```{R}
+
+L_G.D500$Level<-c(rep(500, 10))
+L_G.D1000$Level<-c(rep(1000, 10))
+L_G.D2000$Level<-c(rep(2000, 10))
+L_G.D10000$Level<-c(rep(10000, 10))
+LII.G<-do.call("rbind", list(L_G.D500,L_G.D1000,L_G.D2000,L_G.D10000))
+LII.G<-melt(data=LII.G, id.vars="Level", measure.vars = c("raw", "scaled", "eRare", "pRare", "limmaVST", "deseqVST"))
+LII.G<-data_summary2(LII.G, varname="value", groupnames=c("Level", "variable"))
+
+LII.G500<-LII.G[LII.G$Level==500,]
+LII.G1000<-LII.G[LII.G$Level==1000,]
+LII.G2000<-LII.G[LII.G$Level==2000,]
+LII.G10000<-LII.G[LII.G$Level==10000,]
+
+ggplot(LII.G, aes(x=Level, y=value, group = variable, color=variable))+
+  geom_errorbar(aes(ymin=low, ymax=high), width=.1, position=position_dodge(300)) +
+  geom_line()+
+  geom_point()+
+  xlab("Seq. Depth")+
+  ylab("Lost Information Index Value (Median +/- min/max)")+
+  theme_classic()
+
+```
+```{R}
+
+L_E.D500$Level<-c(rep(500, 10))
+L_E.D1000$Level<-c(rep(1000, 10))
+L_E.D2000$Level<-c(rep(2000, 10))
+L_E.D10000$Level<-c(rep(10000, 10))
+LII.E<-do.call("rbind", list(L_E.D500,L_E.D1000,L_E.D2000,L_E.D10000))
+LII.E<-melt(data=LII.E, id.vars="Level", measure.vars = c("raw", "scaled", "eRare", "pRare", "limmaVST", "deseqVST"))
+LII.E<-data_summary2(LII.E, varname="value", groupnames=c("Level", "variable"))
+
+LII.E500<-LII.E[LII.E$Level==500,]
+LII.E1000<-LII.E[LII.E$Level==1000,]
+LII.E2000<-LII.E[LII.E$Level==2000,]
+LII.E10000<-LII.E[LII.E$Level==10000,]
+
+ggplot(LII.E, aes(x=Level, y=value, group = variable, color=variable))+
+  geom_errorbar(aes(ymin=low, ymax=high), width=.1, position=position_dodge(300)) +
+  geom_line()+
+  geom_point()+
+  xlab("Seq. Depth")+
+  ylab("Lost Information Index Value (Median +/- min/max)")+
+  theme_classic()
+
+```
+
+```{r}
+O_C.D500<-ext.OI(C.D500)
+O_C.D1000<-ext.OI(C.D1000)
+O_C.D2000<-ext.OI(C.D2000)
+O_C.D10000<-ext.OI(C.D10000)
+
+O_C.D500$Level<-c(rep(500, 10))
+O_C.D1000$Level<-c(rep(1000, 10))
+O_C.D2000$Level<-c(rep(2000, 10))
+O_C.D10000$Level<-c(rep(10000, 10))
+
+OI.C<-do.call("rbind", list(O_C.D500,O_C.D1000,O_C.D2000,O_C.D10000))
+OI.C<-melt(data=OI.C, id.vars="Level", measure.vars = c("raw", "scaled", "eRare", "pRare", "limmaVST", "deseqVST"))
+OI.C<-data_summary2(OI.C, varname="value", groupnames=c("Level", "variable"))
+
+ggplot(OI.C, aes(x=Level, y=value, group = variable, color=variable))+
+  geom_errorbar(aes(ymin=low, ymax=high), width=.1, position=position_dodge(300)) +
+  geom_line(position=position_dodge(300))+
+  geom_point(position=position_dodge(300))+
+  xlab("Seq. Depth")+
+  ylab("Overmodeling Index Value (Median +/- min/max)")+
+  theme_classic()
+```
 
 
+```{r}
+O_G.D500<-ext.OI(G.D500)
+O_G.D1000<-ext.OI(G.D1000)
+O_G.D2000<-ext.OI(G.D2000)
+O_G.D10000<-ext.OI(G.D10000)
 
+O_G.D500$Level<-c(rep(500, 10))
+O_G.D1000$Level<-c(rep(1000, 10))
+O_G.D2000$Level<-c(rep(2000, 10))
+O_G.D10000$Level<-c(rep(10000, 10))
 
+OI.G<-do.call("rbind", list(O_G.D500,O_G.D1000,O_G.D2000,O_G.D10000))
+OI.G<-melt(data=OI.G, id.vars="Level", measure.vars = c("raw", "scaled", "eRare", "pRare", "limmaVST", "deseqVST"))
+OI.G<-data_summary2(OI.G, varname="value", groupnames=c("Level", "variable"))
 
+ggplot(OI.G, aes(x=Level, y=value, group = variable, color=variable))+
+  geom_errorbar(aes(ymin=low, ymax=high), width=.1, position=position_dodge(300)) +
+  geom_line(position=position_dodge(300))+
+  geom_point(position=position_dodge(300))+
+  xlab("Seq. Depth")+
+  ylab("Overmodeling Index Value (Median +/- min/max)")+
+  theme_classic()
+```
+
+```{r}
+O_E.D500<-ext.OI(E.D500)
+O_E.D1000<-ext.OI(E.D1000)
+O_E.D2000<-ext.OI(E.D2000)
+O_E.D10000<-ext.OI(E.D10000)
+
+O_E.D500$Level<-c(rep(500, 10))
+O_E.D1000$Level<-c(rep(1000, 10))
+O_E.D2000$Level<-c(rep(2000, 10))
+O_E.D10000$Level<-c(rep(10000, 10))
+
+OI.E<-do.call("rbind", list(O_E.D500,O_E.D1000,O_E.D2000,O_E.D10000))
+OI.E<-melt(data=OI.E, id.vars="Level", measure.vars = c("raw", "scaled", "eRare", "pRare", "limmaVST", "deseqVST"))
+OI.E<-data_summary2(OI.E, varname="value", groupnames=c("Level", "variable"))
+
+ggplot(OI.E, aes(x=Level, y=value, group = variable, color=variable))+
+  geom_errorbar(aes(ymin=low, ymax=high), width=.1, position=position_dodge(300)) +
+  geom_line()+
+  geom_point()+
+  xlab("Seq. Depth")+
+  ylab("Overmodeling Index Value (Median +/- min/max)")+
+  theme_classic()
+```
+```{r}
+
+OI.C$Sparcity<-c(rep(1, 24))
+OI.G$Sparcity<-c(rep(2, 24))
+OI.E$Sparcity<-c(rep(3, 24))
+
+sparcity<-do.call("rbind", list(OI.C, OI.G, OI.E))
+sparcity.500<-as.data.frame(sparcity[sparcity$Level==500,])
+sparcity.1000<-sparcity[sparcity$Level==1000,]
+sparcity.2000<-sparcity[sparcity$Level==2000,]
+sparcity.10000<-sparcity[sparcity$Level==10000,]
+
+par(mfcol=c(2,2))
+ggplot(sparcity.500, aes(x=Sparcity, y=value, group = variable, color=variable))+
+  geom_errorbar(aes(ymin=low, ymax=high), width=.1, position=position_dodge(0.1)) +
+  geom_line(position=position_dodge(0.1))+
+  geom_point(position=position_dodge(0.1))+
+  xlab("Sparcity level")+
+  ylab("Overmodeling Index Value (Median +/- min/max)")+
+  theme_classic()
+
+ggplot(sparcity.1000, aes(x=Sparcity, y=value, group = variable, color=variable))+
+  geom_errorbar(aes(ymin=low, ymax=high), width=.1, position=position_dodge(0.1)) +
+  geom_line(position=position_dodge(0.1))+
+  geom_point(position=position_dodge(0.1))+
+  xlab("Sparcity level")+
+  ylab("Overmodeling Index Value (Median +/- min/max)")+
+  theme_classic()
+
+ggplot(sparcity.2000, aes(x=Sparcity, y=value, group = variable, color=variable))+
+  geom_errorbar(aes(ymin=low, ymax=high), width=.1, position=position_dodge(0.1)) +
+  geom_line(position=position_dodge(0.1))+
+  geom_point(position=position_dodge(0.1))+
+  xlab("Sparcity level")+
+  ylab("Overmodeling Index Value (Median +/- min/max)")+
+  theme_classic()
+
+ggplot(sparcity.10000, aes(x=Sparcity, y=value, group = variable, color=variable))+
+  geom_errorbar(aes(ymin=low, ymax=high), width=.1, position=position_dodge(0.1)) +
+  geom_line(position=position_dodge(0.1))+
+  geom_point(position=position_dodge(0.1))+
+  xlab("Sparcity level")+
+  ylab("Overmodeling Index Value (Median +/- min/max)")+
+  theme_classic()
+
+```
+```{r}
+#trouble shooting 
+
+reference<-as.matrix(as.data.frame(t(as.matrix(otu_table(Delta.sppcount(E.D10000$rep5$model$comm, E.D10000$rep5$model$comm, method=0))))))
+  reference<-reference[order(rownames(reference)),]
+  #reference[reference<0]<-0
+  reference2<-as.matrix(as.data.frame(t(as.matrix(otu_table(Delta.sppcount(E.D10000$rep5$model$comm, E.D10000$rep5$model$comm, method=0))))))
+  reference2<-reference2[order(rownames(reference2)),]
+  reference2[reference2<0]<-0
+  treatment<-as.matrix(as.data.frame(t(as.matrix(otu_table(Delta.sppcount(E.D10000$rep5$deseqVST$comm, E.D10000$rep5$model$comm, method=0))))))
+  treatment<-treatment[order(rownames(treatment)),]
+  treatment[treatment<0]<-0
+if(identical(rownames(reference), rownames(treatment))){
+  Ci<-sapply(seq.int(dim(reference)[1]), function(i) summary(lm(reference[i,] ~ treatment[i,]))$r.squared)
+  Ci2<-sapply(seq.int(dim(reference)[1]), function(i) summary(lm(reference[i,] ~ reference2[i,]))$r.squared)
+  out<-sum(Ci2-Ci)
+  out} else {print("species do not match")}
+
+reference[1,]
 ```
 
 ```{R}
@@ -1864,7 +2231,7 @@ Community ecology approach:
 
 ```{r}
 
-
+install_github("djeppschmidt/Model.Microbiome")
 
 ```
 
@@ -2255,84 +2622,55 @@ pattern1.na<-names(pattern1$sign[is.na(pattern1$sign$p.value)])
 
 Metrics to keep for the real sets:
 ```{r}
-# number of significant indicators that are removed in filtering
-# number of significant indicators that are retained after filtering, but do not have log-fold change
-# number of significant log-fold change that are not signficant indicators or ANOVA
-# number of spp found in anovas that do not have log-fold change
-# correlation of species to environmental variables
-
-
-# make index of endemism: proportion of taxa that are unique to a site
-# phylogenetic distance matrix ...
-
-# false discovery rate ####
-generate.key<-function(){
-  
-}
-
-# N is number of replicates
-benchmark.FDR<-function(commonN, groupN, singleN, N){
-  require(plyr)
-  require()
-  out<-NULL
-}
-
-  # define environment and community
-  # commonN = number of common spp
-  # groupN = number of spp for each group
-  # singleN = number of spp for each site
-  # D = mean subsampling depth
-  # V = variance around subsampling depth
-  pick.tax<-function(commonN, groupN, singleN, D){
-    AllSpp<-c(paste0("spp", c(1:700), sep="")) # make a quick list of all species functions
+AllSpp<-c(paste0("spp", c(1:700), sep="")) # make a quick list of all species functions
     AllSpp<-lapply(AllSpp, get) # connect function to name
     AllSpp<-unlist(AllSpp)  # format to be read by downstream functions
     names(AllSpp)<-c(paste0("spp", c(1:700)))
 
     # Define list of 5 species w/ global distribution
-    global.spp<-names(sample(AllSpp, commonN, replace=F))
+    global.spp<-names(sample(AllSpp, 73, replace=F))
 
 # define list of species w/ regional distribution
     group.spp<-NULL
-    group.spp$group1<-names(sample(AllSpp, groupN, replace=F))
-    group.spp$group2<-names(sample(AllSpp, groupN, replace=F))
-    group.spp$group3<-names(sample(AllSpp, groupN, replace=F))
-    group.spp$group4<-names(sample(AllSpp, groupN, replace=F))
-    group.spp$group5<-names(sample(AllSpp, groupN, replace=F))
-    group.spp$group6<-names(sample(AllSpp, groupN, replace=F))
+    group.spp$group1<-names(sample(AllSpp, 1, replace=F))
+    group.spp$group2<-names(sample(AllSpp, 1, replace=F))
+    group.spp$group3<-names(sample(AllSpp, 1, replace=F))
+    group.spp$group4<-names(sample(AllSpp, 1, replace=F))
+    group.spp$group5<-names(sample(AllSpp, 1, replace=F))
+    group.spp$group6<-names(sample(AllSpp, 1, replace=F))
 
 # define list of species found at each site
     rando.spp<-NULL
-    rando.spp$Site1<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group1), global.spp))
-    rando.spp$Site2<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group1), global.spp))
-    rando.spp$Site3<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group1), global.spp))
-    rando.spp$Site4<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group1), global.spp))
-    rando.spp$Site5<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group1), global.spp))
-    rando.spp$Site6<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group2), global.spp))
-    rando.spp$Site7<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group2), global.spp))
-    rando.spp$Site8<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group2), global.spp))
-    rando.spp$Site9<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group2), global.spp))
-    rando.spp$Site10<-unique(c(names(sample(AllSpp,singleN, replace=F)), c(group.spp$group2), global.spp))
-    rando.spp$Site11<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group3), global.spp))
-    rando.spp$Site12<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group3), global.spp))
-    rando.spp$Site13<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group3), global.spp))
-    rando.spp$Site14<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group3), global.spp))
-    rando.spp$Site15<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group3), global.spp))
-    rando.spp$Site16<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group4), global.spp))
-    rando.spp$Site17<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group4), global.spp))
-    rando.spp$Site18<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group4), global.spp))
-    rando.spp$Site19<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group4), global.spp))
-    rando.spp$Site20<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group4), global.spp))
-    rando.spp$Site21<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group5), global.spp))
-    rando.spp$Site22<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group5), global.spp))
-    rando.spp$Site23<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group5), global.spp))
-    rando.spp$Site24<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group5), global.spp))
-    rando.spp$Site25<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group5), global.spp))
-    rando.spp$Site26<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group6), global.spp))
-    rando.spp$Site27<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group6), global.spp))
-    rando.spp$Site28<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group6), global.spp))
-    rando.spp$Site29<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group6), global.spp))
-    rando.spp$Site30<-unique(c(names(sample(AllSpp, singleN, replace=F)), c(group.spp$group6), global.spp))
+    rando.spp$Site1<-unique(c(names(sample(AllSpp, 1, replace=F)), c(group.spp$group1), global.spp))
+    rando.spp$Site2<-unique(c(names(sample(AllSpp, 1, replace=F)), c(group.spp$group1), global.spp))
+    rando.spp$Site3<-unique(c(names(sample(AllSpp, 1, replace=F)), c(group.spp$group1), global.spp))
+    rando.spp$Site4<-unique(c(names(sample(AllSpp, 1, replace=F)), c(group.spp$group1), global.spp))
+    rando.spp$Site5<-unique(c(names(sample(AllSpp, 1, replace=F)), c(group.spp$group1), global.spp))
+    rando.spp$Site6<-unique(c(names(sample(AllSpp, 1, replace=F)), c(group.spp$group2), global.spp))
+    rando.spp$Site7<-unique(c(names(sample(AllSpp, 1, replace=F)), c(group.spp$group2), global.spp))
+    rando.spp$Site8<-unique(c(names(sample(AllSpp, 1, replace=F)), c(group.spp$group2), global.spp))
+    rando.spp$Site9<-unique(c(names(sample(AllSpp, 1, replace=F)), c(group.spp$group2), global.spp))
+    rando.spp$Site10<-unique(c(names(sample(AllSpp, 1, replace=F)), c(group.spp$group2), global.spp))
+    rando.spp$Site11<-unique(c(names(sample(AllSpp, 1, replace=F)), c(group.spp$group3), global.spp))
+    rando.spp$Site12<-unique(c(names(sample(AllSpp, 1, replace=F)), c(group.spp$group3), global.spp))
+    rando.spp$Site13<-unique(c(names(sample(AllSpp, 1, replace=F)), c(group.spp$group3), global.spp))
+    rando.spp$Site14<-unique(c(names(sample(AllSpp, 1, replace=F)), c(group.spp$group3), global.spp))
+    rando.spp$Site15<-unique(c(names(sample(AllSpp, 1, replace=F)), c(group.spp$group3), global.spp))
+    rando.spp$Site16<-unique(c(names(sample(AllSpp, 1, replace=F)), c(group.spp$group4), global.spp))
+    rando.spp$Site17<-unique(c(names(sample(AllSpp, 1, replace=F)), c(group.spp$group4), global.spp))
+    rando.spp$Site18<-unique(c(names(sample(AllSpp, 1, replace=F)), c(group.spp$group4), global.spp))
+    rando.spp$Site19<-unique(c(names(sample(AllSpp, 1, replace=F)), c(group.spp$group4), global.spp))
+    rando.spp$Site20<-unique(c(names(sample(AllSpp, 1, replace=F)), c(group.spp$group4), global.spp))
+    rando.spp$Site21<-unique(c(names(sample(AllSpp, 1, replace=F)), c(group.spp$group5), global.spp))
+    rando.spp$Site22<-unique(c(names(sample(AllSpp, 1, replace=F)), c(group.spp$group5), global.spp))
+    rando.spp$Site23<-unique(c(names(sample(AllSpp, 1, replace=F)), c(group.spp$group5), global.spp))
+    rando.spp$Site24<-unique(c(names(sample(AllSpp, 1, replace=F)), c(group.spp$group5), global.spp))
+    rando.spp$Site25<-unique(c(names(sample(AllSpp, 1, replace=F)), c(group.spp$group5), global.spp))
+    rando.spp$Site26<-unique(c(names(sample(AllSpp, 1, replace=F)), c(group.spp$group6), global.spp))
+    rando.spp$Site27<-unique(c(names(sample(AllSpp, 1, replace=F)), c(group.spp$group6), global.spp))
+    rando.spp$Site28<-unique(c(names(sample(AllSpp, 1, replace=F)), c(group.spp$group6), global.spp))
+    rando.spp$Site29<-unique(c(names(sample(AllSpp, 1, replace=F)), c(group.spp$group6), global.spp))
+    rando.spp$Site30<-unique(c(names(sample(AllSpp, 1, replace=F)), c(group.spp$group6), global.spp))
 
 # make list of unique species arrays
 
@@ -2371,72 +2709,225 @@ benchmark.FDR<-function(commonN, groupN, singleN, N){
     F5.frame<-mapply(rnorm, f5c1,f5c2,f5c3) # pick Factor 5 value for each site
     F5<-reshape2::melt(F5.frame)
     Factors<-data.frame(F1$value,F2$value,F3$value,F4$value,F5$value) # combine factors into data table
-    
-    output<-NULL
+    Sites<-c(paste0("Site", 1:30))
+    rownames(Factors)<-Sites
+    colnames(Factors)<-c("F1","F2","F3","F4","F5")
+
+    output<-list("model"=NULL, "spplist"=NULL, "raw"=NULL, "RA"=NULL, "eRare"=NULL, "pRare"=NULL, "scaled"=NULL, "deseqVST"=NULL, "deseqVST_scaled"=NULL, "limma"=NULL)
+
+    #output$model<-NULL
     output$spplist<-rando.spp
-    output$model<-make.comm2(rando.spp, Factors) # output a phyloseq object... will make a list of phyloseq objects
-    sample_data(model)$sums<-sample_sums(model)# add sample sums
-    # subsample community
-    sample<-set.seqDepth(D,V)
-    output$model.raw<-make.rarefy2(model, sample)
+
+    output$model$comm<-make.refcomm(rando.spp, Factors) # output a phyloseq object... will make a list of phyloseq objects
+    output$model$comm<-filter_taxa(output$model$comm, function(x) sum(x)>0, TRUE)
+    output$model$EV<-transform_sample_counts(output$model$comm, function(x) x / sum(x) )
+
+    print("spp selection complete")
+    sample_data(output$model$comm)$Density<-sample_sums(output$model$comm)# add sample sums
+    sample_data(output$model$comm)$DensityF<-sample_sums(output$model$comm)/mean(sample_sums(output$model$comm))
+    sample_data(output$model$comm)$Factor<-as.factor(c(rep("one",5),rep("two",5),rep("three",5),rep("four",5),rep("five",5),rep("six",5)))
+    sample_data(output$model$comm)$Factor2<-as.factor(c(rep(1,5),rep(2,5),rep(3,5),rep(4,5),rep(5,5),rep(6,5)))
+
+    sample_data(output$model$comm)$Richness<-estimate_richness(output$model$comm, measures="Observed")
+    print("start subsampling")
+    sample<-set.seqDepth(500,250)
+    output$raw$comm<-model.rarefy(output$model$comm, sample, 500, 250)
     
-    # do each of the normalize community processes
-    output$sums<-sample_sums(model.raw)
-    output$model.eRare<-make.rarefy2(model.raw, min(sums))   ### fill in details !!
-    output$model.pRare<-make.rarefy2() 
-    output$model.scaled<-make.scaled1(model.raw, , )
-    output$model.raw.deseq<-make.deseqVST()
-    output$model.scaled.deseq<-make.deseqVST()
-    output$model.eRare.deseq<-make.deseqVST()
-    output$model.pRare.deseq<-make.deseqVST()
-    output$model.raw.limma<-make.limmaVST()
-    output$model.eRare.limma<-make.limmaVST()
-    output$model.pRare.limma<-make.limmaVST()
-    output$model.scaled.limma<-make.limmaVST()
     
+    
+    
+    function(comm1, sample){
+      comm1<-output$model$comm
+  comm2<-output$model$comm
+  otu<-as.data.frame(as.matrix(otu_table(output$model$comm)))
+  otu[]<-0
+  otu_table(comm2)<-otu_table(otu, taxa_are_rows=TRUE)
+  comm<-as.data.frame(as.matrix(otu_table(output$model$comm)))
+  print("setup")
+  m<-as.data.frame(t(table(sample(rownames(comm), sample[1], replace=T, prob=comm[,1]/sum(comm[,1])))))
+   m<-m[,colnames(m)!="Var1"]
+   colnames(m)[colnames(m)=="Freq"]<-paste("Site", 1, sep="")
+   #print("step one")
+    m2<-as.data.frame(t(table(sample(rownames(comm),sample[2], replace=T, prob=comm[,2]/sum(comm[,2])))))
+   m<-merge(m, m2, by="Var2", all=T)
+   #print("step two")
+    m<-m[,colnames(m)!="Var1"]
+    colnames(m)[colnames(m)=="Freq"]<-paste("Site", 2, sep="")
+    for(i in 3:ncol(comm)){
+     a<-as.data.frame(t(table(sample(rownames(comm), sample[i], replace=T, prob=comm[,i]/sum(comm[,i])))))
+     a<-a[,colnames(a)!="Var1"]
+     m<-merge(m,a, by="Var2", all=T)
+      m<-m[,colnames(m)!="Var1"]
+      colnames(m)[colnames(m)=="Freq"]<-paste("Site", i, sep="")
+
+    }
+    #colnames(m)<-c("Var1", paste0("site",c(1:12), r, sep="."))
+      #names(m)[names(m)=="Var2"]<-paste0("Sample", r,)
+      rownames(m)<-m$Var2
+      m<-m[,-1]
+      m[is.na(m)]<-0
+      m<-m[order(rownames(m)),]
+      print(table(duplicated(rownames(m))))
+      print(table(duplicated(taxa_names(comm1))))
+      print(table(duplicated(taxa_names(comm2))))
+      print(otu_table(comm1))
+      otu_table(comm1)<-otu_table(m, taxa_are_rows=T)
+      print("table made")
+      comm3<-merge_phyloseq(comm1, comm2)
+      print("merger 2")
+      m2<-as.data.frame(as.matrix(otu_table(comm3)))
+      m2<-m2[order(rownames(m2)),]
+      otu_table(comm3)<-otu_table(m2, taxa_are_rows=T)
+      comm3
+    }
+    
+    
+    
+    
+    
+    
+    print("subsampling finished")
+    # remove taxa that have zero abundance in "raw" sequencing run
+    tax.filt<-filter_taxa(output$raw$comm, function(x)sum(x)>0)
+    output$metrics<-NULL
+    output$metrix$tax.lost<-tax.filt
+      output$raw$comm<-filter_taxa(output$raw$comm, function(x)sum(x)>0, TRUE)
+      # remove taxa that are not kept from sequencing so that they don't penalize downstream methods
+      output$model$comm<-prune_taxa(tax.filt, output$model$comm)
+      output$model$EV<-prune_taxa(tax.filt, output$model$EV)
+
+
+    # for each species: measure prevalence
+        prevalence=apply(X = otu_table(output$model$comm), MARGIN=1,FUN = function(x){sum(x > 0)})
+    # for each species: measure relative abundance (proportion of total counts?
+        p.abund<-transform_sample_counts(output$model$comm, function(x) x/sum(x) )
+
+        mean_abundance<-apply(X = otu_table(p.abund), MARGIN=1,FUN = function(x){mean(x)})
+
+        sd_abundance<-apply(X = otu_table(p.abund), MARGIN=1,FUN = function(x){sd(x)})
+    # create a tax table for whole dataset ...
+        tab<-data.frame(prevalence, mean_abundance, sd_abundance)
+        tab$names<-rownames(tab)
+        output$model$SpeciesMeta<-tab
+
+        output$model$R<-lm.test(output$model$comm)
+
+    # make expected value
+        s<-sample_sums(output$raw$comm)
+        s2<-as.data.frame(as.matrix(otu_table(output$model$EV)))
+        s2<-for (i in 1:ncol(s2)) {s2[,i]<-s2[,i]*s[i]}
+        otu_table(output$model$EV)<-otu_table(output$model$EV, taxa_are_rows=TRUE)
+        M.Eval<-apply(X = otu_table(output$model$EV), MARGIN=1,FUN = function(x){mean(x)})
+
+
+    #output$model$SpeciesMeta$USI<-output$model$SpeciesMeta$
+    # create a tax table for whole dataset ...
+        tab<-data.frame(prevalence, mean_abundance, sd_abundance, M.Eval)
+        tab$names<-rownames(tab)
+        output$model$SpeciesMeta<-tab
+
+        output$model$R<-lm.test(output$model$comm)
+print("metadata complete")
+    # remove taxa that have zero abundance in "raw" sequencing run
+
+    print("subsampling complete")
+    #print(sample_sums(output$raw$comm))
+    print(output$raw$comm)
+    print(output$model$comm)
+
+    output$RA$comm<-transform_sample_counts(output$raw$comm, function(x) x / sum(x) )
+    output$eRare$comm<-make.rarefy2(output$raw$comm, min(sample_sums(output$raw$comm)))
+    print("erare complete")
+    output$pRare$comm<-make.rarefy2(output$raw$comm, min(sample_sums(output$raw$comm))*sample_sums(output$raw$comm)/mean(sample_sums(output$raw$comm)))
+    print("prare complete")
+    output$scaled$comm<-make.scaled2(output$raw$comm, val=sample_sums(output$model$comm)/mean(sample_sums(output$model$comm)), scale=D)
+    print("scaling complete")
+    output$deseqVST$comm<-make.deseqVST(output$raw$comm, "Factor", l=1)
+    print("deseq complete")
+    output$deseqVST_scaled$comm<-make.deseqVST(output$scaled$comm, "Factor", l=1)
+    output$limma$comm<-make.limmaVST(output$raw$comm, "Factor")
+    print("limma complete")
+  # add in any additional methods we want to add
+
+    output$raw$PERMANOVA<-make.PERMANOVA(output$raw$comm)
+    print("permanova raw")# make permanova tables
+    output$RA$PERMANOVA<-make.PERMANOVA(output$RA$comm)
+    print("permanova RA")# make permanova tables
+    output$eRare$PERMANOVA<-make.PERMANOVA(output$eRare$comm)
+    print("permanova eRare")
+    output$pRare$PERMANOVA<-make.PERMANOVA(output$pRare$comm)
+    print("permanova pRare")
+    output$scaled$PERMANOVA<-make.PERMANOVA(output$scaled$comm)
+    print("permanova scaled")
+    output$deseqVST$PERMANOVA<-make.PERMANOVA(output$deseqVST$comm)
+    output$deseqVST_scaled$PERMANOVA<-make.PERMANOVA(output$deseqVST_scaled$comm)
+    print("permanova deseq")
+    output$limma$PERMANOVA<-make.PERMANOVA(output$limma$comm)
+    print("permanova limma")
+    print("PERMANOVA complete")
+  # add in any additional methods we want to add
+
+    output$raw$LII<-LII(output$model$comm, output$raw$comm)
+    output$RA$LII<-LII(output$model$comm, output$RA$comm)  # show amount of information retained after corrections
+    output$eRare$LII<-LII(output$model$comm, output$eRare$comm)
+    output$pRare$LII<-LII(output$model$comm, output$pRare$comm)
+    output$scaled$LII<-LII(output$model$comm, output$scaled$comm)
+    output$deseqVST$LII<-LII(output$model$comm, output$deseqVST$comm)
+    output$deseqVST_scaled$LII<-LII(output$model$comm, output$deseqVST_scaled$comm)
+    output$limma$LII<-LII(output$model$comm, output$limma$comm)
+
+# do 1- : calculates the information lost
+    output$model$SpeciesMeta$rawLII<-1-output$raw$LII$R
+    output$model$SpeciesMeta$RALII<-1-output$RA$LII$R
+    output$model$SpeciesMeta$eRareLII<-1-output$eRare$LII$R
+    output$model$SpeciesMeta$pRareLII<-1-output$pRare$LII$R
+    output$model$SpeciesMeta$scaledLII<-1-output$scaled$LII$R
+    output$model$SpeciesMeta$limmaLII<-1-output$limma$LII$R
+    output$model$SpeciesMeta$deseqLII<-1-output$deseqVST$LII$R
+    output$model$SpeciesMeta$deseqSC.LII<-1-output$deseqVST_scaled$LII$R
+
+    print("LII complete")
+  # add in any additional methods we want to add
+
+   output$raw$DMI<-DMI(output$model$comm, output$raw$comm)
+   output$RA$DMI<-DMI(output$model$comm, output$RA$comm)
+   output$eRare$DMI<-DMI(output$model$comm, output$eRare$comm)
+   output$pRare$DMI<-DMI(output$model$comm, output$pRare$comm)
+   output$scaled$DMI<-DMI(output$model$comm, output$scaled$comm)
+   output$deseqVST$DMI<-DMI(output$model$comm, output$deseqVST$comm)
+   output$deseqVST_scaled$DMI<-DMI(output$model$comm, output$deseqVST_scaled$comm)
+   output$limma$DMI<-DMI(output$model$comm, output$limma$comm)
+
+   output$model$SpeciesMeta$rawDMI<-output$raw$DMI$SVI
+   output$model$SpeciesMeta$RADMI<-output$RA$DMI$SVI
+   output$model$SpeciesMeta$eRareDMI<-output$eRare$DMI$SVI
+   output$model$SpeciesMeta$pRareDMI<-output$pRare$DMI$SVI
+   output$model$SpeciesMeta$scaledDMI<-output$scaled$DMI$SVI
+   output$model$SpeciesMeta$limmaDMI<-output$limma$DMI$SVI
+   output$model$SpeciesMeta$deseqDMI<-output$deseqVST$DMI$SVI
+   output$model$SpeciesMeta$deseqSC.DMI<-output$deseqVST_scaled$DMI$SVI
+
+   output$metrics$stats<-NULL
+   output$metrics$stats$rawVA<-summary(lm(output$model$SpeciesMeta$rawDMI~output$model$SpeciesMeta$rawLII))
+   output$metrics$stats$RADVA<-summary(lm(output$model$SpeciesMeta$RADMI~output$model$SpeciesMeta$RALII))
+   output$metrics$stats$eRareVA<-summary(lm(output$model$SpeciesMeta$eRareDMI~output$model$SpeciesMeta$eRareLII))
+   output$metrics$stats$pRareVA<-summary(lm(output$model$SpeciesMeta$pRareDMI~output$model$SpeciesMeta$pRareLII))
+   output$metrics$stats$scaleVA<-summary(lm(output$model$SpeciesMeta$scaledDMI~output$model$SpeciesMeta$scaledLII))
+   output$metrics$stats$limmaVA<-summary(lm(output$model$SpeciesMeta$limmaDMI~output$model$SpeciesMeta$limmaLII))
+   output$metrics$stats$deseqVA<-summary(lm(output$model$SpeciesMeta$deseqDMI~output$model$SpeciesMeta$deseqLII))
+   output$metrics$stats$deseqSC.VA<-summary(lm(output$model$SpeciesMeta$deseqSC.DMI~output$model$SpeciesMeta$deseqSC.LII))
+
+   #output$raw$div<-div(output$raw$comm)
+   #output$RA$div<-div(output$RA$comm)
+   #output$eRare$div<-div(output$eRare$comm)
+   #output$pRare$div<-div(output$pRare$comm)
+   #output$scaled$div<-div(output$scaled$comm)
+   #output$deseqVST$div<-div(output$deseqVST$comm)
+   #output$deseqVST_scaled$div<-div(output$deseqVST_scaled$comm)
+   #output$limma$div<-div(output$limma$comm)
+
+
     output
-}
-  
-
-  plotSVI<-function(){}
-  plotSVI2<-function(){}
-  plotFDR<-function(){}
-  plotMDR<-function(){}
-  # output SVI index values
-  # output SVI2 index values
-  # output False discovery rate
-  # output missed discovery rate
-
-
-
-env<-lapply(,) # make list of env data.frames
-Sites<-c(paste0("Site", 1:30))
-rownames(Factors)<-Sites
-colnames(Factors)<-c("F1","F2","F3","F4","F5")
-head(Factors)
-
-
-# make list of OTU tables ...
-
-# run each normalization on the list of otu tables to generate outputs
-
-# 
-  
-# plot outputs
-
-# statistics
-
-########### next ... 
-  out$plotVSI2<-ggplot()+geom_bar()+theme_classic()
-  out$plotVSI<-ggplot()+geom_bar()+theme_classic()
-  out$plotFDR<-ggplot()+geom_line()+theme_classic()
-  out
-}
-
-# true discovery rate ####
-
-# Power to detect #### ( undiscovered true positives )
-
 
 ```
 
